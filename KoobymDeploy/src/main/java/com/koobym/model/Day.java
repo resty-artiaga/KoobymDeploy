@@ -50,4 +50,12 @@ public class Day {
 		this.dayName = dayName;
 	}
 	
+	public Set<Time> getTimes() {
+		return times;
+	}
+	
+	public void setTimes(Set<Time> times) {
+		this.times = times;
+	}
+	
 }
