@@ -55,13 +55,13 @@ public class BookOwnerController {
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public ResponseEntity<BookOwner> getRoles(@PathVariable("id") int id) {
-		ResponseEntity<BookOwner> flag = ResponseEntity.ok(bookOwnerService.get(Integer.toUnsignedLong(id)));
+		ResponseEntity<BookOwner> flag = ResponseEntity.ok(bookOwnerService.get(new Long(id)));
 		return flag;
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
-		bookOwnerService.delete(Integer.toUnsignedLong(id));
+		bookOwnerService.delete(new Long(id));
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}

@@ -28,7 +28,7 @@ public class UserController {
 		ent = ResponseEntity.ok(userLoggedIn);
 		return ent;
 	}
-	
+
 	@RequestMapping(value = "/checkFbUser/{userFbId}", method = RequestMethod.GET)
 	public ResponseEntity<User> checkFbUser(@PathVariable("userFbId") String userFbId) {
 		ResponseEntity<User> ent = null;
@@ -70,13 +70,13 @@ public class UserController {
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public ResponseEntity<User> getRoles(@PathVariable("id") int id) {
-		ResponseEntity<User> flag = ResponseEntity.ok(userService.get(Integer.toUnsignedLong(id)));
+		ResponseEntity<User> flag = ResponseEntity.ok(userService.get(new Long(id)));
 		return flag;
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
-		userService.delete(Integer.toUnsignedLong(id));
+		userService.delete(new Long(id));
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}

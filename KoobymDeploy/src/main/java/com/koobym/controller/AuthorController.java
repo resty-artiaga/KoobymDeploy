@@ -23,8 +23,6 @@ public class AuthorController {
 	@Autowired
 	private AuthorService authorService;
 
-
-
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<Author> add(@RequestBody Author author) {
 		ResponseEntity<Author> ent = null;
@@ -57,13 +55,13 @@ public class AuthorController {
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Author> getRoles(@PathVariable("id") int id) {
-		ResponseEntity<Author> flag = ResponseEntity.ok(authorService.get(Integer.toUnsignedLong(id)));
+		ResponseEntity<Author> flag = ResponseEntity.ok(authorService.get(new Long(id)));
 		return flag;
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
-		authorService.delete(Integer.toUnsignedLong(id));
+		authorService.delete(new Long(id));
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}

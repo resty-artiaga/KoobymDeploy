@@ -2,7 +2,6 @@ package com.koobym.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,13 +53,13 @@ public class GenreController {
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Genre> getRoles(@PathVariable("id") int id) {
-		ResponseEntity<Genre> flag = ResponseEntity.ok(genreService.get(Integer.toUnsignedLong(id)));
+		ResponseEntity<Genre> flag = ResponseEntity.ok(genreService.get(new Long(id)));
 		return flag;
 	}
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
-		genreService.delete(Integer.toUnsignedLong(id));
+		genreService.delete(new Long(id));
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}

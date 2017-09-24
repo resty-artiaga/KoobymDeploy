@@ -24,9 +24,9 @@ public class RentalDetailController {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getMostRented());
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/suggested/{userId}", method = RequestMethod.GET)
-	public ResponseEntity<List<RentalDetail>> getSuggested(@PathVariable("userId")int userId) {
+	public ResponseEntity<List<RentalDetail>> getSuggested(@PathVariable("userId") int userId) {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getSuggestedByGenre(userId));
 		return flag;
 	}
