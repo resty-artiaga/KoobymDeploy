@@ -22,20 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Time {
 
 	@Id
-	@Column(name = "timeId")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long timeId;
-
 	@Column(name = "strTime", nullable = false)
 	private String strTime;
-
-	public long getTimeId() {
-		return timeId;
-	}
-
-	public void setTimeId(long timeId) {
-		this.timeId = timeId;
-	}
 
 	public String getStrTime() {
 		return strTime;
@@ -44,5 +32,5 @@ public class Time {
 	public void setStrTime(String strTime) {
 		this.strTime = strTime;
 	}
-	
+
 }
