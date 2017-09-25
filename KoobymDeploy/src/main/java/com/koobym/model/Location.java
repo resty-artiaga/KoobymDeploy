@@ -30,10 +30,10 @@ public class Location {
 	private String locationName;
 
 	@Column(name = "latitude", nullable = false)
-	private float latitude;
+	private String latitude;
 
 	@Column(name = "longitude", nullable = false)
-	private float longitude;
+	private String longitude;
 
 	public long getLocationId() {
 		return locationId;
@@ -51,19 +51,19 @@ public class Location {
 		this.locationName = locationName;
 	}
 
-	public float getlatitude() {
+	public String getlatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(float latitude) {
+	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
 
-	public float getLongitude() {
+	public String getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(float longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
 	
