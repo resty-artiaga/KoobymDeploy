@@ -33,8 +33,7 @@ public class Day {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "day_time", joinColumns = @JoinColumn(name = "dayId", referencedColumnName = "dayId"), inverseJoinColumns = @JoinColumn(name = "strTime", referencedColumnName = "strTime"))
 	private Set<Time> times;
-	
-
+		
 	public long getDayId() {
 		return dayId;
 	}

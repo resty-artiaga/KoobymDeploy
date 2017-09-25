@@ -36,7 +36,7 @@ public class Genre {
 		return genreName;
 	}
 
-	public void setEmail(String genreName) {
+	public void setGenreName(String genreName) {
 		this.genreName = genreName;
 	}
 	
