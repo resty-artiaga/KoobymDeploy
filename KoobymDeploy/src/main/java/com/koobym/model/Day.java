@@ -34,9 +34,6 @@ public class Day {
     @JoinTable(name = "day_time", joinColumns = @JoinColumn(name = "dayId", referencedColumnName = "dayId"), inverseJoinColumns = @JoinColumn(name = "strTime", referencedColumnName = "strTime"))
 	private Set<Time> times;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "day_user", joinColumns = @JoinColumn(name = "dayId", referencedColumnName = "dayId"), inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
-	private long userId;
 
 	public long getDayId() {
 		return dayId;
@@ -62,11 +59,4 @@ public class Day {
 		this.times = times;
 	}
 	
-	public long getUserId() {
-		return userId;
-	}
-	
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
 }
