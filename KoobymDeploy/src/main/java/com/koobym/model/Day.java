@@ -22,52 +22,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Day {
 
 	@Id
-	@Column(name = "dayId")
+	@Column(name = "strDay")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long dayId;
+	private String strDay;
 
-	@Column(name = "dayName", nullable = false)
-	private String dayName;
-	
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "day_time", joinColumns = @JoinColumn(name = "dayId", referencedColumnName = "dayId"), inverseJoinColumns = @JoinColumn(name = "strTime", referencedColumnName = "strTime"))
-	private Set<Time> times;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "day_user", joinColumns = @JoinColumn(name = "dayId", referencedColumnName = "dayId"), inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
-	private long userId;
-		
-	public long getDayId() {
-		return dayId;
-	}
-
-	public void setDayId(long dayId) {
-		this.dayId = dayId;
-	}
-
-	public String getDayName() {
-		return dayName;
-	}
-
-	public void setDayName(String dayName) {
-		this.dayName = dayName;
+	public String getStrDay() {
+		return strDay;
 	}
 	
-	public Set<Time> getTimes() {
-		return times;
+	public void setStrDay(String strDay) {
+		this.strDay = strDay;
 	}
-	
-	public void setTimes(Set<Time> times) {
-		this.times = times;
-	}
-	
-	public long getUserId() {
-		return userId;
-	}
-	
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
-	
 }

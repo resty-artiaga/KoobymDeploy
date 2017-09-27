@@ -1,4 +1,4 @@
-package com.koobym.model;
+ package com.koobym.model;
 
 import java.util.Set;
 
@@ -13,12 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
 	@Id
@@ -26,6 +27,17 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long userId;
 
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "location_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "locationId", referencedColumnName = "locationId"))
+	private Set<Location> locations;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "genre_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
+	private Set<Genre> genres;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "userId")
+	private Set<UserDayTime> userDayTimes;
+	
 	@Column(name = "email", nullable = false)
 	private String email;
 
@@ -56,14 +68,13 @@ public class User {
 	@Column(name="fbUserId")
 	private String userFbId;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "location_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "locationId", referencedColumnName = "locationId"))
-	private Set<Location> locations;
+	public void setUserDayTimes(Set<UserDayTime> userDayTimes) {
+		this.userDayTimes = userDayTimes;
+	}
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "genre_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
-	private Set<Genre> genres;
-	
+	public Set<UserDayTime> getUserDayTimes(){
+		return userDayTimes;
+	}
 	
 	public String getUserFbId() {
 		return userFbId;
