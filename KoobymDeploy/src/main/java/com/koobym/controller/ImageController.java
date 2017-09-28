@@ -51,7 +51,7 @@ public class ImageController {
 			// save file in server - you may need an another scenario
 			filename = pre1+ pre2+ Long.toString(new Date().getTime())+ file.getOriginalFilename();
 
-			Path path = Paths.get("D:/images/" + filename);
+			Path path = Paths.get("/home/resty_artiaga/Koobym/images/" + filename);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,7 +66,7 @@ public class ImageController {
 		byte[] flag = null;
 		try {
 			// Retrieve image from the classpath.
-			File f = new File("D:/images/" + filename);
+			File f = new File("/home/resty_artiaga/Koobym/images/" + filename);
 			InputStream is = new FileInputStream(f);
 
 			// Prepare buffered image.
