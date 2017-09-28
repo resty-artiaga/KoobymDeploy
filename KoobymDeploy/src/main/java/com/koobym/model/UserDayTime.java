@@ -41,11 +41,12 @@ public class UserDayTime {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	
+	@Column(name = "userId")
 	public long getUserId() {
 		return userId;
 	}
 	
+	@Column(name = "userDayTimeId")
 	public long getUserDayTimeId() {
 		return userDayTimeId;
 	}
