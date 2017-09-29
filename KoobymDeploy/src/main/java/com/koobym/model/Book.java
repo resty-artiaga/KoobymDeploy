@@ -38,6 +38,9 @@ public class Book {
 	@Column(name = "publishedDate")
 	private String publishedDate;
 	
+	@Column(name = "bookFilename")
+	private String bookFilename;
+	
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId", referencedColumnName = "authorId"))
@@ -47,6 +50,13 @@ public class Book {
     @JoinTable(name = "genre_book", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
 	private Set<Genre> genresBook;
 	
+	public String getBookFilename() {
+		return bookFilename;
+	}
+	
+	public void setBookFilename(String bookFilename) {
+		this.bookFilename = bookFilename;
+	}
 	
 	public long getBookId() {
 		return bookId;
