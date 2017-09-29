@@ -85,7 +85,7 @@ public class RentalDetailDaoImpl extends BaseDaoImpl<RentalDetail, Long> impleme
 	public List<RentalDetail> getRentalById(int userId) {
 		List<RentalDetail> flag = new ArrayList<RentalDetail>();
 		Session session = getSessionFactory().getCurrentSession();
-		String squery = "select * from rental_detail JOIN (select * from book_owner WHERE book_owner.userId = :userId) as userid_rental";
+		String squery = "select * from rental_detail INNER JOIN book_owner ON rental_detail.bookOwnerId = book_ownerId WHERE book_owner.userId = :userId";
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setInteger("userId", userId);
 		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
