@@ -57,5 +57,9 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 		return rentalDetailDao.mostRentedBooks();
 	}
 
+	@Override
+	public List<RentalDetail> getRentalById(int userId){
+		return rentalDetailDao.getRentalById(userId);
+	}
 
 }

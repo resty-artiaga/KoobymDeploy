@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koobym.model.RentalDetail;
+import com.koobym.model.User;
 import com.koobym.service.RentalDetailService;
 
 @RestController
@@ -31,4 +32,15 @@ public class RentalDetailController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalDetail>> getList() {
+		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.list());
+		return flag;
+	}
+	
+	@RequestMapping(value = "/rentById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalDetail>> getRentalId(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getRentalById(userId));
+		return flag;
+	}
 }
