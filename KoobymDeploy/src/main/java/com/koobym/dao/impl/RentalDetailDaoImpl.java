@@ -81,29 +81,39 @@ public class RentalDetailDaoImpl extends BaseDaoImpl<RentalDetail, Long> impleme
 
 		return flag;
 	}
-
+	
 	public List<RentalDetail> getRentalById(int userId) {
 		List<RentalDetail> flag = new ArrayList<RentalDetail>();
-		Session session = getSessionFactory().getCurrentSession();
-		String squery = "select * from rental_detail INNER JOIN book_owner ON rental_detail.bookOwnerId = book_ownerId WHERE book_owner.userId = :userId";
-		SQLQuery query = session.createSQLQuery(squery);
-		query.setInteger("userId", userId);
-		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-		Map<String, Object> row = null;
-		List<Object> data = query.list();
-		RentalDetail temp;
-		for (Object object : data) {
-			row = (Map<String, Object>) object;
-			temp = new RentalDetail();
-			temp.setRental_detailId((int) row.get("rental_detailId"));
-			temp.setCalculatedPrice(new Double((float) row.get("calculatedPrice")));
-			temp.setDaysForRent((int) row.get("daysForRent"));
-			temp.setBookOwner(new BookOwner());
-			temp.getBookOwner().setBook_OwnerId((int) row.get("bookOwnerId"));
-			Hibernate.initialize(temp.getBookOwner());
-			flag.add(temp);
-		}
-
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalDetail.class);
+		criteria = criteria.createAlias("bookOwner", "bookOwner");
+		criteria = criteria.add(Restrictions.eq("bookOwner.user.userId", new Long(userId)));
+		flag = (List<RentalDetail>) criteria.list();
 		return flag;
 	}
+
+//	public List<RentalDetail> getRentalById(int userId) {
+//		List<RentalDetail> flag = new ArrayList<RentalDetail>();
+//		Session session = getSessionFactory().getCurrentSession();
+//		String squery = "select * from rental_detail INNER JOIN book_owner on (select * from book_owner WHERE book_owner.userId = :userId)";
+//		SQLQuery query = session.createSQLQuery(squery);
+//		query.setInteger("userId", userId);
+//		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+//		Map<String, Object> row = null;
+//		List<Object> data = query.list();
+//		RentalDetail temp;
+//		for (Object object : data) {
+//			row = (Map<String, Object>) object;
+//			temp = new RentalDetail();
+//			temp.setRental_detailId((int) row.get("rental_detailId"));
+//			temp.setCalculatedPrice(new Double((float) row.get("calculatedPrice")));
+//			temp.setDaysForRent((int) row.get("daysForRent"));
+//			temp.setBookOwner(new BookOwner());
+//			temp.getBookOwner().setBook_OwnerId((int) row.get("bookOwnerId"));
+//			Hibernate.initialize(temp.getBookOwner());
+//			flag.add(temp);
+//		}
+//
+//		return flag;
+//	}
 }
