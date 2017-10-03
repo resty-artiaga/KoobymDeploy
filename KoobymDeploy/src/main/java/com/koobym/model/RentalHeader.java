@@ -34,6 +34,17 @@ public class RentalHeader {
 	@JoinColumn(name = "locationId")
 	private Location location;
 	
+	@Column(name="status")
+	private String status;
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
 	public void setRentalHeaderId(long rentalHeaderId) {
 		this.rentalHeaderId = rentalHeaderId;
 	}
