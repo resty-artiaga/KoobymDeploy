@@ -31,7 +31,7 @@ public class User {
     @JoinTable(name = "location_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "locationId", referencedColumnName = "locationId"))
 	private Set<Location> locations;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "genre_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
 	private Set<Genre> genres;
 	
