@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koobym.model.RentalHeader;
+import com.koobym.model.UserRental;
 import com.koobym.service.RentalHeaderService;
 
 @RestController
@@ -63,6 +64,12 @@ public class RentalHeaderController {
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
 		rentalHeaderService.delete(new Long(id));
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
+		return flag;
+	}
+	
+	@RequestMapping(value = "/rentalById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getRentalId(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getListRentalById(userId));
 		return flag;
 	}
 

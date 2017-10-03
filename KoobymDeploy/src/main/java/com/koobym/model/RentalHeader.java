@@ -23,6 +23,10 @@ public class RentalHeader {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	private User user;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "rentalDetailId")
+	private RentalDetail rentalDetail;
 		
 	@Column(name="rentalTimeStamp")
 	private String rentalTimeStamp;
@@ -36,6 +40,14 @@ public class RentalHeader {
 	
 	@Column(name="status")
 	private String status;
+	
+	public void setRentalDetail(RentalDetail rentalDetail) {
+		this.rentalDetail = rentalDetail;
+	}
+	
+	public RentalDetail getRentalDetail() {
+		return rentalDetail;
+	}
 	
 	public void setStatus(String status) {
 		this.status = status;
