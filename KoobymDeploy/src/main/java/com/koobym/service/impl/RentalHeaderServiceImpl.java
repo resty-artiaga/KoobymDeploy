@@ -42,4 +42,15 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		return rentalHeaderDao.getToReceiveByIdRenter(userId);
 	}
 
+	@Override
+	public List<RentalHeader> getRequestReceivedById(int userId) {
+		// TODO Auto-generated method stub
+		return rentalHeaderDao.getRequestReceivedById(userId);
+	}
+	
+	@Override
+	public List<RentalHeader> getMyRequestsById(int userId) {
+		// TODO Auto-generated method stub
+		return rentalHeaderDao.getMyRequestsById(userId);
+	}
 }

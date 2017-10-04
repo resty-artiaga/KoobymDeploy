@@ -85,5 +85,17 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/myRequestById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getMyRequestsById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getMyRequestsById(userId));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/requestReceivedById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getRequestReceivedById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getRequestReceivedById(userId));
+		return flag;
+	}
+	
 
 }

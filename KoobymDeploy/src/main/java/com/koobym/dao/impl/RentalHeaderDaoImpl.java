@@ -59,4 +59,32 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return flag;
 		
 	}
+	
+public List<RentalHeader> getMyRequestsById(int userId){
+		
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		/*criteria = criteria.createAlias("user", "user");*/
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("status", "Confirmation"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
+		
+	}
+
+public List<RentalHeader> getRequestReceivedById(int userId){
+	
+	List<RentalHeader> flag = new ArrayList<RentalHeader>();
+	
+	Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+	criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+	criteria = criteria.add(Restrictions.eq("rentalDetail.bookOwner.user.userId", new Long(userId)));
+	criteria = criteria.add(Restrictions.eq("status", "Confirmation"));
+	criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	flag = (List<RentalHeader>) criteria.list();
+	return flag;
+	
+}
 }
