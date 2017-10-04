@@ -72,5 +72,11 @@ public class RentalHeaderController {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getListRentalById(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/toDeliverById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getToDeliverById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getToDeliverById(userId));
+		return flag;
+	}
 
 }

@@ -31,4 +31,18 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
 	}
+	
+	public List<RentalHeader> getToDeliverById(int userId){
+		
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		/*criteria = criteria.createAlias("user", "user");*/
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("status", "To Deliver"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
+		
+	}
 }
