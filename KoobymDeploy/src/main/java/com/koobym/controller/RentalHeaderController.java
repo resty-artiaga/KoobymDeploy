@@ -97,5 +97,16 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/toReturnByIdRenter/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getToReturnByIdRenter(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getToReturnByIdRenter(userId));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/completeByIdRenter/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getCompleteByIdRenter(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getCompleteByIdRenter(userId));
+		return flag;
+	}
 
 }
