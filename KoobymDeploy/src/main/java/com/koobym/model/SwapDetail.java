@@ -26,10 +26,20 @@ public class SwapDetail {
 	@Column(name = "swapTimeStamp")
 	private String swapTimeStamp;
 		
+	@Column(name = "swapPrice")
+	private float price;
+	
 	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="bookOwnerId")
 	private BookOwner bookOwner;
 
+	public float getSwapPrice() {
+		return price;
+	}
+	
+	public void setSwapPrice(float price) {
+		this.price = price;
+	}
 
 	public long getSwapDetailId() {
 		return swap_detailId;
