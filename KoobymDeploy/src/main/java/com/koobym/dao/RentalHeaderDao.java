@@ -15,4 +15,5 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public List<RentalHeader> getRequestReceivedById(int userId);
 	public List<RentalHeader> getToReturnByIdRenter(int userId);
 	public List<RentalHeader> getCompleteByIdRenter(int userId);
+	public List<RentalHeader> getToReceiveByIdOwner(int userId);
 }
