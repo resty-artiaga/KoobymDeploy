@@ -29,7 +29,8 @@ public class RentalDetail {
 	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="bookOwnerId")
 	private BookOwner bookOwner;
-
+	
+	
 	public long getRental_detailId() {
 		return rental_detailId;
 	}

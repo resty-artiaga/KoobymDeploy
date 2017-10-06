@@ -43,16 +43,6 @@ public class BookOwner {
 	@Column(name = "noRenters")
 	private int noRenters;
 	
-	@Column(name = "category")
-	private String category;	
-
-	public void setCategory(String category){
-		this.category = category;
-	}
-	
-	public String getCategory() {
-		return category;
-	}
 	
 	public void setBook_ownerId(long book_ownerId) {
 		this.book_ownerId = book_ownerId;
