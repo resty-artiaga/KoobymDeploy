@@ -61,6 +61,12 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	}
 	
 	@Override
+	public List<RentalHeader> getToReturnByIdOwner(int userId) {
+		// TODO Auto-generated method stub
+		return rentalHeaderDao.getToReturnByIdOwner(userId);
+	}
+	
+	@Override
 	public List<RentalHeader> getCompleteByIdRenter(int userId) {
 		// TODO Auto-generated method stub
 		return rentalHeaderDao.getCompleteByIdRenter(userId);

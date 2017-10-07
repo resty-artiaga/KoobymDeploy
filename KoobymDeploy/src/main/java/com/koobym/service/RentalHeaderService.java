@@ -14,4 +14,5 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public List<RentalHeader> getCompleteByIdRenter(int userId);
 	public List<RentalHeader> getToReceiveByIdOwner(int userId);
 	public List<RentalHeader> getCompleteByIdOwner(int userId);
+	public List<RentalHeader> getToReturnByIdOwner(int userId);
 }

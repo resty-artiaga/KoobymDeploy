@@ -103,6 +103,12 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/toReturnByIdOwner/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getToReturnByIdOwner(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getToReturnByIdOwner(userId));
+		return flag;
+	}
+	
 	@RequestMapping(value = "/completeByIdRenter/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<RentalHeader>> getCompleteByIdRenter(@PathVariable("userId") int userId) {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getCompleteByIdRenter(userId));
