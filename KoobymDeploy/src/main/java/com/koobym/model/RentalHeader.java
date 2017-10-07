@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="rental_header")
 public class RentalHeader {
@@ -22,6 +24,7 @@ public class RentalHeader {
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "userId")
+	@JsonProperty(value="user")
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
