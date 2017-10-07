@@ -114,5 +114,11 @@ public class RentalHeaderController {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getToReceiveByIdOwner(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/completeByIdOwner/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getCompleteByIdOwner(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getCompleteByIdOwner(userId));
+		return flag;
+	}
 
 }
