@@ -20,6 +20,7 @@ import com.koobym.dao.UserDao;
 import com.koobym.model.SwapDetail;
 import com.koobym.model.Genre;
 import com.koobym.model.RentalDetail;
+import com.koobym.model.RentalHeader;
 import com.koobym.model.User;
 
 @Repository
@@ -57,6 +58,22 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 		criteria = criteria.add(Restrictions.eq("bookOwner.user.userId", new Long(userId)));
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
+	}
+	
+	public List<SwapDetail> getMySwapBookById(int userId){
+		
+		List<SwapDetail> flag = new ArrayList<SwapDetail>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("status", "Confirmation"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapDetail>) criteria.list();
+		return flag;
+		
 	}
 
 //	public List<RentalDetail> getRentalById(int userId) {

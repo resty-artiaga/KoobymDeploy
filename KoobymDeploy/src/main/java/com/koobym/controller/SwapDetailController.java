@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.koobym.model.RentalDetail;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapDetail;
 import com.koobym.model.User;
@@ -70,6 +71,12 @@ public class SwapDetailController {
 	public ResponseEntity<Integer> deleteUser(@PathVariable("id") int id) {
 		swapDetailService.delete(new Long(id));
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
+		return flag;
+	}
+	
+	@RequestMapping(value = "/mySwapBooks/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapDetail>> getSwapById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getSwapById(userId));
 		return flag;
 	}
 }

@@ -9,4 +9,5 @@ import com.koobym.model.SwapDetail;
 
 public interface SwapDetailDao extends BaseDao<SwapDetail, Long> {
 	public List<SwapDetail> getSwapById(int userId);
+	public List<SwapDetail> getMySwapBookById(int userId);
 }

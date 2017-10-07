@@ -31,4 +31,9 @@ public class SwapDetailServiceImpl extends BaseServiceImpl<SwapDetail, Long> imp
 		return swapDetailDao.getSwapById(userId);
 	}
 
+	@Override
+	public List<SwapDetail> getMySwapBookById(int userId){
+		return swapDetailDao.getMySwapBookById(userId);
+	}
+
 }
