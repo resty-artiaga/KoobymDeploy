@@ -30,7 +30,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 		
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
-		/*criteria = criteria.createAlias("user", "user");*/
+		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
@@ -74,7 +74,7 @@ public List<RentalHeader> getToReturnByIdRenter(int userId){
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 		
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
-		/*criteria = criteria.createAlias("user", "user");*/
+		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Received"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -121,11 +121,11 @@ public List<RentalHeader> getToReceiveByIdOwner(int userId){
 	criteria = criteria.createAlias("rentalDetail", "rentalDetail");
 	criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
 	criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
+	criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Approved"),Restrictions.eq("status", "Received")));
 	criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-	criteria = criteria.add(Restrictions.eq("status", "Approved"));
-	criteria = criteria.add(Restrictions.eq("status", "Received"));
 	criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	flag = (List<RentalHeader>) criteria.list();
+	
 	return flag;
 	
 }
@@ -167,7 +167,7 @@ public List<RentalHeader> getCompleteByIdRenter(int userId){
 	List<RentalHeader> flag = new ArrayList<RentalHeader>();
 	
 	Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
-	/*criteria = criteria.createAlias("user", "user");*/
+	criteria = criteria.createAlias("user", "user");
 	criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 	criteria = criteria.add(Restrictions.eq("status", "Complete"));
 	criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

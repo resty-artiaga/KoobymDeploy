@@ -56,6 +56,7 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail.class);
 		criteria = criteria.createAlias("bookOwner", "bookOwner");
 		criteria = criteria.add(Restrictions.eq("bookOwner.user.userId", new Long(userId)));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
 	}
@@ -65,11 +66,10 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 		List<SwapDetail> flag = new ArrayList<SwapDetail>();
 		
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
-		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
-		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("swapDetail", "swapDetail");
+		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.eq("status", "Confirmation"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
