@@ -79,4 +79,10 @@ public class SwapDetailController {
 		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getSwapById(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/mySwapBooksPrice/{userId}/{price}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapDetail>> getSwapPriceById(@PathVariable("userId") int userId, @PathVariable("price") float price) {
+		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getSwapPriceById(userId, price));
+		return flag;
+	}
 }
