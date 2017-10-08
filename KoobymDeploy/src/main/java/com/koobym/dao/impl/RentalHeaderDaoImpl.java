@@ -42,7 +42,9 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 		
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
-		/*criteria = criteria.createAlias("user", "user");*/
+		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Approved"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -50,6 +52,8 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return flag;
 		
 	}
+	
+	
 	
 	public List<RentalHeader> getToReceiveByIdRenter(int userId){
 		
