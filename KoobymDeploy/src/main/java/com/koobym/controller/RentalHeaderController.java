@@ -127,4 +127,9 @@ public class RentalHeaderController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/updateStatus/{rentalHeaderId}/{status}", method = RequestMethod.GET)
+	public ResponseEntity <RentalHeader> setApprovedExam(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("status") String status) {
+		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setApprovedExam(rentalHeaderId, status));
+		return flag;
+	}
 }
