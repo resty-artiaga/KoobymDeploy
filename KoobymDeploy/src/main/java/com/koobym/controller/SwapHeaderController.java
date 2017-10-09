@@ -73,5 +73,13 @@ public class SwapHeaderController {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getToDeliverById(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/toReceiveById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getToReceiveByIdRenter(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getToReceiveByIdRenter(userId));
+		return flag;
+	}
+	
+	
 
 }

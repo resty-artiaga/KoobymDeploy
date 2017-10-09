@@ -29,5 +29,10 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> getToDeliverById(int userId){
 		return swapHeaderDao.getToDeliverById(userId);
 	}
+	
+	@Override
+	public List<SwapHeader> getToReceiveByIdRenter(int userId){
+		return swapHeaderDao.getToReceiveByIdRenter(userId);
+	}
 
 }
