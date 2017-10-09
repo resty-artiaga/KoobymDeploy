@@ -90,4 +90,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		return rentalHeaderDao.setApprovedExam(rentalHeaderId, status);
 	}
 	
+	@Override
+	public RentalHeader setRentalHeader(RentalHeader rentalHeader) {
+		return rentalHeaderDao.setRentalHeader(rentalHeader);
+	}
 }

@@ -162,6 +162,23 @@ public RentalHeader setApprovedExam(long rentalHeaderId, String status) {
 	return rentalHeader;
 }
 
+public RentalHeader setRentalHeader(RentalHeader rentalHeader) {
+	RentalHeader rentalHeaderModel = new RentalHeader();
+	
+	Session session= getSessionFactory().getCurrentSession();
+	String squery = "insert into rental_header (userId, locationId, rentalTimeStamp, totalPrice, status, rentalDetailId)"
+			+ "values(rentalHeader.userId, rentalHeader.locationId, rentalHeader.rentalTimeStamp, rentalHeader.price, rentalHeader.status, rentalHeader.rentalDetailId)";
+	
+	SQLQuery query = session.createSQLQuery(squery);
+	query.executeUpdate();
+	
+	rentalHeader = get(rentalHeader.getRentalHeaderId());
+	
+	
+	return rentalHeader;
+}
+
+
 public List<RentalHeader> getCompleteByIdRenter(int userId){
 	
 	List<RentalHeader> flag = new ArrayList<RentalHeader>();

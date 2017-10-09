@@ -132,4 +132,10 @@ public class RentalHeaderController {
 		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setApprovedExam(rentalHeaderId, status));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/addRentalHeader/{rentalHeader}", method = RequestMethod.GET)
+	public ResponseEntity <RentalHeader> setRentalHeader(@PathVariable("rentalHeader") RentalHeader rentalHeader) {
+		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setRentalHeader(rentalHeader));
+		return flag;
+	}
 }
