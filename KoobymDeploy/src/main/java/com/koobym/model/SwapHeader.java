@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class SwapHeader {
 	
 	@Id
-	@Column(name = "swap_headerId")
+	@Column(name = "swapHeaderId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long swapHeaderId;
 

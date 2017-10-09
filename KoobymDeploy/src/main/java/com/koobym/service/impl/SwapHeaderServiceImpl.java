@@ -35,4 +35,8 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 		return swapHeaderDao.getToReceiveByIdRenter(userId);
 	}
 
+	@Override
+	public SwapHeader setApprovedExam(long swapHeaderId, String status) {
+		return swapHeaderDao.setApprovedExam(swapHeaderId, status);
+	}
 }

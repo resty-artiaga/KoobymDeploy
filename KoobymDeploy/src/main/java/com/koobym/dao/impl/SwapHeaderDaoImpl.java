@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import org.hibernate.criterion.Restrictions;
@@ -52,6 +53,23 @@ public List<SwapHeader> getToReceiveByIdRenter(int userId){
 	flag = (List<SwapHeader>) criteria.list();
 	return flag;
 	
+}
+
+public SwapHeader setApprovedExam(long swapHeaderId, String status) {
+	SwapHeader swapHeader = new SwapHeader();
+	
+	Session session= getSessionFactory().getCurrentSession();
+	String squery = "update swap_header set status = :status where swapHeaderId = :swapHeaderId";
+	
+	SQLQuery query = session.createSQLQuery(squery);
+	query.setString("status", status);
+	query.setLong("swapHeaderId", swapHeaderId);
+	query.executeUpdate();
+	
+	swapHeader = get(swapHeaderId);
+	
+	
+	return swapHeader;
 }
 	
 	

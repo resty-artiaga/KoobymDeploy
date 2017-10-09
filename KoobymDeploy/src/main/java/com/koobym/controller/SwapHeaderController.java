@@ -80,6 +80,13 @@ public class SwapHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/updateStatus/{status}/{swapHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapHeader> setApprovedExam(@PathVariable("swapHeaderId") int swapHeaderId, @PathVariable("status") String status) {
+		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setApprovedExam(swapHeaderId, status));
+		return flag;
+	}
+	
+	
 	
 
 }
