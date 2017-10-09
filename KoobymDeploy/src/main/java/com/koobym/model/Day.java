@@ -23,7 +23,6 @@ public class Day {
 
 	@Id
 	@Column(name = "strDay")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String strDay;
 
 	public String getStrDay() {

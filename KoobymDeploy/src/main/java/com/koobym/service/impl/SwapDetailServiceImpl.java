@@ -40,5 +40,10 @@ public class SwapDetailServiceImpl extends BaseServiceImpl<SwapDetail, Long> imp
 	public List<SwapDetail> getSwapPriceById(int userId, float price){
 		return swapDetailDao.getSwapPriceById(userId, price);
 	}
+	
+	@Override
+	public List<SwapDetail> getAll(){
+		return swapDetailDao.getAll();
+	}
 
 }

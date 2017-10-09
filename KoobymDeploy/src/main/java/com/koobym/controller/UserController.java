@@ -41,7 +41,7 @@ public class UserController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<User> add(@RequestBody User user) {
 		ResponseEntity<User> ent = null;
-		userService.save(user);
+		userService.register(user);
 		if (user == null) {
 			ent = ResponseEntity.badRequest().body(null);
 		} else {

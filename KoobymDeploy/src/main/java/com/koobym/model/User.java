@@ -35,7 +35,7 @@ public class User {
     @JoinTable(name = "genre_user", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
 	private Set<Genre> genres;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy="userId")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="userId", cascade=CascadeType.ALL)
 	private Set<UserDayTime> userDayTimes;
 	
 	@Column(name = "email", nullable = false)
