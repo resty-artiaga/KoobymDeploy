@@ -2,6 +2,7 @@ package com.koobym.service;
 
 import java.util.List;
 
+import com.koobym.model.BookOwner;
 import com.koobym.model.SwapHeader;
 
 public interface SwapHeaderService extends BaseService<SwapHeader, Long> {

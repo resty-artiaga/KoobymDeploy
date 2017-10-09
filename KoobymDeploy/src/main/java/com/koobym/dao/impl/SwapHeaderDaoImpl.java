@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.SwapHeaderDao;
+import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
 import com.koobym.model.UserRental;
@@ -71,6 +72,7 @@ public SwapHeader setApprovedExam(long swapHeaderId, String status) {
 	
 	return swapHeader;
 }
+
 	
 	
 }

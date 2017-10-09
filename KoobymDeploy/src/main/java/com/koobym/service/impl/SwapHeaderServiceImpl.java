@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.koobym.model.BookOwner;
 import com.koobym.model.SwapHeader;
 import com.koobym.service.SwapHeaderService;
 import com.koobym.dao.SwapHeaderDao;
@@ -39,4 +40,5 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public SwapHeader setApprovedExam(long swapHeaderId, String status) {
 		return swapHeaderDao.setApprovedExam(swapHeaderId, status);
 	}
+	
 }

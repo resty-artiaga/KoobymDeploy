@@ -50,6 +50,7 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 	}
 	return flag;*/
 	
+	
 	public List<SwapDetail> getSwapById(int userId) {
 		List<SwapDetail> flag = new ArrayList<SwapDetail>();
 		

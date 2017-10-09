@@ -5,6 +5,7 @@ import java.util.List;
 
 import java.util.Set;
 
+import com.koobym.model.BookOwner;
 import com.koobym.model.SwapHeader;
 
 public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {

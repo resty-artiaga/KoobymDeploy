@@ -65,5 +65,11 @@ public class BookOwnerController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
+	
+	@RequestMapping(value = "/updateBookOwner/{bookOwnerId}/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<BookOwner> setBookOwner(@PathVariable("bookOwnerId") int bookOwnerId, @PathVariable("userId") long userId) {
+		ResponseEntity<BookOwner> flag = ResponseEntity.ok(bookOwnerService.setBookOwner(bookOwnerId, userId));
+		return flag;
+	}
 
 }
