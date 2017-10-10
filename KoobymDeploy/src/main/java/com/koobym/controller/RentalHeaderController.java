@@ -138,4 +138,11 @@ public class RentalHeaderController {
 		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setRentalHeader(rentalHeader));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/checkExist/{userId}/{rentalDetailId}", method = RequestMethod.GET)
+	public ResponseEntity <RentalHeader> checkExist(@PathVariable("userId") long userId, @PathVariable("rentalDetailId") long rentalDetailId) {
+		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.checkExist(userId, rentalDetailId));
+		return flag;
+	}
 }
+	

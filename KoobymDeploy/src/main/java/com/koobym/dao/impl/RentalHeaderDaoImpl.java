@@ -162,6 +162,19 @@ public RentalHeader setApprovedExam(long rentalHeaderId, String status) {
 	return rentalHeader;
 }
 
+public RentalHeader checkExist(long userId, long rentalDetailId) {
+	RentalHeader rentalHeader = new RentalHeader();
+	
+	Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+	criteria = criteria.createAlias("user", "user");
+	criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+	criteria = criteria.add(Restrictions.eq("user.userId", userId));
+	criteria = criteria.add(Restrictions.eq("rentalDetail.rentalDetailId", rentalDetailId));
+	rentalHeader =(RentalHeader) criteria.uniqueResult();
+	
+	return rentalHeader;
+}
+
 public RentalHeader setRentalHeader(RentalHeader rentalHeader) {
 	RentalHeader rentalHeaderModel = new RentalHeader();
 	

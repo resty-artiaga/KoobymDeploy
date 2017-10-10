@@ -94,4 +94,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public RentalHeader setRentalHeader(RentalHeader rentalHeader) {
 		return rentalHeaderDao.setRentalHeader(rentalHeader);
 	}
+	
+	@Override
+	public RentalHeader checkExist(long userId, long rentalDetailId) {
+		return rentalHeaderDao.checkExist(userId, rentalDetailId);
+	}
 }
