@@ -22,7 +22,7 @@ public class SwapDetail {
 	@Id
 	@Column(name = "swap_detailId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long swap_detailId;
+	private long swapDetailId;
 
 	@Column(name = "swapDescription")
 	private String swapDescription;
@@ -33,7 +33,7 @@ public class SwapDetail {
 	@Column(name = "swapPrice")
 	private float price;
 	
-	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="bookOwnerId")
 	private BookOwner bookOwner;
 
@@ -58,11 +58,11 @@ public class SwapDetail {
 	}
 
 	public long getSwapDetailId() {
-		return swap_detailId;
+		return swapDetailId;
 	}
 	
-	public void setSwapDetailId(long swap_detailId) {
-		this.swap_detailId = swap_detailId;
+	public void setSwapDetailId(long swapDetailId) {
+		this.swapDetailId = swapDetailId;
 	}
 	
 	public String getSwapDescription() {

@@ -12,5 +12,7 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public List<SwapHeader> getToDeliverById(int userId);
 	public List<SwapHeader> getToReceiveByIdRenter(int userId);
 	public SwapHeader setApprovedExam(long swapHeaderId, String status);
+	public SwapHeader swapRequested(SwapHeader swapHeader);
+	public List<SwapHeader> getRequestedSwaps(long userId);
 	
 }

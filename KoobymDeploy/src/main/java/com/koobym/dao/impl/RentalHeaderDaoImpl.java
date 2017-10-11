@@ -169,7 +169,7 @@ public RentalHeader checkExist(long userId, long rentalDetailId) {
 	criteria = criteria.createAlias("user", "user");
 	criteria = criteria.createAlias("rentalDetail", "rentalDetail");
 	criteria = criteria.add(Restrictions.eq("user.userId", userId));
-	criteria = criteria.add(Restrictions.eq("rentalDetail.rentalDetailId", rentalDetailId));
+	criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", rentalDetailId));
 	rentalHeader =(RentalHeader) criteria.uniqueResult();
 	
 	return rentalHeader;

@@ -26,10 +26,10 @@ public class BookOwner {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long book_ownerId;
 
-	@Column(name = "statusDescription", nullable = false)
+	@Column(name = "statusDescription")
 	private String statusDescription;
 
-	@Column(name = "dateBought", nullable = false)
+	@Column(name = "dateBought")
 	private String dateBought;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -29,7 +29,7 @@ public class SwapComment {
 	@Column(name = "swapComment")
 	private String swapComment;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userId")
 	private User user;
 	

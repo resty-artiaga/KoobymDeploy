@@ -21,18 +21,22 @@ public class SwapHeader {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long swapHeaderId;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "swap_detailId")
 	private SwapDetail swapDetail;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "requested_swap_detailId")
+	private SwapDetail requestedSwapDetail;
 		
 	@Column(name="dateSwap")
 	private String dateTimeStamp;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userDayTimeId")
 	private UserDayTime userDayTime; 
 	
@@ -42,6 +46,14 @@ public class SwapHeader {
 	
 	@Column(name="status")
 	private String status;
+	
+	public SwapDetail getRequestedSwapDetail() {
+		return requestedSwapDetail;
+	}
+	
+	public void setRequestedSwapDetail(SwapDetail requestedSwapDetail) {
+		this.requestedSwapDetail = requestedSwapDetail;
+	}
 	
 	public void setSwapHeaderId(long swapHeaderId) {
 		this.swapHeaderId = swapHeaderId;

@@ -2,9 +2,6 @@ package com.koobym.controller;
 
 import java.util.List;
 
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +25,21 @@ public class SwapHeaderController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<SwapHeader> add(@RequestBody SwapHeader swapHeader) {
 		ResponseEntity<SwapHeader> ent = null;
+		System.out.println("inside add swap header");
 		swapHeaderService.save(swapHeader);
+		if (swapHeader == null) {
+			ent = ResponseEntity.badRequest().body(null);
+		} else {
+			ent = ResponseEntity.ok(swapHeader);
+		}
+		return ent;
+	}
+
+	@RequestMapping(value = "/swapRequested", method = RequestMethod.POST)
+	public ResponseEntity<SwapHeader> swapRequested(@RequestBody SwapHeader swapHeader) {
+		ResponseEntity<SwapHeader> ent = null;
+		System.out.println("swapdetailId" + swapHeader.getSwapDetail().getSwapDetailId());
+		swapHeaderService.swapRequested(swapHeader);
 		if (swapHeader == null) {
 			ent = ResponseEntity.badRequest().body(null);
 		} else {
@@ -49,6 +60,12 @@ public class SwapHeaderController {
 		return ent;
 	}
 
+	@RequestMapping(value = "/getRequestedSwaps/{id}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getRequestedSwaps(@PathVariable("id") long id) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getRequestedSwaps(id));
+		return flag;
+	}
+
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getRoles() {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.list());
@@ -67,30 +84,24 @@ public class SwapHeaderController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
-	
 
 	@RequestMapping(value = "/toDeliverById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getToDeliverById(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getToDeliverById(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/toReceiveById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getToReceiveByIdRenter(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getToReceiveByIdRenter(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/updateStatus/{status}/{swapHeaderId}", method = RequestMethod.GET)
-	public ResponseEntity<SwapHeader> setApprovedExam(@PathVariable("swapHeaderId") int swapHeaderId, @PathVariable("status") String status) {
+	public ResponseEntity<SwapHeader> setApprovedExam(@PathVariable("swapHeaderId") int swapHeaderId,
+			@PathVariable("status") String status) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setApprovedExam(swapHeaderId, status));
 		return flag;
 	}
-	
-
-	
-	
-	
-	
 
 }
