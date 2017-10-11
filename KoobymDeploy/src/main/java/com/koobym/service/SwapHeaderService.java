@@ -11,4 +11,5 @@ public interface SwapHeaderService extends BaseService<SwapHeader, Long> {
 	public SwapHeader setApprovedExam(long swapHeaderId, String status);
 	public SwapHeader swapRequested(SwapHeader swapHeader);
 	public List<SwapHeader> getRequestedSwaps(long userId);
+	public List<SwapHeader> getToApproveSwaps(long userId);
 }

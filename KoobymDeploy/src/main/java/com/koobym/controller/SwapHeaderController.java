@@ -103,5 +103,12 @@ public class SwapHeaderController {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setApprovedExam(swapHeaderId, status));
 		return flag;
 	}
-
+	
+	@RequestMapping(value = "/toApproveById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getToApproveSwaps(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getToApproveSwaps(userId));
+		return flag;
+	}
+	
+	
 }
