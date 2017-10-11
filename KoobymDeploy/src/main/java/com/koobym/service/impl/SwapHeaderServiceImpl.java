@@ -57,5 +57,10 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> getToApproveSwaps(long userId){
 		return swapHeaderDao.getToApproveSwaps(userId);
 	}
+	
+	@Override
+	public List<SwapHeader> getCompleteById(int userId){
+		return swapHeaderDao.getCompleteById(userId);
+	}
 
 }

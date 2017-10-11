@@ -15,5 +15,6 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public SwapHeader swapRequested(SwapHeader swapHeader);
 	public List<SwapHeader> getRequestedSwaps(long userId);
 	public List<SwapHeader> getToApproveSwaps(long userId);
+	public List<SwapHeader> getCompleteById(int userId);
 	
 }

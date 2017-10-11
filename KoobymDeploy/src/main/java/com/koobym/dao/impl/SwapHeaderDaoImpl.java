@@ -40,6 +40,22 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		return flag;
 
 	}
+	
+	public List<SwapHeader> getCompleteById(int userId) {
+
+		List<SwapHeader> flag = new ArrayList<SwapHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("swapDetail", "swapDetail");
+		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("swapDetail.bookOwner.user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("status", "Complete"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		return flag;
+
+	}
 
 	public List<SwapHeader> getToReceiveByIdRenter(int userId) {
 

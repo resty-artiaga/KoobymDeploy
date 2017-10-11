@@ -110,5 +110,11 @@ public class SwapHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/completeById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getCompleteById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getCompleteById(userId));
+		return flag;
+	}
+	
 	
 }
