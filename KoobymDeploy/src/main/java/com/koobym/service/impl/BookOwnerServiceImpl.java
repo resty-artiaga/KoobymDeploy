@@ -1,5 +1,7 @@
 package com.koobym.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 
@@ -33,6 +35,10 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 		return bookOwnerDao.setBookOwner(bookOwnerId, userId);
 	}
 
+	@Override
+	public List<BookOwner> getMyBooksById(int userId){
+		return bookOwnerDao.getMyBooksById(userId);
+	}
 
 
 }

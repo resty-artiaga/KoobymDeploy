@@ -71,5 +71,11 @@ public class BookOwnerController {
 		ResponseEntity<BookOwner> flag = ResponseEntity.ok(bookOwnerService.setBookOwner(bookOwnerId, userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/myBooksById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity <List<BookOwner>> getMyBooksById(@PathVariable("userId") int userId) {
+		ResponseEntity <List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getMyBooksById(userId));
+		return flag;
+	}
 
 }
