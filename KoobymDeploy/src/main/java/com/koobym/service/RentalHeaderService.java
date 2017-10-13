@@ -19,4 +19,5 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public RentalHeader setRentalHeader(RentalHeader rentalHeader);
 	public RentalHeader checkExist(long userId, long rentalDetailId);
 	public List<RentalHeader> getRejectedByIdRenter(int userId);
+	public List<RentalHeader> getRejectedByIdOwner(int userId);
 }

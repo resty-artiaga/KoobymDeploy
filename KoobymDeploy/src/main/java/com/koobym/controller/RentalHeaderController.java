@@ -127,7 +127,13 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
-	@RequestMapping(value = "/rejectedById/{userId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/rejectedByIdOwner/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getRejectedByIdOwner(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getRejectedByIdOwner(userId));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/rejectedByIdRenter/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<RentalHeader>> getRejectedByIdRenter(@PathVariable("userId") int userId) {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getRejectedByIdRenter(userId));
 		return flag;
