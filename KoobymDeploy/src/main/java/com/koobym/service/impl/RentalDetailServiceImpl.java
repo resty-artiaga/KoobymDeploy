@@ -27,10 +27,10 @@ import com.koobym.service.UserService;
 public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long> implements RentalDetailService {
 
 	private RentalDetailDao rentalDetailDao;
-	
+
 	@Autowired
 	private BookOwnerDao bookOwnerDao;
-	
+
 	@Autowired
 	private UserDao userDao;
 
@@ -39,18 +39,16 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 		super(rentalDetailDao);
 		this.rentalDetailDao = rentalDetailDao;
 	}
-	
-	
-	public List<RentalDetail> getSuggestedByGenre(int userId){
+
+	public List<RentalDetail> getSuggestedByGenre(int userId) {
 		List<RentalDetail> flag = rentalDetailDao.suggestedBooksByGenre(userId);
-		
-		for(RentalDetail rd: flag) {
+
+		for (RentalDetail rd : flag) {
 			rd.setBookOwner(bookOwnerDao.get(rd.getBookOwner().getBook_OwnerId()));
 		}
-		
+
 		return flag;
 	}
-
 
 	@Override
 	public List<RentalDetail> getMostRented() {
@@ -58,8 +56,18 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 	}
 
 	@Override
-	public List<RentalDetail> getRentalById(int userId){
+	public List<RentalDetail> getRentalById(int userId) {
 		return rentalDetailDao.getRentalById(userId);
+	}
+
+	@Override
+	public List<RentalDetail> getAllForRentOrderByRate() {
+		List<RentalDetail> flag = rentalDetailDao.getAllForRentOrderByRate();
+		for (RentalDetail rd : flag) {
+			rd.setBookOwner(bookOwnerDao.get(rd.getBookOwner().getBook_OwnerId()));
+		}
+
+		return flag;
 	}
 
 }

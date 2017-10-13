@@ -42,11 +42,11 @@ public class Book {
 	private String bookFilename;
 	
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId", referencedColumnName = "authorId"))
 	private Set<Author> authors;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "genre_book", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
 	private Set<Genre> genresBook;
 	

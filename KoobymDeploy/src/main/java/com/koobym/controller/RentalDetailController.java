@@ -27,7 +27,7 @@ public class RentalDetailController {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getMostRented());
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<RentalDetail> add(@RequestBody RentalDetail rentalDetail) {
 		ResponseEntity<RentalDetail> ent = null;
@@ -40,7 +40,6 @@ public class RentalDetailController {
 		return ent;
 	}
 
-
 	@RequestMapping(value = "/suggested/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<RentalDetail>> getSuggested(@PathVariable("userId") int userId) {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getSuggestedByGenre(userId));
@@ -52,10 +51,16 @@ public class RentalDetailController {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.list());
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/rentById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<RentalDetail>> getRentalId(@PathVariable("userId") int userId) {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getRentalById(userId));
+		return flag;
+	}
+
+	@RequestMapping(value = "/allForRentOrderByRate", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalDetail>> getAllForRentOrderByRate() {
+		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getAllForRentOrderByRate());
 		return flag;
 	}
 }

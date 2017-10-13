@@ -9,4 +9,5 @@ public interface RentalDetailService extends BaseService<RentalDetail, Long> {
 	public List<RentalDetail> getSuggestedByGenre(int userId);
 	public List<RentalDetail> getMostRented();
 	public List<RentalDetail> getRentalById(int userId);
+	public List<RentalDetail> getAllForRentOrderByRate();
 }

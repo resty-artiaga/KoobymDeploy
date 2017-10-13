@@ -66,4 +66,16 @@ public class BookController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/addNewBook", method = RequestMethod.POST)
+	public ResponseEntity<Book> addNewBook(@RequestBody Book book) {
+		ResponseEntity<Book> ent = null;
+		bookService.addNewBook(book);
+		if (book == null) {
+			ent = ResponseEntity.badRequest().body(null);
+		} else {
+			ent = ResponseEntity.ok(book);
+		}
+		return ent;
+	}
+
 }

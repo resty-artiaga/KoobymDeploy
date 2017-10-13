@@ -10,4 +10,5 @@ public interface RentalDetailDao extends BaseDao<RentalDetail, Long> {
 	public List<RentalDetail> mostRentedBooks();
 	public List<RentalDetail> suggestedBooksByGenre(int userId);
 	public List<RentalDetail> getRentalById(int userId);
+	public List<RentalDetail> getAllForRentOrderByRate();
 }
