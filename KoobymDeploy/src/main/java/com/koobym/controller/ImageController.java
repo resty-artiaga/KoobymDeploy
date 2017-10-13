@@ -56,9 +56,11 @@ public class ImageController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		String imagePath = "http://104.197.4.32:8080/Koobym/image/" + filename;
 
 		// redirect to an another url end point
-		return filename;
+		return imagePath;
 	}
 
 	@RequestMapping(value = "/{filename:.+}", headers = "Accept=image/jpeg, image/jpg, image/png, image/gif", method = RequestMethod.GET, produces = {"image/jpg", "image/jpeg", "image/png"})
