@@ -126,6 +126,12 @@ public class RentalHeaderController {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getCompleteByIdOwner(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/rejectedById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getRejectedByIdRenter(@PathVariable("userId") int userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getRejectedByIdRenter(userId));
+		return flag;
+	}
 
 	@RequestMapping(value = "/updateStatus/{rentalHeaderId}/{status}", method = RequestMethod.GET)
 	public ResponseEntity <RentalHeader> setApprovedExam(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("status") String status) {

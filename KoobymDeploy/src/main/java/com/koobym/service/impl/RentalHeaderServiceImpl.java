@@ -99,4 +99,10 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public RentalHeader checkExist(long userId, long rentalDetailId) {
 		return rentalHeaderDao.checkExist(userId, rentalDetailId);
 	}
+
+	@Override
+	public List<RentalHeader> getRejectedByIdRenter(int userId){
+		return rentalHeaderDao.getRejectedByIdRenter(userId);
+	}
+
 }

@@ -21,4 +21,5 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public RentalHeader setApprovedExam(long rentalHeaderId, String status);
 	public RentalHeader setRentalHeader(RentalHeader rentalHeader);
 	public RentalHeader checkExist(long userId, long rentalDetailId);
+	public List<RentalHeader> getRejectedByIdRenter(int userId);
 }
