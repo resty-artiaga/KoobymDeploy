@@ -1,10 +1,15 @@
 package com.koobym.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.UserDao;
+import com.koobym.model.RentalHeader;
 import com.koobym.model.User;
 
 @Repository
@@ -41,4 +46,5 @@ public class UserDaoImpl extends BaseDaoImpl<User, Long> implements UserDao {
 		.uniqueResult();
 		return userLoggedIn;
 	}
+	
 }
