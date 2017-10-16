@@ -156,5 +156,7 @@ public class RentalHeaderController {
 		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.checkExist(userId, rentalDetailId));
 		return flag;
 	}
+	
+	
 }
 	

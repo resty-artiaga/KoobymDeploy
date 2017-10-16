@@ -16,6 +16,7 @@ import com.koobym.dao.RentalHeaderDao;
 import com.koobym.model.BookOwner;
 import com.koobym.model.RentalDetail;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.User;
 import com.koobym.model.UserRental;
 
 
@@ -52,7 +53,6 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return flag;
 		
 	}
-	
 	
 	
 	public List<RentalHeader> getToReceiveByIdRenter(int userId){

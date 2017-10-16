@@ -109,5 +109,6 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public List<RentalHeader> getRejectedByIdOwner(int userId){
 		return rentalHeaderDao.getRejectedByIdOwner(userId);
 	}
+	
 
 }
