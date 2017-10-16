@@ -30,7 +30,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		List<SwapHeader> flag = new ArrayList<SwapHeader>();
 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
-		criteria = criteria.createAlias("swapDetail", "requestedSwapDetail");
+		criteria = criteria.createAlias("swapDetail", "swapDetail");
 		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("swapDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
@@ -46,10 +46,10 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		List<SwapHeader> flag = new ArrayList<SwapHeader>();
 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
-		criteria = criteria.createAlias("swapDetail", "swapDetail");
-		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
-		criteria = criteria.createAlias("swapDetail.bookOwner.user", "user");
-		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwnerRequested");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner.user", "userRequested");
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("userRequested.userId", new Long (userId)),Restrictions.eq("user.userId", new Long (userId)) ));
 		criteria = criteria.add(Restrictions.eq("status", "Complete"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
