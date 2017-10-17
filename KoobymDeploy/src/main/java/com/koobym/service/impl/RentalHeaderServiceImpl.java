@@ -110,5 +110,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		return rentalHeaderDao.getRejectedByIdOwner(userId);
 	}
 	
-
+	@Override
+	public List<RentalHeader> getCompleteByRentalDetail(long rentalDetailId){
+		return rentalHeaderDao.getCompleteByRentalDetail(rentalDetailId);
+	}
 }

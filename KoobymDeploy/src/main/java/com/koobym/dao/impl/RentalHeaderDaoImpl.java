@@ -251,4 +251,21 @@ public List<RentalHeader> getRejectedByIdOwner(int userId){
 	return flag;
 	
 }
+
+public List<RentalHeader> getCompleteByRentalDetail(long rentalDetailId){
+	
+	List<RentalHeader> flag = new ArrayList<RentalHeader>();
+	
+	Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+	criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+	criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", new Long(rentalDetailId)));
+	criteria = criteria.add(Restrictions.eq("status", "Complete"));
+	criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	flag = (List<RentalHeader>) criteria.list();
+	return flag;
+	
 }
+
+
+}
+
