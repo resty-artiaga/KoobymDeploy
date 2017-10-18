@@ -32,7 +32,8 @@ public class RentalDetailDaoImpl extends BaseDaoImpl<RentalDetail, Long> impleme
 	public List<RentalDetail> mostRentedBooks() {
 		List<RentalDetail> flag = null;
 		Session session = getSessionFactory().getCurrentSession();
-		flag = (List<RentalDetail>) session.createCriteria(RentalDetail.class).createAlias("bookOwner", "b").addOrder(Order.desc("b.noRenters")).list();
+		flag = (List<RentalDetail>) session.createCriteria(RentalDetail.class).createAlias("bookOwner", "b")
+				.addOrder(Order.desc("b.noRenters")).list();
 		return flag;
 	}
 	
@@ -58,9 +59,12 @@ public class RentalDetailDaoImpl extends BaseDaoImpl<RentalDetail, Long> impleme
 	public List<RentalDetail> suggestedBooksByGenre(int userId) {
 		List<RentalDetail> flag = new ArrayList<RentalDetail>();
 		Session session = getSessionFactory().getCurrentSession();		
-		String squery = "select * from rental_detail  JOIN 	(select book_ownerId from book_owner join (SELECT bookId, count(genre_bookId) FROM genre_book JOIN genre_user ON genre_book.genreId = genre_user.genreId  WHERE genre_user.userId = :userId GROUP BY bookId ORDER BY 2 desc) as suggested_books "
+		String squery = "select * from rental_detail  JOIN 	(select book_ownerId from book_owner join (SELECT bookId, count(genre_bookId) "
+				+ "FROM genre_book JOIN genre_user ON genre_book.genreId = genre_user.genreId  WHERE genre_user.userId = :userId GROUP BY bookId ORDER BY 2 desc) "
+				+ "as suggested_books "
 				+ "on book_owner.bookId = suggested_books.bookId) as suggested_user_books ON rental_detail.bookOwnerId = suggested_user_books.book_ownerId "				
-				+ "JOIN (select avg(rate.rateNumber) as rate, book_owner_rating.book_ownerId  as boi from rate JOIN book_owner_rating on rate.rateId = book_owner_rating.rateId group by book_owner_rating.book_ownerId) "
+				+ "LEFT JOIN (select avg(rate.rateNumber) as rate, book_owner_rating.book_ownerId  as boi from rate JOIN book_owner_rating "
+				+ "on rate.rateId = book_owner_rating.rateId group by book_owner_rating.book_ownerId) "
 				+ "as ratings on ratings.boi = suggested_user_books.book_ownerId order by rate desc";
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setInteger("userId", userId);
