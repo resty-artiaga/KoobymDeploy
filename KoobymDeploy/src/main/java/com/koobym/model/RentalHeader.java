@@ -22,7 +22,7 @@ public class RentalHeader {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long rentalHeaderId;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	@JsonProperty(value="user")
 	private User user;
@@ -43,6 +43,18 @@ public class RentalHeader {
 	
 	@Column(name="status")
 	private String status;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userDayTimeId")
+	private UserDayTime userDayTime; 
+	
+	public void setUserDayTime(UserDayTime userDayTime){
+		this.userDayTime = userDayTime;
+	}
+	
+	public UserDayTime getUserDayTime(){
+		return userDayTime;
+	}
 	
 	public void setRentalDetail(RentalDetail rentalDetail) {
 		this.rentalDetail = rentalDetail;
