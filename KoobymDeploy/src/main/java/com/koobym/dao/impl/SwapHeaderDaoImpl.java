@@ -73,6 +73,60 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 	}
 
+	public List<SwapHeader> getRejectedByIdRenter(int userId) {
+
+		List<SwapHeader> flag = new ArrayList<SwapHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner.user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("status", "Rejected"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		return flag;
+
+	}
+	
+	public List<SwapHeader> getRejectedByIdOwner(int userId) {
+
+		List<SwapHeader> flag = new ArrayList<SwapHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("swapDetail", "swapDetail");
+		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwnerSwap");
+		criteria = criteria.createAlias("swapDetail.bookOwner.user", "userSwap");
+		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwnerRequest");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner.user", "userRequest");
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("userSwap.userId", new Long(userId)), Restrictions.eq("userRequest.userId", new Long(userId)), Restrictions.eq("user.userId", new Long(userId))));
+		criteria = criteria.add(Restrictions.eq("status", "Rejected"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		return flag;
+
+	}
+	
+	public List<SwapHeader> getCompleteAllById(int userId) {
+
+		List<SwapHeader> flag = new ArrayList<SwapHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("swapDetail", "swapDetail");
+		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwnerSwap");
+		criteria = criteria.createAlias("swapDetail.bookOwner.user", "userSwap");
+		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwnerRequest");
+		criteria = criteria.createAlias("requestedSwapDetail.bookOwner.user", "userRequest");
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("userSwap.userId", new Long(userId)), Restrictions.eq("userRequest.userId", new Long(userId)), Restrictions.eq("user.userId", new Long(userId))));
+		criteria = criteria.add(Restrictions.eq("status", "Completed"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		return flag;
+
+	}
+	
 	public SwapHeader swapRequested(SwapHeader swapHeader) {
 
 		String squery = "insert into swap_header (userId, swap_detailId, locationId, userDayTimeId, dateSwap, status) "

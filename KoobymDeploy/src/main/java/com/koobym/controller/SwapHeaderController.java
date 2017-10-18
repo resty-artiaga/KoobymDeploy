@@ -122,7 +122,16 @@ public class SwapHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/rejectedOwner/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getRejectedByIdOwner(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getRejectedByIdOwner(userId));
+		return flag;
+	}
 	
-	
+	@RequestMapping(value = "/completeAll/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getCompleteAllById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getCompleteAllById(userId));
+		return flag;
+	}
 	
 }

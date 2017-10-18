@@ -67,5 +67,20 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> getCompleteById(int userId){
 		return swapHeaderDao.getCompleteById(userId);
 	}
+	
+	@Override
+	public List<SwapHeader> getRejectedByIdOwner(int userId){
+		return swapHeaderDao.getRejectedByIdOwner(userId);
+	}
+	
+	@Override
+	public List<SwapHeader> getRejectedByIdRenter(int userId){
+		return swapHeaderDao.getRejectedByIdRenter(userId);
+	}
+	
+	@Override
+	public List<SwapHeader> getCompleteAllById(int userId){
+		return swapHeaderDao.getCompleteAllById(userId);
+	}
 
 }
