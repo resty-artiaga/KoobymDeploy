@@ -116,5 +116,13 @@ public class SwapHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/approvedById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> getApprovedSwaps(@PathVariable("userId") int userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getApprovedSwaps(userId));
+		return flag;
+	}
+	
+	
+	
 	
 }

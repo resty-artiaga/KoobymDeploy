@@ -47,6 +47,11 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 		locationDao.save(swapHeader.getLocation());
 		return swapHeaderDao.swapRequested(swapHeader);
 	}
+	
+	@Override
+	public List<SwapHeader> getApprovedSwaps(long userId){
+		return swapHeaderDao.getApprovedSwaps(userId);
+	}
 
 	@Override
 	public List<SwapHeader> getRequestedSwaps(long userId) {
