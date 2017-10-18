@@ -45,7 +45,7 @@ public class RentalHeader {
 	private String status;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "userDayTimeId")
+	@JoinColumn(name = "user_day_timeId")
 	private UserDayTime userDayTime; 
 	
 	public void setUserDayTime(UserDayTime userDayTime){
