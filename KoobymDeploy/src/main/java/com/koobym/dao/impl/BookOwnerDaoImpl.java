@@ -39,6 +39,16 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 		return bookOwner;
 	}
 	
+	public BookOwner increment(long bookOwnerId){
+		BookOwner bookOwner = get(bookOwnerId);
+		System.out.println(bookOwner.getNoRenters());
+		bookOwner.setNoRenters(bookOwner.getNoRenters() + 1);
+		System.out.println(bookOwner.getNoRenters());
+		update(bookOwner);
+		return bookOwner;
+	}
+	
+	
 	public List<BookOwner> getMyBooksById(int userId) {
 		List<BookOwner> flag = new ArrayList<BookOwner>();
 		

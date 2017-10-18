@@ -49,7 +49,7 @@ public class BookOwner {
 	}
 
 	public void setNoRenters(int noRenters) {
-		noRenters = noRenters;
+		this.noRenters = noRenters;
 	}
 
 	public long getBook_ownerId() {

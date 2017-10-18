@@ -78,4 +78,11 @@ public class BookOwnerController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/increment/{bookOwnerId}", method = RequestMethod.GET)
+	public ResponseEntity <BookOwner> increment(@PathVariable("bookOwnerId") long bookOwnerId) {
+		ResponseEntity <BookOwner> flag = ResponseEntity.ok(bookOwnerService.increment(bookOwnerId));
+		return flag;
+	}
+	
+	
 }
