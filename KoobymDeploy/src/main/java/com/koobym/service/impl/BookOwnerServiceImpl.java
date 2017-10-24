@@ -44,5 +44,10 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 	public BookOwner increment(long bookOwnerId){
 		return bookOwnerDao.increment(bookOwnerId);
 	}
+	
+	@Override
+	public List<BookOwner> getStatusById(){
+		return bookOwnerDao.getStatusById();
+	}
 
 }

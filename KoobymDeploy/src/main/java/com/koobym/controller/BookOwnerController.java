@@ -84,5 +84,12 @@ public class BookOwnerController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/allBook", method = RequestMethod.GET)
+	public ResponseEntity <List<BookOwner>> getStatusById() {
+		ResponseEntity <List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getStatusById());
+		return flag;
+	}
+	
+	
 	
 }

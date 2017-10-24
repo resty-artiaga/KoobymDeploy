@@ -59,5 +59,16 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 		flag = (List<BookOwner>) criteria.list();
 		return flag;
 	}
+	
+	public List<BookOwner> getStatusById() {
+		List<BookOwner> flag = new ArrayList<BookOwner>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(BookOwner.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Rent"),Restrictions.eq("status", "Swap")));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<BookOwner>) criteria.list();
+		return flag;
+	}
 
 }
