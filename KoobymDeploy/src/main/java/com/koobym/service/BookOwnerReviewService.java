@@ -8,4 +8,5 @@ import com.koobym.model.BookOwnerReview;
 
 public interface BookOwnerReviewService extends BaseService<BookOwnerReview, Long> {
 	public List<BookOwnerReview> getReviewsOfBookOwner(long bookOwnerId);
+	public Double averageRatingOfBookOwner(long bookOwnerId);
 }

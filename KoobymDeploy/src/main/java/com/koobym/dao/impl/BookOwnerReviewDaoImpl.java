@@ -36,4 +36,18 @@ public class BookOwnerReviewDaoImpl extends BaseDaoImpl<BookOwnerReview, Long> i
 
 		return flag;
 	}
+	
+	@Override
+	public List<BookOwnerReview> averageRatingOfBookOwner(long bookOwnerId) {
+		
+		List<BookOwnerReview> flag = null;
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(BookOwnerReview.class);
+		criteria = criteria.add(Restrictions.eq("bookOwner.book_ownerId", bookOwnerId));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<BookOwnerReview>) criteria.list();
+
+		return flag;
+	}
+	
 }

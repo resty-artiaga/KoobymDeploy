@@ -34,6 +34,18 @@ public class BookOwnerReview {
 
 	@Column(name = "comment")
 	private String comment;
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "rateId")
+	private Rate rate;
+	
+	public Rate getRate() {
+		return rate;
+	}
+	
+	public void setRate(Rate rate) {
+		this.rate = rate;
+	}
 
 	public BookOwner getBookOwner() {
 		return bookOwner;

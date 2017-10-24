@@ -8,4 +8,5 @@ import com.koobym.model.BookOwnerReview;
 
 public interface BookOwnerReviewDao extends BaseDao<BookOwnerReview, Long> {
 	public List<BookOwnerReview> getReviewsOfBookOwner(long bookOwnerId);
+	public List<BookOwnerReview> averageRatingOfBookOwner(long bookOwnerId);
 }

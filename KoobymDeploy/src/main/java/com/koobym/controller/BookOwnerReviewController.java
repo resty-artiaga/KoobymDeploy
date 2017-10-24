@@ -72,5 +72,11 @@ public class BookOwnerReviewController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getAverageRatingOfBookOwner/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Double> averageRatingOfBookOwner(@PathVariable("id") int id) {
+		ResponseEntity<Double> flag = ResponseEntity.ok(bookOwnerReviewService.averageRatingOfBookOwner(new Long(id)));
+		return flag;
+	}
 
 }

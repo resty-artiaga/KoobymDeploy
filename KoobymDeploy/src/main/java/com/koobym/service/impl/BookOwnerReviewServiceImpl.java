@@ -12,6 +12,7 @@ import com.koobym.dao.BookOwnerReviewDao;
 import com.koobym.dao.UserDao;
 import com.koobym.model.Author;
 import com.koobym.model.BookOwner;
+import com.koobym.model.BookOwnerRating;
 import com.koobym.model.BookOwnerReview;
 import com.koobym.model.User;
 import com.koobym.service.BookOwnerReviewService;
@@ -35,6 +36,22 @@ public class BookOwnerReviewServiceImpl extends BaseServiceImpl<BookOwnerReview,
 	@Override
 	public List<BookOwnerReview> getReviewsOfBookOwner(long bookOwnerId) {
 		return bookOwnerReviewDao.getReviewsOfBookOwner(bookOwnerId);
+	}
+	
+	@Override
+	public Double averageRatingOfBookOwner(long bookOwnerId) {
+		
+		List<BookOwnerReview> flag = bookOwnerReviewDao.averageRatingOfBookOwner(bookOwnerId);
+		Double average = 0.0;
+		if (flag.size() > 0) {
+			long total = 0;
+			for (BookOwnerReview bor : flag) {
+				total += bor.getRate().getRateNumber();
+			}
+			average = (double) (total / flag.size());
+		}
+
+		return average;
 	}
 
 }
