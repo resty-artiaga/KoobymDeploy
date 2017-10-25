@@ -17,4 +17,5 @@ public interface SwapHeaderService extends BaseService<SwapHeader, Long> {
 	public List<SwapHeader> getRejectedByIdOwner(int userId);
 	public List<SwapHeader> getRejectedByIdRenter(int userId);
 	public List<SwapHeader> getCompleteAllById(int userId);
+	public SwapHeader addNewSwapHeader(SwapHeader swapHeader);
 }

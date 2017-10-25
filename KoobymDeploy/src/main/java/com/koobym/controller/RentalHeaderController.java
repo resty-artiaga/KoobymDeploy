@@ -27,7 +27,7 @@ public class RentalHeaderController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<RentalHeader> add(@RequestBody RentalHeader rentalHeader) {
 		ResponseEntity<RentalHeader> ent = null;
-		rentalHeaderService.save(rentalHeader);
+		rentalHeaderService.addNewRentalHeader(rentalHeader);
 		if (rentalHeader == null) {
 			ent = ResponseEntity.badRequest().body(null);
 		} else {
@@ -163,7 +163,10 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
-	
-	
+	@RequestMapping(value = "/getCount/{bookOwnerId}", method = RequestMethod.GET)
+	public ResponseEntity <Long> numberOfCompletedRentsByBookOwnerId(@PathVariable("bookOwnerId") long bookOwnerId) {
+		ResponseEntity <Long> flag = ResponseEntity.ok(rentalHeaderService.numberOfCompletedRentsByBookOwnerId(bookOwnerId));
+		return flag;
+	}
 }
 	

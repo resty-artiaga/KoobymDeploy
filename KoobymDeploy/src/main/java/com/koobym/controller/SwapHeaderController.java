@@ -26,7 +26,7 @@ public class SwapHeaderController {
 	public ResponseEntity<SwapHeader> add(@RequestBody SwapHeader swapHeader) {
 		ResponseEntity<SwapHeader> ent = null;
 		System.out.println("inside add swap header");
-		swapHeaderService.save(swapHeader);
+		swapHeaderService.addNewSwapHeader(swapHeader);
 		if (swapHeader == null) {
 			ent = ResponseEntity.badRequest().body(null);
 		} else {
@@ -103,35 +103,35 @@ public class SwapHeaderController {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setApprovedExam(swapHeaderId, status));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/toApproveById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getToApproveSwaps(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getToApproveSwaps(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/completeById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getCompleteById(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getCompleteById(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/approvedById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getApprovedSwaps(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getApprovedSwaps(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/rejectedOwner/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getRejectedByIdOwner(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getRejectedByIdOwner(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/completeAll/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> getCompleteAllById(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getCompleteAllById(userId));
 		return flag;
 	}
-	
+
 }

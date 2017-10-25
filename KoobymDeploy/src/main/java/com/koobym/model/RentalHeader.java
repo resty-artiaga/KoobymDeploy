@@ -27,7 +27,7 @@ public class RentalHeader {
 	@JsonProperty(value="user")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rentalDetailId")
 	private RentalDetail rentalDetail;
 		

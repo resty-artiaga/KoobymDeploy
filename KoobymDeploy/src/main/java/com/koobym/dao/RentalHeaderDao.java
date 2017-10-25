@@ -8,6 +8,7 @@ import com.koobym.model.RentalHeader;
 import com.koobym.model.UserRental;
 
 public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
+	public List<RentalHeader> getListRentalByBookOwnerId(long bookOwnerId);
 	public List<RentalHeader> getListRentalById(int userId);
 	public List<RentalHeader> getToDeliverById(int userId);
 	public List<RentalHeader> getToReceiveByIdRenter(int userId);
@@ -24,4 +25,5 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public List<RentalHeader> getRejectedByIdRenter(int userId);
 	public List<RentalHeader> getRejectedByIdOwner(int userId);
 	public List<RentalHeader> getCompleteByRentalDetail(long rentalDetailId);
+	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId);
 }
