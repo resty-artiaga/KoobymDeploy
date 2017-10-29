@@ -47,7 +47,8 @@ public class UserNotificationController {
 
 	@RequestMapping(value = "/notificationForUser/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<UserNotification>> getNotificationsForuser(@PathVariable("id") long id) {
-		ResponseEntity<List<UserNotification>> flag = ResponseEntity.ok(userNotificationService.list());
+		ResponseEntity<List<UserNotification>> flag = ResponseEntity
+				.ok(userNotificationService.getUserNotificationsForUser(id));
 		return flag;
 	}
 
