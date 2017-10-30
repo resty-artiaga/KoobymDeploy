@@ -160,14 +160,15 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return flag;
 	}
 
-	public RentalHeader setApprovedExam(long rentalHeaderId, String status) {
+	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved) {
 		RentalHeader rentalHeader = new RentalHeader();
 
 		Session session = getSessionFactory().getCurrentSession();
-		String squery = "update rental_header set status = :status where rentalHeaderId = :rentalHeaderId";
+		String squery = "update rental_header set status = :status, dateApproved = :dateApproved where rentalHeaderId = :rentalHeaderId";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setString("status", status);
+		query.setString("dateApproved", dateApproved);
 		query.setLong("rentalHeaderId", rentalHeaderId);
 		query.executeUpdate();
 
@@ -272,6 +273,20 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
 		criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", new Long(rentalDetailId)));
 		criteria = criteria.add(Restrictions.eq("status", "Complete"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
+
+	}
+	
+	public List<RentalHeader> getRentalHeader(long bookOwnerId) {
+
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
+		criteria = criteria.add(Restrictions.eq("bookOwner.book_ownerId", new Long(bookOwnerId)));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;

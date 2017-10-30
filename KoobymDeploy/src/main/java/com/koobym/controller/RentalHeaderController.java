@@ -139,9 +139,9 @@ public class RentalHeaderController {
 		return flag;
 	}
 
-	@RequestMapping(value = "/updateStatus/{rentalHeaderId}/{status}", method = RequestMethod.GET)
-	public ResponseEntity <RentalHeader> setApprovedExam(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("status") String status) {
-		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setApprovedExam(rentalHeaderId, status));
+	@RequestMapping(value = "/updateStatus/{rentalHeaderId}/{status}/{dateApproved}", method = RequestMethod.GET)
+	public ResponseEntity <RentalHeader> setApprovedExam(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("status") String status, @PathVariable("dateApproved") String dateApproved) {
+		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setApprovedExam(rentalHeaderId, status, dateApproved));
 		return flag;
 	}
 	
@@ -168,5 +168,12 @@ public class RentalHeaderController {
 		ResponseEntity <Long> flag = ResponseEntity.ok(rentalHeaderService.numberOfCompletedRentsByBookOwnerId(bookOwnerId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getRentalByBookOwner/{bookOwnerId}", method = RequestMethod.GET)
+	public ResponseEntity <List<RentalHeader>> getRentalHeader(@PathVariable("bookOwnerId") long bookOwnerId) {
+		ResponseEntity <List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getRentalHeader(bookOwnerId));
+		return flag;
+	}
+	
 }
 	

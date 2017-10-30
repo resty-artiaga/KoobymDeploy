@@ -87,7 +87,7 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	}
 
 	@Override
-	public RentalHeader setApprovedExam(long rentalHeaderId, String status) {
+	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved) {
 		RentalHeader rentalHeader = get(rentalHeaderId);
 		UserNotification userNotif = new UserNotification();
 		userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
@@ -98,7 +98,7 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
 
-		return rentalHeaderDao.setApprovedExam(rentalHeaderId, status);
+		return rentalHeaderDao.setApprovedExam(rentalHeaderId, status, dateApproved);
 	}
 
 	@Override
@@ -144,5 +144,10 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	@Override
 	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId){
 		return rentalHeaderDao.numberOfCompletedRentsByBookOwnerId(bookOwnerId);
+	}
+	
+	@Override
+	public List<RentalHeader> getRentalHeader(long bookOwnerId){
+		return rentalHeaderDao.getRentalHeader(bookOwnerId);
 	}
 }

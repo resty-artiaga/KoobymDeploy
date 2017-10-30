@@ -19,11 +19,12 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public List<RentalHeader> getToReceiveByIdOwner(int userId);
 	public List<RentalHeader> getCompleteByIdOwner(int userId);
 	public List<RentalHeader> getToReturnByIdOwner(int userId);
-	public RentalHeader setApprovedExam(long rentalHeaderId, String status);
+	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved);
 	public RentalHeader setRentalHeader(RentalHeader rentalHeader);
 	public RentalHeader checkExist(long userId, long rentalDetailId);
 	public List<RentalHeader> getRejectedByIdRenter(int userId);
 	public List<RentalHeader> getRejectedByIdOwner(int userId);
 	public List<RentalHeader> getCompleteByRentalDetail(long rentalDetailId);
 	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId);
+	public List<RentalHeader> getRentalHeader(long bookOwnerId);
 }
