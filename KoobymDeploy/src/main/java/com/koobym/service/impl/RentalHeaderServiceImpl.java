@@ -89,14 +89,35 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	@Override
 	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved) {
 		RentalHeader rentalHeader = get(rentalHeaderId);
-		UserNotification userNotif = new UserNotification();
-		userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
-		userNotif.setActionId(rentalHeader.getRentalHeaderId());
-		userNotif.setActionName("rental");
-		userNotif.setActionStatus(status);
-		userNotif.setUserPerformer(rentalHeader.getUserId());
-		userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
-		userNotificationDao.save(userNotif);
+		
+		if(status=="request"){
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
+			userNotif.setActionId(rentalHeader.getRentalHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUserPerformer(rentalHeader.getUserId());
+			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
+			userNotificationDao.save(userNotif);			
+		}else if(status=="Approved"){
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
+			userNotif.setActionId(rentalHeader.getRentalHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUser(rentalHeader.getUserId());
+			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
+			userNotificationDao.save(userNotif);			
+		}else if(status=="Rejected"){
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
+			userNotif.setActionId(rentalHeader.getRentalHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUser(rentalHeader.getUserId());
+			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+		}
 
 		return rentalHeaderDao.setApprovedExam(rentalHeaderId, status, dateApproved);
 	}
