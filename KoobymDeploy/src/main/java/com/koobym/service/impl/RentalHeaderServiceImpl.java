@@ -89,8 +89,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	@Override
 	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved) {
 		RentalHeader rentalHeader = get(rentalHeaderId);
-		
-		if(status=="request"){
+
+		if ("Request".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
 			userNotif.setActionId(rentalHeader.getRentalHeaderId());
@@ -98,10 +98,10 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			userNotif.setActionStatus(status);
 			userNotif.setUserPerformer(rentalHeader.getUserId());
 			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
-			userNotificationDao.save(userNotif);			
+			userNotificationDao.save(userNotif);
 		}
-		
-		if(status=="Approved"){
+
+		if ("Approved".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
 			userNotif.setActionId(rentalHeader.getRentalHeaderId());
@@ -109,10 +109,10 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			userNotif.setActionStatus(status);
 			userNotif.setUser(rentalHeader.getUserId());
 			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
-			userNotificationDao.save(userNotif);			
+			userNotificationDao.save(userNotif);
 		}
-		
-		if(status=="Rejected"){
+
+		if ("Rejected".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
 			userNotif.setActionId(rentalHeader.getRentalHeaderId());
@@ -159,20 +159,20 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
 		userNotif.setActionId(rentalHeader.getRentalHeaderId());
 		userNotif.setActionName("rental");
-		userNotif.setActionStatus("request");
+		userNotif.setActionStatus("Request");
 		userNotif.setUserPerformer(rentalHeader.getUserId());
 		userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
 		return rentalHeader;
 	}
-	
+
 	@Override
-	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId){
+	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId) {
 		return rentalHeaderDao.numberOfCompletedRentsByBookOwnerId(bookOwnerId);
 	}
-	
+
 	@Override
-	public List<RentalHeader> getRentalHeader(long bookOwnerId){
+	public List<RentalHeader> getRentalHeader(long bookOwnerId) {
 		return rentalHeaderDao.getRentalHeader(bookOwnerId);
 	}
 }
