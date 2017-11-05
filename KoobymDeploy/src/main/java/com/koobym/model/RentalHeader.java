@@ -43,13 +43,25 @@ public class RentalHeader {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "locationId")
 	private Location location;
-	
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "meet_upId")
+	private MeetUp meetUp;
+
 	@Column(name="status")
 	private String status;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_day_timeId")
 	private UserDayTime userDayTime; 
+	
+	public void setMeetUp(MeetUp meetUp){
+		this.meetUp = meetUp;
+	}
+	
+	public MeetUp getMeetUp(){
+		return meetUp;
+	}
 	
 	public void setDateApproved(String dateApproved){
 		this.dateApproved = dateApproved;
