@@ -27,4 +27,5 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public List<RentalHeader> getCompleteByRentalDetail(long rentalDetailId);
 	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId);
 	public List<RentalHeader> getRentalHeader(long bookOwnerId);
+	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId);
 }

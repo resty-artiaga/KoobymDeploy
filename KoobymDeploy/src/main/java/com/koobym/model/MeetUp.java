@@ -25,7 +25,7 @@ public class MeetUp {
 	@Id
 	@Column(name = "meet_upId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userId;
+	private long meetUpId;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "locationId")
@@ -35,12 +35,12 @@ public class MeetUp {
 	@JoinColumn(name = "userDayTimeId")
 	private UserDayTime userDayTime;
 	
-	public void setUserId(long userId){
-		this.userId = userId;
+	public void setMeetUpId(long meetUpId){
+		this.meetUpId = meetUpId;
 	}
 	
-	public long getUserId(){
-		return userId;
+	public long getMeetUpId(){
+		return meetUpId;
 	}
 	
 	public void setLocation(Location location){

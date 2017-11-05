@@ -175,4 +175,22 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public List<RentalHeader> getRentalHeader(long bookOwnerId) {
 		return rentalHeaderDao.getRentalHeader(bookOwnerId);
 	}
+	
+	@Override
+	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId){
+
+		RentalHeader rentalHeader = get(rentalHeaderId);
+		
+		UserNotification userNotif = new UserNotification();
+		userNotif.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
+		userNotif.setActionId(rentalHeader.getRentalHeaderId());
+		userNotif.setActionName("rental");
+		userNotif.setActionStatus("Chose meet up details.");
+		userNotif.setUser(rentalHeader.getUserId());
+		userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
+		userNotificationDao.save(userNotif);
+		
+		return rentalHeaderDao.setMeetUp(rentalHeaderId, meetUpId);
+	
+	}
 }

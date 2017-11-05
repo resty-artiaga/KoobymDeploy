@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.RentalHeaderDao;
+import com.koobym.model.MeetUp;
 import com.koobym.model.RentalHeader;
 
 @Repository
@@ -177,6 +178,22 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return rentalHeader;
 	}
 
+	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId) {
+		RentalHeader rentalHeader = new RentalHeader();
+
+		Session session = getSessionFactory().getCurrentSession();
+		String squery = "update rental_header set meet_upId = :meetUpId where rentalHeaderId = :rentalHeaderId";
+
+		SQLQuery query = session.createSQLQuery(squery);
+		query.setLong("rentalHeaderId", rentalHeaderId);
+		query.setLong("meet_upId", meetUpId);
+		query.executeUpdate();
+
+		rentalHeader = get(rentalHeaderId);
+
+		return rentalHeader;
+	}
+	
 	public RentalHeader checkExist(long userId, long rentalDetailId) {
 		RentalHeader rentalHeader = new RentalHeader();
 

@@ -175,5 +175,10 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/updateMeetUp/{rentalHeaderId}/{meetUpId}", method = RequestMethod.GET)
+	public ResponseEntity <RentalHeader> setMeetUp(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("meetUp") String status, @PathVariable("dateApproved") String dateApproved) {
+		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setApprovedExam(rentalHeaderId, status, dateApproved));
+		return flag;
+	}
 }
 	
