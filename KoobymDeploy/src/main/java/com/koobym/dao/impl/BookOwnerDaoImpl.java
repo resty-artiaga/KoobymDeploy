@@ -89,7 +89,7 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 				+ " GROUP BY bookId ORDER BY 2 desc) as suggested_books on book_owner.bookId = suggested_books.bi"
 				+ " LEFT JOIN (select avg(rate.rateNumber) as rate, book_owner_rating.book_ownerId as boi from rate"
 				+ " JOIN book_owner_rating on rate.rateId = book_owner_rating.rateId group by"
-				+ " book_owner_rating.book_ownerId) as ratings on ratings.boi = book_owner.book_ownerId order by rate desc";
+				+ " book_owner_rating.book_ownerId) as ratings on ratings.boi = book_owner.book_ownerId where userId != :userId order by rate desc";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setInteger("userId", userId);
@@ -115,10 +115,12 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 			}
 			temp.setNoRenters((int) row.get("noRenters"));
 			temp.setStatus((String) row.get("status"));
-			/*
-			 * Double rate = (Double) row.get("rate"); if (rate != null) {
-			 * temp.setRate(rate); } else { temp.setRate(0); }
-			 */
+			Double rate = (Double) row.get("rate");
+			if (rate != null) {
+				temp.setRate(rate);
+			} else {
+				temp.setRate(0);
+			}
 			flag.add(temp);
 		}
 		return flag;

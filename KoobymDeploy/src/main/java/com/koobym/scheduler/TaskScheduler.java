@@ -14,6 +14,7 @@ import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.UserNotification;
+import com.koobym.pusher.PusherServer;
 
 @Component
 public class TaskScheduler {
@@ -24,6 +25,9 @@ public class TaskScheduler {
 	@Autowired
 	private UserNotificationDao userNotificationDao;
 
+	@Autowired
+	private PusherServer pusherServer;
+
 	@Transactional
 	@Scheduled(fixedRate = 300000)
 	public void checkRentalEndDates() {
@@ -31,6 +35,7 @@ public class TaskScheduler {
 		List<RentalHeader> rentalHeadersWithElapsedEndDates = rentalHeaderDao.getElapsedRentalDate();
 		UserNotification un;
 		for (RentalHeader rh : rentalHeadersWithElapsedEndDates) {
+			rentalHeaderDao.setApprovedExam(rh.getRentalHeaderId(), "Due", format.format(new Date()));
 			un = new UserNotification();
 
 			un.setActionId(rh.getRentalHeaderId());
@@ -41,6 +46,7 @@ public class TaskScheduler {
 			un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
 
 			userNotificationDao.save(un);
+			pusherServer.sendNotification(un);
 
 			un = new UserNotification();
 			un.setActionId(rh.getRentalHeaderId());
@@ -51,8 +57,7 @@ public class TaskScheduler {
 			un.setUserPerformer(rh.getUserId());
 
 			userNotificationDao.save(un);
-
-			rentalHeaderDao.setApprovedExam(rh.getRentalHeaderId(), "Due", format.format(new Date()));
-		}			
+			pusherServer.sendNotification(un);
+		}
 	}
 }

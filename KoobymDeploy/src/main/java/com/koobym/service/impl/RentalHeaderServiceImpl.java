@@ -11,6 +11,7 @@ import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.UserNotification;
+import com.koobym.pusher.PusherServer;
 import com.koobym.service.RentalHeaderService;
 
 @Service
@@ -19,6 +20,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 
 	private RentalHeaderDao rentalHeaderDao;
 	private UserNotificationDao userNotificationDao;
+
+	@Autowired
+	private PusherServer pusherServer;
 
 	@Autowired
 	public RentalHeaderServiceImpl(RentalHeaderDao rentalHeaderDao, UserNotificationDao userNotificationDao) {
@@ -99,6 +103,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			userNotif.setUserPerformer(rentalHeader.getUserId());
 			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
 		}
 
 		if ("Approved".equals(status)) {
@@ -110,6 +116,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			userNotif.setUser(rentalHeader.getUserId());
 			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
 		}
 
 		if ("Rejected".equals(status)) {
@@ -121,6 +129,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			userNotif.setUser(rentalHeader.getUserId());
 			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
 		}
 
 		return rentalHeaderDao.setApprovedExam(rentalHeaderId, status, dateApproved);
@@ -163,6 +173,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		userNotif.setUserPerformer(rentalHeader.getUserId());
 		userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
+
+		pusherServer.sendNotification(userNotif);
 		return rentalHeader;
 	}
 
@@ -175,12 +187,12 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public List<RentalHeader> getRentalHeader(long bookOwnerId) {
 		return rentalHeaderDao.getRentalHeader(bookOwnerId);
 	}
-	
+
 	@Override
-	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId){
+	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId) {
 
 		RentalHeader rentalHeader = get(rentalHeaderId);
-		
+
 		UserNotification userNotif = new UserNotification();
 		userNotif.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
 		userNotif.setActionId(rentalHeader.getRentalHeaderId());
@@ -189,8 +201,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		userNotif.setUser(rentalHeader.getUserId());
 		userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
-		
+
+		pusherServer.sendNotification(userNotif);
+
 		return rentalHeaderDao.setMeetUp(rentalHeaderId, meetUpId);
-	
 	}
 }

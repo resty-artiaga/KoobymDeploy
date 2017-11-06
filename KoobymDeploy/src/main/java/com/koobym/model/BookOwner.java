@@ -1,7 +1,5 @@
 package com.koobym.model;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,12 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "book_owner")
@@ -46,7 +41,8 @@ public class BookOwner {
 	@Column(name = "status")
 	private String status;
 
-	/*private double rate;
+	@Transient
+	private double rate;
 
 	public double getRate() {
 		return rate;
@@ -55,7 +51,7 @@ public class BookOwner {
 	public void setRate(double rate) {
 		this.rate = rate;
 	}
-*/
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
