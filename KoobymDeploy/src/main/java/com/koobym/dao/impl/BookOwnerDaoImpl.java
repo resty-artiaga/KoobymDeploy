@@ -115,12 +115,10 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 			}
 			temp.setNoRenters((int) row.get("noRenters"));
 			temp.setStatus((String) row.get("status"));
-			Double rate = (Double) row.get("rate");
-			if (rate != null) {
-				temp.setRate(rate);
-			} else {
-				temp.setRate(0);
-			}
+			/*
+			 * Double rate = (Double) row.get("rate"); if (rate != null) {
+			 * temp.setRate(rate); } else { temp.setRate(0); }
+			 */
 			flag.add(temp);
 		}
 		return flag;

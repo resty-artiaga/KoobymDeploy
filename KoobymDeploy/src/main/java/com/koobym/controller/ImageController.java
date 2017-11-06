@@ -37,7 +37,7 @@ public class ImageController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String fileUpload(@RequestParam("file") MultipartFile file) {
 		String filename = "";
-		
+
 		try {
 
 			System.out.println("inside upload");
@@ -47,28 +47,29 @@ public class ImageController {
 			Random rand = new Random();
 			String pre1 = Long.toString(rand.nextLong());
 			String pre2 = Long.toString(rand.nextLong());
-			
-			// save file in server - you may need an another scenario
-			filename = pre1+ pre2+ Long.toString(new Date().getTime())+ file.getOriginalFilename();
 
-			Path path = Paths.get("/home/resty_artiaga/Koobym/images/" + filename);
+			// save file in server - you may need an another scenario
+			filename = pre1 + pre2 + Long.toString(new Date().getTime()) + file.getOriginalFilename();
+
+			Path path = Paths.get("/home/artiagajoane/Koobym/images/" + filename);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		String imagePath = "http://104.197.4.32:8080/Koobym/image/" + filename;
+
+		String imagePath = "http://104.198.152.85/Koobym/image/" + filename;
 
 		// redirect to an another url end point
 		return imagePath;
 	}
 
-	@RequestMapping(value = "/{filename:.+}", headers = "Accept=image/jpeg, image/jpg, image/png, image/gif", method = RequestMethod.GET, produces = {"image/jpg", "image/jpeg", "image/png"})
+	@RequestMapping(value = "/{filename:.+}", headers = "Accept=image/jpeg, image/jpg, image/png, image/gif", method = RequestMethod.GET, produces = {
+			"image/jpg", "image/jpeg", "image/png" })
 	public @ResponseBody byte[] getFile(@PathVariable String filename) {
 		byte[] flag = null;
 		try {
 			// Retrieve image from the classpath.
-			File f = new File("/home/resty_artiaga/Koobym/images/" + filename);
+			File f = new File("/home/artiagajoane/Koobym/images/" + filename);
 			InputStream is = new FileInputStream(f);
 
 			// Prepare buffered image.
@@ -79,7 +80,7 @@ public class ImageController {
 
 			System.out.println("Extension = " + extension(filename));
 			// Write to output stream
-			ImageIO.write(img, extension(filename), bao);			
+			ImageIO.write(img, extension(filename), bao);
 
 			flag = bao.toByteArray();
 		} catch (IOException e) {
@@ -88,15 +89,15 @@ public class ImageController {
 
 		return flag;
 	}
-	
-	private String extension(String filename){
-		StringTokenizer tokenize = new StringTokenizer(filename , ".");
+
+	private String extension(String filename) {
+		StringTokenizer tokenize = new StringTokenizer(filename, ".");
 		String flag = "";
 
-		while(tokenize.hasMoreTokens()){
+		while (tokenize.hasMoreTokens()) {
 			flag = tokenize.nextToken();
 		}
-		
+
 		return flag;
 	}
 

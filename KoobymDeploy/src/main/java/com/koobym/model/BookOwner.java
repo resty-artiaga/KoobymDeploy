@@ -46,7 +46,7 @@ public class BookOwner {
 	@Column(name = "status")
 	private String status;
 
-	private double rate;
+	/*private double rate;
 
 	public double getRate() {
 		return rate;
@@ -55,7 +55,7 @@ public class BookOwner {
 	public void setRate(double rate) {
 		this.rate = rate;
 	}
-
+*/
 	public void setStatus(String status) {
 		this.status = status;
 	}

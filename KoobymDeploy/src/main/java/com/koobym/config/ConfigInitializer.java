@@ -38,7 +38,7 @@ public class ConfigInitializer extends AbstractAnnotationConfigDispatcherServlet
 		return multipartConfigElement;
 	}
 
-	private static final String LOCATION = "/home/resty_artiaga/Koobym/images/"; // Temporary location
+	private static final String LOCATION = "/home/artiagajoane/Koobym/images/"; // Temporary location
 														// where files will be
 														// stored
 
