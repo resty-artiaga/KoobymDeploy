@@ -7,6 +7,8 @@ import com.koobym.model.BookOwner;
 
 public interface BookOwnerService extends BaseService<BookOwner, Long> {
 
+	public List<BookOwner> allDistinct();
+
 	public BookOwner setBookOwner(long bookOwnerId, long userId);
 
 	public List<BookOwner> getMyBooksById(int userId);

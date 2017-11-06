@@ -34,6 +34,10 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 		this.swapHeaderDao = swapHeaderDao;
 	}
 
+	public List<BookOwner> allDistinct(){
+		return bookOwnerDao.allDistinct();
+	}
+	
 	@Override
 	public BookOwner setBookOwner(long bookOwnerId, long userId) {
 		return bookOwnerDao.setBookOwner(bookOwnerId, userId);

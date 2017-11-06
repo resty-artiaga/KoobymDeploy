@@ -10,4 +10,5 @@ public interface BookOwnerDao extends BaseDao<BookOwner, Long> {
 	public List<BookOwner> getMyBooksById(int userId);
 	public BookOwner increment(long bookOwnerId);
 	public List<BookOwner> getStatusById();
+	public List<BookOwner> allDistinct();
 }

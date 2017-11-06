@@ -49,7 +49,7 @@ public class BookOwnerController {
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<List<BookOwner>> getRoles() {
-		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.list());
+		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.allDistinct());
 		return flag;
 	}
 
@@ -65,31 +65,30 @@ public class BookOwnerController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/updateBookOwner/{bookOwnerId}/{userId}", method = RequestMethod.GET)
-	public ResponseEntity<BookOwner> setBookOwner(@PathVariable("bookOwnerId") int bookOwnerId, @PathVariable("userId") long userId) {
+	public ResponseEntity<BookOwner> setBookOwner(@PathVariable("bookOwnerId") int bookOwnerId,
+			@PathVariable("userId") long userId) {
 		ResponseEntity<BookOwner> flag = ResponseEntity.ok(bookOwnerService.setBookOwner(bookOwnerId, userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/myBooksById/{userId}", method = RequestMethod.GET)
-	public ResponseEntity <List<BookOwner>> getMyBooksById(@PathVariable("userId") int userId) {
-		ResponseEntity <List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getMyBooksById(userId));
+	public ResponseEntity<List<BookOwner>> getMyBooksById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getMyBooksById(userId));
 		return flag;
 	}
 
 	@RequestMapping(value = "/increment/{bookOwnerId}", method = RequestMethod.GET)
-	public ResponseEntity <BookOwner> increment(@PathVariable("bookOwnerId") long bookOwnerId) {
-		ResponseEntity <BookOwner> flag = ResponseEntity.ok(bookOwnerService.increment(bookOwnerId));
+	public ResponseEntity<BookOwner> increment(@PathVariable("bookOwnerId") long bookOwnerId) {
+		ResponseEntity<BookOwner> flag = ResponseEntity.ok(bookOwnerService.increment(bookOwnerId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/allBook", method = RequestMethod.GET)
-	public ResponseEntity <List<BookOwner>> getStatusById() {
-		ResponseEntity <List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getStatusById());
+	public ResponseEntity<List<BookOwner>> getStatusById() {
+		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getStatusById());
 		return flag;
 	}
-	
-	
-	
+
 }
