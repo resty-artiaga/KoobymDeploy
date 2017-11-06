@@ -2,6 +2,7 @@ package com.koobym.dao.impl;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -193,7 +194,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 		return rentalHeader;
 	}
-	
+
 	public RentalHeader checkExist(long userId, long rentalDetailId) {
 		RentalHeader rentalHeader = new RentalHeader();
 
@@ -295,7 +296,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return flag;
 
 	}
-	
+
 	public List<RentalHeader> getRentalHeader(long bookOwnerId) {
 
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
@@ -308,6 +309,16 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
 
+	}
+
+	public List<RentalHeader> getElapsedRentalDate() {
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.add(Restrictions.ge("rentalEndDate", new Date()));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Due")));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
 	}
 
 }

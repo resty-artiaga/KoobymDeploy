@@ -14,9 +14,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="rental_header")
+@Table(name = "rental_header")
 public class RentalHeader {
-	
+
 	@Id
 	@Column(name = "rentalHeaderId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,22 +24,25 @@ public class RentalHeader {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
-	@JsonProperty(value="user")
+	@JsonProperty(value = "user")
 	private User user;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "rentalDetailId")
 	private RentalDetail rentalDetail;
-		
-	@Column(name="rentalTimeStamp")
+
+	@Column(name = "rentalTimeStamp")
 	private String rentalTimeStamp;
 
-	@Column(name="dateApproved")
+	@Column(name = "dateApproved")
 	private String dateApproved;
-	
-	@Column(name="totalPrice")
-	private float totalPrice; 
-	
+
+	@Column(name = "rentalEndDate")
+	private String rentalEndDate;
+
+	@Column(name = "totalPrice")
+	private float totalPrice;
+
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "locationId")
 	private Location location;
@@ -48,93 +51,99 @@ public class RentalHeader {
 	@JoinColumn(name = "meet_upId")
 	private MeetUp meetUp;
 
-	@Column(name="status")
+	@Column(name = "status")
 	private String status;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_day_timeId")
-	private UserDayTime userDayTime; 
-	
-	public void setMeetUp(MeetUp meetUp){
+	private UserDayTime userDayTime;
+
+	public String getRentalEndDate() {
+		return rentalEndDate;
+	}
+
+	public void setRentalEndDate(String rentalEndDate) {
+		this.rentalEndDate = rentalEndDate;
+	}
+
+	public void setMeetUp(MeetUp meetUp) {
 		this.meetUp = meetUp;
 	}
-	
-	public MeetUp getMeetUp(){
+
+	public MeetUp getMeetUp() {
 		return meetUp;
 	}
-	
-	public void setDateApproved(String dateApproved){
+
+	public void setDateApproved(String dateApproved) {
 		this.dateApproved = dateApproved;
 	}
-	
-	public String getDateApproved(){
+
+	public String getDateApproved() {
 		return dateApproved;
 	}
-	
-	public void setUserDayTime(UserDayTime userDayTime){
+
+	public void setUserDayTime(UserDayTime userDayTime) {
 		this.userDayTime = userDayTime;
 	}
-	
-	public UserDayTime getUserDayTime(){
+
+	public UserDayTime getUserDayTime() {
 		return userDayTime;
 	}
-	
+
 	public void setRentalDetail(RentalDetail rentalDetail) {
 		this.rentalDetail = rentalDetail;
 	}
-	
+
 	public RentalDetail getRentalDetail() {
 		return rentalDetail;
 	}
-	
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
-	
+
 	public void setRentalHeaderId(long rentalHeaderId) {
 		this.rentalHeaderId = rentalHeaderId;
 	}
-	
+
 	public long getRentalHeaderId() {
 		return rentalHeaderId;
 	}
-	
-	public void setUserId(User user){
+
+	public void setUserId(User user) {
 		this.user = user;
 	}
-	
+
 	public User getUserId() {
 		return user;
 	}
-	
+
 	public void setRentalTimeStamp(String rentalTimeStamp) {
 		this.rentalTimeStamp = rentalTimeStamp;
 	}
-	
+
 	public String getRentalTimeStamp() {
 		return rentalTimeStamp;
 	}
-	
+
 	public void setTotalPrice(float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
 	public float getTotalPrice() {
 		return totalPrice;
 	}
-	
+
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
+
 	public Location getLocation() {
 		return location;
 	}
-	
-	
 
 }
