@@ -40,6 +40,9 @@ public class RentalHeader {
 	@Column(name = "dateConfirmed")
 	private String dateConfirmed;
 	
+	@Column(name = "dateDeliver")
+	private String dateDeliver;
+	
 	@Column(name = "rentalEndDate")
 	private String rentalEndDate;
 
@@ -60,6 +63,14 @@ public class RentalHeader {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_day_timeId")
 	private UserDayTime userDayTime;
+
+	public String getDateDeliver() {
+		return dateDeliver;
+	}
+
+	public void setDateDeliver(String dateDeliver) {
+		this.dateDeliver = dateDeliver;
+	}
 
 	public String getDateConfirmed() {
 		return dateConfirmed;
