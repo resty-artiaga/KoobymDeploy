@@ -45,5 +45,10 @@ public class SwapDetailServiceImpl extends BaseServiceImpl<SwapDetail, Long> imp
 	public List<SwapDetail> getAll(){
 		return swapDetailDao.getAll();
 	}
+	
+	@Override
+	public SwapDetail getSwapDetail(long bookOwnerId){
+		return swapDetailDao.getSwapDetail(bookOwnerId);
+	}
 
 }

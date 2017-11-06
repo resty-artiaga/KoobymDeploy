@@ -51,6 +51,16 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 	}
 	return flag;*/
 	
+	public SwapDetail getSwapDetail(long bookOwnerId) {
+		SwapDetail swapDetail = new SwapDetail ();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail .class);
+		criteria = criteria.createAlias("bookOwner", "bookOwner");
+		criteria = criteria.add(Restrictions.eq("bookOwner.book_ownerId", bookOwnerId));
+		swapDetail = (SwapDetail ) criteria.uniqueResult();
+
+		return swapDetail;
+	}
 	
 	public List<SwapDetail> getSwapById(int userId) {
 		List<SwapDetail> flag = new ArrayList<SwapDetail>();

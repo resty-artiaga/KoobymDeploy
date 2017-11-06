@@ -92,4 +92,9 @@ public class SwapDetailController {
 		return flag;
 	}
 	
+	@RequestMapping(value = "/getSwapDetail/{bookOwnerId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapDetail> getSwapDetail(@PathVariable("bookOwnerId") long bookOwnerId) {
+		ResponseEntity<SwapDetail> flag = ResponseEntity.ok(swapDetailService.getSwapDetail(bookOwnerId));
+		return flag;
+	}
 }
