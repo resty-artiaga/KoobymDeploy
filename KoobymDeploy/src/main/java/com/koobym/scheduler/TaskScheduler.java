@@ -29,7 +29,7 @@ public class TaskScheduler {
 	private PusherServer pusherServer;
 
 	@Transactional
-	@Scheduled(fixedRate = 300000)
+	@Scheduled(fixedRate = 1500000)
 	public void checkRentalEndDates() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 		List<RentalHeader> rentalHeadersWithElapsedEndDates = rentalHeaderDao.getElapsedRentalDate();
