@@ -18,4 +18,6 @@ public interface BookOwnerService extends BaseService<BookOwner, Long> {
 	public List<BookOwner> getStatusById();
 
 	public List<Transaction> bookTransactions(long bookOwnerId);
+	
+	public List<BookOwner> getSuggestedBooks(int userId);
 }

@@ -91,4 +91,9 @@ public class BookOwnerController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/suggestedBooks/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<BookOwner>> getStatusById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getSuggestedBooks(userId));
+		return flag;
+	}
 }

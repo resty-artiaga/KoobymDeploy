@@ -42,19 +42,28 @@ public class BookOwner {
 
 	@Column(name = "noRenters")
 	private int noRenters;
-	
+
 	@Column(name = "status")
 	private String status;
-	
-	
+
+	private double rate;
+
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
-	
+
 	public void setBook_ownerId(long book_ownerId) {
 		this.book_ownerId = book_ownerId;
 	}

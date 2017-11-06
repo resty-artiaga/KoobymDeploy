@@ -8,9 +8,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.koobym.dao.BookDao;
 import com.koobym.dao.BookOwnerDao;
 import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.SwapHeaderDao;
+import com.koobym.dao.UserDao;
 import com.koobym.dto.Transaction;
 import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
@@ -22,22 +24,26 @@ import com.koobym.service.BookOwnerService;
 public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> implements BookOwnerService {
 
 	private BookOwnerDao bookOwnerDao;
+	private BookDao bookDao;
+	private UserDao userDao;
 	private RentalHeaderDao rentalHeaderDao;
 	private SwapHeaderDao swapHeaderDao;
 
 	@Autowired
-	public BookOwnerServiceImpl(BookOwnerDao bookOwnerDao, RentalHeaderDao rentalHeaderDao,
-			SwapHeaderDao swapHeaderDao) {
+	public BookOwnerServiceImpl(BookOwnerDao bookOwnerDao, RentalHeaderDao rentalHeaderDao, SwapHeaderDao swapHeaderDao,
+			BookDao bookDao, UserDao userDao) {
 		super(bookOwnerDao);
 		this.bookOwnerDao = bookOwnerDao;
 		this.rentalHeaderDao = rentalHeaderDao;
 		this.swapHeaderDao = swapHeaderDao;
+		this.bookDao = bookDao;
+		this.userDao = userDao;
 	}
 
-	public List<BookOwner> allDistinct(){
+	public List<BookOwner> allDistinct() {
 		return bookOwnerDao.allDistinct();
 	}
-	
+
 	@Override
 	public BookOwner setBookOwner(long bookOwnerId, long userId) {
 		return bookOwnerDao.setBookOwner(bookOwnerId, userId);
@@ -84,6 +90,15 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 		}
 
 		return transactions;
+	}
+
+	public List<BookOwner> getSuggestedBooks(int userId) {
+		List<BookOwner> flags = bookOwnerDao.suggestedBooks(userId);
+		for (BookOwner flag : flags) {
+			flag.setBook(bookDao.get(flag.getBook().getBookId()));
+			flag.setUser(userDao.get(flag.getUser().getUserId()));
+		}
+		return flags;
 	}
 
 }
