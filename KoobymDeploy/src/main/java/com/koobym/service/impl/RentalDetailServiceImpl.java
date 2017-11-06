@@ -69,5 +69,10 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 
 		return flag;
 	}
+	
+	@Override
+	public RentalDetail getRentalDetail(long bookOwnerId){
+		return rentalDetailDao.getRentalDetail(bookOwnerId);
+	}
 
 }

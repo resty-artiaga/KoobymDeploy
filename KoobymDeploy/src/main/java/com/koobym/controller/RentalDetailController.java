@@ -70,4 +70,10 @@ public class RentalDetailController {
 		ResponseEntity<List<RentalDetail>> flag = ResponseEntity.ok(rentalDetailService.getAllForRentOrderByRate());
 		return flag;
 	}
+
+	@RequestMapping(value = "/getRentalDetail/{bookOwnerId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalDetail> getRentalDetail(@PathVariable("bookOwnerId") long bookOwnerId) {
+		ResponseEntity<RentalDetail> flag = ResponseEntity.ok(rentalDetailService.getRentalDetail(bookOwnerId));
+		return flag;
+	}
 }

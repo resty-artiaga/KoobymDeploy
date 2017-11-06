@@ -19,6 +19,7 @@ import com.koobym.dao.UserDao;
 import com.koobym.model.BookOwner;
 import com.koobym.model.Genre;
 import com.koobym.model.RentalDetail;
+import com.koobym.model.RentalHeader;
 import com.koobym.model.User;
 
 @Repository
@@ -137,6 +138,16 @@ public class RentalDetailDaoImpl extends BaseDaoImpl<RentalDetail, Long> impleme
 		return flag;
 	}
 
+	public RentalDetail getRentalDetail(long bookOwnerId) {
+		RentalDetail rentalDetail = new RentalDetail();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalDetail.class);
+		criteria = criteria.createAlias("bookOwner", "bookOwner");
+		criteria = criteria.add(Restrictions.eq("bookOwner.book_ownerId", bookOwnerId));
+		rentalDetail = (RentalDetail) criteria.uniqueResult();
+
+		return rentalDetail;
+	}
 //	public List<RentalDetail> getRentalById(int userId) {
 //		List<RentalDetail> flag = new ArrayList<RentalDetail>();
 //		Session session = getSessionFactory().getCurrentSession();
