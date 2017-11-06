@@ -166,7 +166,14 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		RentalHeader rentalHeader = new RentalHeader();
 
 		Session session = getSessionFactory().getCurrentSession();
-		String squery = "update rental_header set status = :status, dateApproved = :dateApproved where rentalHeaderId = :rentalHeaderId";
+		
+		String squery = ""; 
+		
+		if(status.equals("Approved")){
+			squery = "update rental_header set status = :status, dateApproved = :dateApproved where rentalHeaderId = :rentalHeaderId";
+		}else if (status.equals("Confirm")){
+			squery = "update rental_header set status = :status, dateConfirmed = :dateApproved where rentalHeaderId = :rentalHeaderId";
+		}
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setString("status", status);
