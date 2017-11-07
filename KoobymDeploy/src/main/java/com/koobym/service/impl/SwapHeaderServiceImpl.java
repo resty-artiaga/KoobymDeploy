@@ -12,6 +12,7 @@ import com.koobym.dao.SwapHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.SwapHeader;
 import com.koobym.model.UserNotification;
+import com.koobym.pusher.PusherServer;
 import com.koobym.service.SwapHeaderService;
 
 @Service
@@ -21,6 +22,9 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	private SwapHeaderDao swapHeaderDao;
 	private LocationDao locationDao;
 	private UserNotificationDao userNotificationDao;
+	
+	@Autowired
+	private PusherServer pusherServer;
 
 	@Autowired
 	public SwapHeaderServiceImpl(SwapHeaderDao swapHeaderDao, LocationDao locationDao,
@@ -44,15 +48,60 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	@Override
 	public SwapHeader setApprovedExam(long swapHeaderId, String status) {
 		SwapHeader swapHeader = get(swapHeaderId);
-		UserNotification userNotif = new UserNotification();
-		userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
-		userNotif.setActionId(swapHeader.getSwapHeaderId());
-		userNotif.setActionName("swap");
-		userNotif.setActionStatus(status);
-		userNotif.setUserPerformer(swapHeader.getUser());
-		userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
-		userNotificationDao.save(userNotif);
+	
+		if ("Request".equals(status)) {
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUserPerformer(swapHeader.getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
+
+		if ("Approved".equals(status)) {
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUser(swapHeader.getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
+
+		if ("Rejected".equals(status)) {
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUser(swapHeader.getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
+
+		if("Confirm".equals(status)){
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUserPerformer(swapHeader.getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
 		return swapHeaderDao.setApprovedExam(swapHeaderId, status);
+
 	}
 
 	@Override
