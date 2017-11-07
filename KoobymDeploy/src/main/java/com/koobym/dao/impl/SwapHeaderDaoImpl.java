@@ -174,22 +174,23 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		return flag;
 	}
 
-	public SwapHeader setApprovedExam(long swapHeaderId, String status, String date) {
+	public SwapHeader setApprovedExam(String status, long swapHeaderId, String date) {
 		SwapHeader swapHeader = new SwapHeader();
 
 		Session session = getSessionFactory().getCurrentSession();
 		String squery = "";
-		
-		if(status.equals("Approved")){
+
+		if (status.equals("Approved")) {
 			squery = "update swap_header set status = :status , dateApproved = :date where swapHeaderId = :swapHeaderId";
-		}else if(status.equals("Confirm")){
+		} else if (status.equals("Confirm")) {
 			squery = "update swap_header set status = :status , dateConfirmed = :date where swapHeaderId = :swapHeaderId";
-		}else if(status.equals("Rejected")){
+		} else if (status.equals("Rejected")) {
 			squery = "update swap_header set status = :status , dateRejected = :date where swapHeaderId = :swapHeaderId";
 		}
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setString("status", status);
+		query.setString("date", date);
 		query.setLong("swapHeaderId", swapHeaderId);
 		query.executeUpdate();
 

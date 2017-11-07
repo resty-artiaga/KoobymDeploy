@@ -8,7 +8,7 @@ import com.koobym.model.SwapHeader;
 public interface SwapHeaderService extends BaseService<SwapHeader, Long> {
 	public List<SwapHeader> getToDeliverById(int userId);
 	public List<SwapHeader> getToReceiveByIdRenter(int userId);
-	public SwapHeader setApprovedExam(long swapHeaderId, String status, String date);
+	public SwapHeader setApprovedExam(String status, long swapHeaderId, String date);
 	public SwapHeader swapRequested(SwapHeader swapHeader);
 	public List<SwapHeader> getRequestedSwaps(long userId);
 	public List<SwapHeader> getToApproveSwaps(long userId);
