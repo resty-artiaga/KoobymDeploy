@@ -133,6 +133,18 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			pusherServer.sendNotification(userNotif);
 		}
 
+		if("Confirm".equals(status)){
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
+			userNotif.setActionId(rentalHeader.getRentalHeaderId());
+			userNotif.setActionName("rental");
+			userNotif.setActionStatus(status);
+			userNotif.setUserPerformer(rentalHeader.getUserId());
+			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
 		return rentalHeaderDao.setApprovedExam(rentalHeaderId, status, dateApproved);
 	}
 
