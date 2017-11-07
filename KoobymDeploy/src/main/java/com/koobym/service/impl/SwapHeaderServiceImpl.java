@@ -46,7 +46,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	}
 
 	@Override
-	public SwapHeader setApprovedExam(long swapHeaderId, String status) {
+	public SwapHeader setApprovedExam(long swapHeaderId, String status, String date) {
 		SwapHeader swapHeader = get(swapHeaderId);
 	
 //		if ("Request".equals(status)||"request".equals(status)) {
@@ -100,7 +100,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 			pusherServer.sendNotification(userNotif);
 		}
-		return swapHeaderDao.setApprovedExam(swapHeaderId, status);
+		return swapHeaderDao.setApprovedExam(swapHeaderId, status, date);
 
 	}
 
