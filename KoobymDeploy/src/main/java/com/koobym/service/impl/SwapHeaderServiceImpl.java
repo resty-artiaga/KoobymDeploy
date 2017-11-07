@@ -90,7 +90,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 		if("Confirm".equals(status)){
 			UserNotification userNotif = new UserNotification();
-			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
 			userNotif.setActionId(swapHeader.getSwapHeaderId());
 			userNotif.setActionName("swap");
 			userNotif.setActionStatus(status);
