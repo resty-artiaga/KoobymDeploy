@@ -36,6 +36,21 @@ public class SwapHeader {
 	@Column(name="dateSwap")
 	private String dateTimeStamp;
 
+	@Column(name="dateRequest")
+	private String dateRequest;
+
+	@Column(name="dateApproved")
+	private String dateApproved;
+
+	@Column(name="dateRejected")
+	private String dateRejected;
+
+	@Column(name="dateConfirmed")
+	private String dateConfirmed;
+
+	@Column(name="dateReceived")
+	private String dateReceived;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userDayTimeId")
 	private UserDayTime userDayTime; 
@@ -46,7 +61,47 @@ public class SwapHeader {
 	
 	@Column(name="status")
 	private String status;
+
+	public String getDateReceived() {
+		return dateReceived;
+	}
 	
+	public void setDatev(String dateReceived) {
+		this.dateReceived = dateReceived;
+	}
+	
+	public String getDateConfirmed() {
+		return dateConfirmed;
+	}
+	
+	public void setDateConfirmed(String dateConfirmed) {
+		this.dateConfirmed = dateConfirmed;
+	}
+	
+	public String getDateRejected() {
+		return dateRejected;
+	}
+	
+	public void setDateRejected(String dateRejected) {
+		this.dateRejected = dateRejected;
+	}
+	
+	public String getDateApproved() {
+		return dateApproved;
+	}
+	
+	public void setDateApproved(String dateApproved) {
+		this.dateApproved = dateApproved;
+	}
+	
+	public String getDateRequest() {
+		return dateRequest;
+	}
+	
+	public void setDateRequest(String dateRequest) {
+		this.dateRequest = dateRequest;
+	}
+
 	public SwapDetail getRequestedSwapDetail() {
 		return requestedSwapDetail;
 	}
