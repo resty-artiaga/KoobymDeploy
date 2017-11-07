@@ -53,7 +53,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
 			userNotif.setActionId(swapHeader.getSwapHeaderId());
-			userNotif.setActionName("rental");
+			userNotif.setActionName("swap");
 			userNotif.setActionStatus(status);
 			userNotif.setUserPerformer(swapHeader.getUser());
 			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
@@ -66,7 +66,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
 			userNotif.setActionId(swapHeader.getSwapHeaderId());
-			userNotif.setActionName("rental");
+			userNotif.setActionName("swap");
 			userNotif.setActionStatus(status);
 			userNotif.setUser(swapHeader.getUser());
 			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
@@ -79,7 +79,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
 			userNotif.setActionId(swapHeader.getSwapHeaderId());
-			userNotif.setActionName("rental");
+			userNotif.setActionName("swap");
 			userNotif.setActionStatus(status);
 			userNotif.setUser(swapHeader.getUser());
 			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
@@ -92,7 +92,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
 			userNotif.setActionId(swapHeader.getSwapHeaderId());
-			userNotif.setActionName("rental");
+			userNotif.setActionName("swap");
 			userNotif.setActionStatus(status);
 			userNotif.setUserPerformer(swapHeader.getUser());
 			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
