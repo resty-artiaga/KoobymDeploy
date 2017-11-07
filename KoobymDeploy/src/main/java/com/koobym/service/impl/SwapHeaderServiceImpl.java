@@ -49,19 +49,19 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public SwapHeader setApprovedExam(long swapHeaderId, String status) {
 		SwapHeader swapHeader = get(swapHeaderId);
 	
-		if ("Request".equals(status)||"request".equals(status)) {
-			UserNotification userNotif = new UserNotification();
-			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
-			userNotif.setActionId(swapHeader.getSwapHeaderId());
-			userNotif.setActionName("swap");
-			userNotif.setActionStatus(status);
-			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
-			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
-			userNotificationDao.save(userNotif);
-
-			pusherServer.sendNotification(userNotif);
-		}
-
+//		if ("Request".equals(status)||"request".equals(status)) {
+//			UserNotification userNotif = new UserNotification();
+//			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
+//			userNotif.setActionId(swapHeader.getSwapHeaderId());
+//			userNotif.setActionName("swap");
+//			userNotif.setActionStatus(status);
+//			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
+//			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+//			userNotificationDao.save(userNotif);
+//
+//			pusherServer.sendNotification(userNotif);
+//		}
+//
 		if ("Approved".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
@@ -108,13 +108,16 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public SwapHeader addNewSwapHeader(SwapHeader swapHeader) {
 		swapHeaderDao.save(swapHeader);
 		UserNotification userNotif = new UserNotification();
-		userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
+		userNotif.setUser(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotif.setActionId(swapHeader.getSwapHeaderId());
 		userNotif.setActionName("swap");
-		userNotif.setActionStatus("request");
+		userNotif.setActionStatus("Request");
 		userNotif.setUserPerformer(swapHeader.getUser());
 		userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
+		
+		pusherServer.sendNotification(userNotif);
+		
 		return swapHeader;
 	}
 
