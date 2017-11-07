@@ -59,8 +59,20 @@ public class SwapHeader {
 	@JoinColumn(name = "locationId")
 	private Location location;
 	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "meetUpId")
+	private MeetUp meetUp;
+	
 	@Column(name="status")
 	private String status;
+
+	public MeetUp getMeetUp() {
+		return meetUp;
+	}
+	
+	public void setMeetUp(MeetUp meetUp) {
+		this.meetUp = meetUp;
+	}
 
 	public String getDateReceived() {
 		return dateReceived;
