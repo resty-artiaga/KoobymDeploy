@@ -236,4 +236,29 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
 	}
+
+	public List<SwapHeader> getOngoingSwaps(long userId) {
+		List<SwapHeader> flag = null;
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("swapDetail", "swapDetail");
+		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("swapDetail.bookOwner.user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Complete")));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Rejected")));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		return flag;
+	}
+	
+	public List<SwapHeader> getOngoingSwapRequestsByUser(long userId) {
+		List<SwapHeader> flag = null;
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Complete")));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		return flag;
+	}
 }

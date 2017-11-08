@@ -12,7 +12,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.RentalHeaderDao;
-import com.koobym.model.MeetUp;
 import com.koobym.model.RentalHeader;
 
 @Repository
@@ -166,12 +165,12 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		RentalHeader rentalHeader = new RentalHeader();
 
 		Session session = getSessionFactory().getCurrentSession();
-		
-		String squery = ""; 
-		
-		if(status.equals("Approved")){
+
+		String squery = "";
+
+		if (status.equals("Approved")) {
 			squery = "update rental_header set status = :status, dateApproved = :dateApproved where rentalHeaderId = :rentalHeaderId";
-		}else if (status.equals("Confirm")){
+		} else if (status.equals("Confirm")) {
 			squery = "update rental_header set status = :status, dateConfirmed = :dateApproved where rentalHeaderId = :rentalHeaderId";
 		}
 
@@ -323,6 +322,34 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.add(Restrictions.ge("rentalEndDate", new Date()));
 		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Due")));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
+	}
+
+	public List<RentalHeader> getOngoingByOwner(int userId) {
+
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Rejected")));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Complete")));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
+	}
+	
+	public List<RentalHeader> getOngoingRequestsByUser(int userId) {
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Complete")));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;

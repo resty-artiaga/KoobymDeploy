@@ -2,6 +2,8 @@ package com.koobym.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +15,7 @@ import com.koobym.dao.BookOwnerDao;
 import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.SwapHeaderDao;
 import com.koobym.dao.UserDao;
+import com.koobym.dto.BookActivityObject;
 import com.koobym.dto.Transaction;
 import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
@@ -101,4 +104,69 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 		return flags;
 	}
 
+	public Set<BookActivityObject> getUserOwnBookActivities(int userId) {
+		List<RentalHeader> rentalHeaders = rentalHeaderDao.getOngoingByOwner(userId);
+		List<SwapHeader> swapHeaders = swapHeaderDao.getOngoingSwaps(userId);
+
+		Set<BookActivityObject> bookActivityObjects = new TreeSet<BookActivityObject>();
+		BookActivityObject baj;
+		for (RentalHeader rentalHeader : rentalHeaders) {
+			baj = new BookActivityObject();
+			baj.setUser(rentalHeader.getUserId());
+			baj.setBookOwner(rentalHeader.getRentalDetail().getBookOwner());
+			baj.setBookActivityId(rentalHeader.getRentalHeaderId());
+			baj.setBookStatus("rent");
+			baj.setStatus(rentalHeader.getStatus());
+			baj.setDateRequest(rentalHeader.getRentalTimeStamp());
+
+			bookActivityObjects.add(baj);
+		}
+
+		for (SwapHeader swapHeader : swapHeaders) {
+			baj = new BookActivityObject();
+			baj.setUser(swapHeader.getUser());
+			baj.setBookOwner(swapHeader.getSwapDetail().getBookOwner());
+			baj.setBookStatus("swap");
+			baj.setStatus(swapHeader.getStatus());
+			baj.setBookActivityId(swapHeader.getSwapHeaderId());
+			baj.setDateRequest(swapHeader.getDateTimeStamp());
+
+			bookActivityObjects.add(baj);
+		}
+
+		return bookActivityObjects;
+	}
+
+	public Set<BookActivityObject> getUserRequestsBookActivities(int userId) {
+		List<RentalHeader> rentalHeaders = rentalHeaderDao.getOngoingRequestsByUser(userId);
+		List<SwapHeader> swapHeaders = swapHeaderDao.getOngoingSwapRequestsByUser(userId);
+
+		Set<BookActivityObject> bookActivityObjects = new TreeSet<BookActivityObject>();
+		BookActivityObject baj;
+		for (RentalHeader rentalHeader : rentalHeaders) {
+			baj = new BookActivityObject();
+			baj.setUser(rentalHeader.getUserId());
+			baj.setBookOwner(rentalHeader.getRentalDetail().getBookOwner());
+			baj.setBookActivityId(rentalHeader.getRentalHeaderId());
+			baj.setBookStatus("rent");
+			baj.setStatus(rentalHeader.getStatus());
+			baj.setDateRequest(rentalHeader.getRentalTimeStamp());
+
+			bookActivityObjects.add(baj);
+		}
+
+		for (SwapHeader swapHeader : swapHeaders) {
+			baj = new BookActivityObject();
+			baj.setUser(swapHeader.getUser());
+			baj.setBookOwner(swapHeader.getSwapDetail().getBookOwner());
+			baj.setBookStatus("swap");
+			baj.setStatus(swapHeader.getStatus());
+			baj.setBookActivityId(swapHeader.getSwapHeaderId());
+			baj.setDateRequest(swapHeader.getDateTimeStamp());
+
+			bookActivityObjects.add(baj);
+		}
+
+		return bookActivityObjects;
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,7 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(UserNotification.class);
 		criteria = criteria.add(Restrictions.eq("user.userId", userId));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria = criteria.addOrder(Order.desc("userNotificationId"));
 		flag = (List<UserNotification>) criteria.list();
 		return flag;
 	}

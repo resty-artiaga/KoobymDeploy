@@ -1,6 +1,7 @@
 package com.koobym.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,13 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.koobym.dto.BookActivityObject;
 import com.koobym.model.BookOwner;
-import com.koobym.model.User;
 import com.koobym.service.BookOwnerService;
-import com.koobym.service.UserService;
 
 @RestController
 @RequestMapping(value = "/bookOwner")
@@ -96,4 +95,19 @@ public class BookOwnerController {
 		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.getSuggestedBooks(userId));
 		return flag;
 	}
+
+	@RequestMapping(value = "/bookActivity/own/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Set<BookActivityObject>> getBookActivityOwn(@PathVariable("userId") int userId) {
+		ResponseEntity<Set<BookActivityObject>> flag = ResponseEntity
+				.ok(bookOwnerService.getUserOwnBookActivities(userId));
+		return flag;
+	}
+
+	@RequestMapping(value = "/bookActivity/requests/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Set<BookActivityObject>> getBookActivityRequests(@PathVariable("userId") int userId) {
+		ResponseEntity<Set<BookActivityObject>> flag = ResponseEntity
+				.ok(bookOwnerService.getUserRequestsBookActivities(userId));
+		return flag;
+	}
+
 }
