@@ -1,5 +1,6 @@
 package com.koobym.dao.impl;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,28 +102,50 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 		for (Object object : data) {
 			row = (Map<String, Object>) object;
 			temp = new BookOwner();
+
 			temp.setBook_OwnerId((int) row.get("book_ownerId"));
-			temp.setBook(new Book());
-			temp.getBook().setBookId((int) row.get("bookId"));
-			Hibernate.initialize(temp.getBook());
-			temp.setUser(new User());
-			temp.getUser().setUserId((int) row.get("userId"));
-			Hibernate.initialize(temp.getUser());
-			temp.setStatusDescription((String) row.get("status_description"));
-			Date dateBought = (Date) row.get("dateBought");
-			if (dateBought != null) {
-				temp.setDateBought(format.format(new java.util.Date(dateBought.getTime())));
+			if (isCurrentlyAvailableForRent(temp.getBook_OwnerId())) {
+				temp.setBook(new Book());
+				temp.getBook().setBookId((int) row.get("bookId"));
+				Hibernate.initialize(temp.getBook());
+				temp.setUser(new User());
+				temp.getUser().setUserId((int) row.get("userId"));
+				Hibernate.initialize(temp.getUser());
+				temp.setStatusDescription((String) row.get("status_description"));
+				Date dateBought = (Date) row.get("dateBought");
+				if (dateBought != null) {
+					temp.setDateBought(format.format(new java.util.Date(dateBought.getTime())));
+				}
+				temp.setNoRenters((int) row.get("noRenters"));
+				temp.setStatus((String) row.get("status"));
+				Double rate = (Double) row.get("rate");
+				if (rate != null) {
+					temp.setRate(rate);
+				} else {
+					temp.setRate(0);
+				}
+				flag.add(temp);
 			}
-			temp.setNoRenters((int) row.get("noRenters"));
-			temp.setStatus((String) row.get("status"));
-			Double rate = (Double) row.get("rate");
-			if (rate != null) {
-				temp.setRate(rate);
-			} else {
-				temp.setRate(0);
-			}
-			flag.add(temp);
 		}
+		return flag;
+	}
+
+	private boolean isCurrentlyAvailableForRent(long bookOwnerId) {
+		boolean flag = false;
+
+		String sQuery = "select count(rentalHeaderId) from rental_header join rental_detail on "
+				+ "rental_header.rentalDetailId = rental_detail.rental_detailId where rental_detail.bookOwnerId = :bookOwnerId and "
+				+ "rental_header.status != 'Rejected' and rental_header.status != 'Complete' and rental_header.status != 'Request'";
+
+		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(sQuery);
+		sqlQuery.setLong("bookOwnerId", bookOwnerId);
+		Object obj = sqlQuery.uniqueResult();
+		BigInteger bigIntVal = (BigInteger) obj;
+
+		if (bigIntVal.intValue() == 0) {
+			flag = true;
+		}
+
 		return flag;
 	}
 
