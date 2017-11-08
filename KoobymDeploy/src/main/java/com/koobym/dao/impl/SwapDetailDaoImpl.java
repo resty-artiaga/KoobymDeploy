@@ -31,40 +31,35 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 		super(SwapDetail.class);
 	}
 
-	
-	/*String squery = "SELECT * FROM rental_detail JOIN book_owner ON rental_detail.bookOwnerId = book_owner.book_ownerId ORDER BY book_owner.noRenters DESC";
-	SQLQuery query = session.createSQLQuery(squery);
-	query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-	Map<String, Object> row = null;
-	List<Object> data = query.list();
-	RentalDetail temp;
-	for (Object object : data) {
-		row = (Map<String, Object>) object;
-		temp = new RentalDetail();
-		temp.setRental_detailId((int) row.get("rental_detailId"));
-		temp.setCalculatedPrice(new Double((float) row.get("calculatedPrice")));
-		temp.setDaysForRent((int) row.get("daysForRent"));
-		temp.setBookOwner(new BookOwner());
-		temp.getBookOwner().setBook_OwnerId((int) row.get("bookOwnerId"));
-		Hibernate.initialize(temp.getBookOwner());
-		flag.add(temp);
-	}
-	return flag;*/
-	
-	public SwapDetail getSwapDetail(long bookOwnerId) {
-		SwapDetail swapDetail = new SwapDetail ();
+	/*
+	 * String squery =
+	 * "SELECT * FROM rental_detail JOIN book_owner ON rental_detail.bookOwnerId = book_owner.book_ownerId ORDER BY book_owner.noRenters DESC"
+	 * ; SQLQuery query = session.createSQLQuery(squery);
+	 * query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP); Map<String,
+	 * Object> row = null; List<Object> data = query.list(); RentalDetail temp;
+	 * for (Object object : data) { row = (Map<String, Object>) object; temp =
+	 * new RentalDetail(); temp.setRental_detailId((int)
+	 * row.get("rental_detailId")); temp.setCalculatedPrice(new Double((float)
+	 * row.get("calculatedPrice"))); temp.setDaysForRent((int)
+	 * row.get("daysForRent")); temp.setBookOwner(new BookOwner());
+	 * temp.getBookOwner().setBook_OwnerId((int) row.get("bookOwnerId"));
+	 * Hibernate.initialize(temp.getBookOwner()); flag.add(temp); } return flag;
+	 */
 
-		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail .class);
+	public SwapDetail getSwapDetail(long bookOwnerId) {
+		SwapDetail swapDetail = new SwapDetail();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail.class);
 		criteria = criteria.createAlias("bookOwner", "bookOwner");
 		criteria = criteria.add(Restrictions.eq("bookOwner.book_ownerId", bookOwnerId));
-		swapDetail = (SwapDetail ) criteria.uniqueResult();
+		swapDetail = (SwapDetail) criteria.uniqueResult();
 
 		return swapDetail;
 	}
-	
+
 	public List<SwapDetail> getSwapById(int userId) {
 		List<SwapDetail> flag = new ArrayList<SwapDetail>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail.class);
 		criteria = criteria.createAlias("bookOwner", "bookOwner");
 		criteria = criteria.add(Restrictions.eq("bookOwner.user.userId", new Long(userId)));
@@ -72,33 +67,34 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
 	}
-	
+
 	public List<SwapDetail> getSwapPriceById(int userId, float price) {
 		List<SwapDetail> flag = new ArrayList<SwapDetail>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail.class);
 		criteria = criteria.createAlias("bookOwner", "bookOwner");
 		criteria = criteria.createAlias("bookOwner.user", "user");
 		criteria = criteria.createAlias("bookOwner.book", "book");
-		criteria = criteria.add(Restrictions.and(Restrictions.eq("user.userId", new Long(userId)), 
-				Restrictions.between("book.bookOriginalPrice", price - 100, price +100)));
+		criteria = criteria.add(Restrictions.and(Restrictions.eq("user.userId", new Long(userId)),
+				Restrictions.between("price", price - 100, price + 100)));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
 	}
-	
+
 	public List<SwapDetail> getAll() {
-List<SwapDetail> flag = new ArrayList<SwapDetail>();
-		
+		List<SwapDetail> flag = new ArrayList<SwapDetail>();
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail.class);
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
 	}
-	public List<SwapDetail> getMySwapBookById(int userId){
-		
+
+	public List<SwapDetail> getMySwapBookById(int userId) {
+
 		List<SwapDetail> flag = new ArrayList<SwapDetail>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.createAlias("swapDetail", "swapDetail");
 		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
@@ -107,31 +103,32 @@ List<SwapDetail> flag = new ArrayList<SwapDetail>();
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
-		
+
 	}
 
-//	public List<RentalDetail> getRentalById(int userId) {
-//		List<RentalDetail> flag = new ArrayList<RentalDetail>();
-//		Session session = getSessionFactory().getCurrentSession();
-//		String squery = "select * from rental_detail INNER JOIN book_owner on (select * from book_owner WHERE book_owner.userId = :userId)";
-//		SQLQuery query = session.createSQLQuery(squery);
-//		query.setInteger("userId", userId);
-//		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-//		Map<String, Object> row = null;
-//		List<Object> data = query.list();
-//		RentalDetail temp;
-//		for (Object object : data) {
-//			row = (Map<String, Object>) object;
-//			temp = new RentalDetail();
-//			temp.setRental_detailId((int) row.get("rental_detailId"));
-//			temp.setCalculatedPrice(new Double((float) row.get("calculatedPrice")));
-//			temp.setDaysForRent((int) row.get("daysForRent"));
-//			temp.setBookOwner(new BookOwner());
-//			temp.getBookOwner().setBook_OwnerId((int) row.get("bookOwnerId"));
-//			Hibernate.initialize(temp.getBookOwner());
-//			flag.add(temp);
-//		}
-//
-//		return flag;
-//	}
+	// public List<RentalDetail> getRentalById(int userId) {
+	// List<RentalDetail> flag = new ArrayList<RentalDetail>();
+	// Session session = getSessionFactory().getCurrentSession();
+	// String squery = "select * from rental_detail INNER JOIN book_owner on
+	// (select * from book_owner WHERE book_owner.userId = :userId)";
+	// SQLQuery query = session.createSQLQuery(squery);
+	// query.setInteger("userId", userId);
+	// query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+	// Map<String, Object> row = null;
+	// List<Object> data = query.list();
+	// RentalDetail temp;
+	// for (Object object : data) {
+	// row = (Map<String, Object>) object;
+	// temp = new RentalDetail();
+	// temp.setRental_detailId((int) row.get("rental_detailId"));
+	// temp.setCalculatedPrice(new Double((float) row.get("calculatedPrice")));
+	// temp.setDaysForRent((int) row.get("daysForRent"));
+	// temp.setBookOwner(new BookOwner());
+	// temp.getBookOwner().setBook_OwnerId((int) row.get("bookOwnerId"));
+	// Hibernate.initialize(temp.getBookOwner());
+	// flag.add(temp);
+	// }
+	//
+	// return flag;
+	// }
 }
