@@ -7,20 +7,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.koobym.dao.AuthorDao;
 import com.koobym.dao.BookOwnerDao;
-import com.koobym.dao.GenreDao;
 import com.koobym.dao.RentalDetailDao;
 import com.koobym.dao.UserDao;
-import com.koobym.model.Author;
-import com.koobym.model.Book;
-import com.koobym.model.Genre;
 import com.koobym.model.RentalDetail;
-import com.koobym.model.User;
-import com.koobym.service.AuthorService;
-import com.koobym.service.BookService;
 import com.koobym.service.RentalDetailService;
-import com.koobym.service.UserService;
 
 @Service
 @Transactional
@@ -69,10 +60,25 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 
 		return flag;
 	}
-	
+
 	@Override
-	public RentalDetail getRentalDetail(long bookOwnerId){
+	public RentalDetail getRentalDetail(long bookOwnerId) {
 		return rentalDetailDao.getRentalDetail(bookOwnerId);
+	}
+
+	public RentalDetail setBookOwnerAsRental(RentalDetail rentalDetail) {
+		RentalDetail rd = rentalDetailDao.getRentalDetail(rentalDetail.getBookOwner().getBook_OwnerId());
+		if (rd != null) {
+			rd.setCalculatedPrice(rentalDetail.getCalculatedPrice());
+			rd.setDaysForRent(rentalDetail.getDaysForRent());			
+			rentalDetailDao.update(rd);
+			rentalDetail.setRental_detailId(rd.getRental_detailId());
+		} else {
+			rentalDetailDao.save(rentalDetail);
+		}
+
+		return rentalDetail;
+
 	}
 
 }

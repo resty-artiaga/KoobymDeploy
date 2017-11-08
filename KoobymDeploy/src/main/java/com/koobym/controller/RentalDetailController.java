@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koobym.model.RentalDetail;
-import com.koobym.model.RentalHeader;
-import com.koobym.model.SwapDetail;
-import com.koobym.model.User;
 import com.koobym.service.RentalDetailService;
 
 @RestController
@@ -40,7 +37,19 @@ public class RentalDetailController {
 		}
 		return ent;
 	}
-	
+
+	@RequestMapping(value = "/setBookOwnerAsRental", method = RequestMethod.POST)
+	public ResponseEntity<RentalDetail> setBookOwnerAsRental(@RequestBody RentalDetail rentalDetail) {
+		ResponseEntity<RentalDetail> ent = null;
+		rentalDetailService.setBookOwnerAsRental(rentalDetail);
+		if (rentalDetail == null) {
+			ent = ResponseEntity.badRequest().body(null);
+		} else {
+			ent = ResponseEntity.ok(rentalDetail);
+		}
+		return ent;
+	}
+
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public ResponseEntity<RentalDetail> getRoles(@PathVariable("id") int id) {
 		ResponseEntity<RentalDetail> flag = ResponseEntity.ok(rentalDetailService.get(new Long(id)));

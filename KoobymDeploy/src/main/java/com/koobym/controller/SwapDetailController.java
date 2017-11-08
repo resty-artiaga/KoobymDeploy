@@ -2,7 +2,6 @@ package com.koobym.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.koobym.model.RentalDetail;
-import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapDetail;
-import com.koobym.model.User;
 import com.koobym.service.SwapDetailService;
 
 @RestController
@@ -29,17 +25,29 @@ public class SwapDetailController {
 		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.list());
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/swapDetailById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapDetail>> getRentalId(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getSwapById(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public ResponseEntity<SwapDetail> add(@RequestBody SwapDetail swapDetail) {
 		ResponseEntity<SwapDetail> ent = null;
 		swapDetailService.save(swapDetail);
+		if (swapDetail == null) {
+			ent = ResponseEntity.badRequest().body(null);
+		} else {
+			ent = ResponseEntity.ok(swapDetail);
+		}
+		return ent;
+	}
+
+	@RequestMapping(value = "/setBookOwnerAsSwap", method = RequestMethod.POST)
+	public ResponseEntity<SwapDetail> setBookOwnerAsSwap(@RequestBody SwapDetail swapDetail) {
+		ResponseEntity<SwapDetail> ent = null;
+		swapDetailService.setBookOwnerAsSwap(swapDetail);
 		if (swapDetail == null) {
 			ent = ResponseEntity.badRequest().body(null);
 		} else {
@@ -60,7 +68,6 @@ public class SwapDetailController {
 		return ent;
 	}
 
-
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public ResponseEntity<SwapDetail> getRolesId(@PathVariable("id") int id) {
 		ResponseEntity<SwapDetail> flag = ResponseEntity.ok(swapDetailService.get(new Long(id)));
@@ -73,25 +80,26 @@ public class SwapDetailController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/mySwapBooks/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapDetail>> getSwapById(@PathVariable("userId") int userId) {
 		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getSwapById(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/mySwapBooksPrice/{userId}/{price}", method = RequestMethod.GET)
-	public ResponseEntity<List<SwapDetail>> getSwapPriceById(@PathVariable("userId") int userId, @PathVariable("price") float price) {
+	public ResponseEntity<List<SwapDetail>> getSwapPriceById(@PathVariable("userId") int userId,
+			@PathVariable("price") float price) {
 		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getSwapPriceById(userId, price));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/getAllSwap", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapDetail>> getAll() {
 		ResponseEntity<List<SwapDetail>> flag = ResponseEntity.ok(swapDetailService.getAll());
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/getSwapDetail/{bookOwnerId}", method = RequestMethod.GET)
 	public ResponseEntity<SwapDetail> getSwapDetail(@PathVariable("bookOwnerId") long bookOwnerId) {
 		ResponseEntity<SwapDetail> flag = ResponseEntity.ok(swapDetailService.getSwapDetail(bookOwnerId));

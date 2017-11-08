@@ -26,7 +26,7 @@ public class RentalDetail {
 	@Column(name = "calculatedPrice", nullable = false)
 	private Double calculatedPrice;
 		
-	@ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="bookOwnerId")
 	private BookOwner bookOwner;
 	
