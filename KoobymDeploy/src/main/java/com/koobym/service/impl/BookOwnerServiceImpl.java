@@ -20,6 +20,7 @@ import com.koobym.dto.Transaction;
 import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
+import com.koobym.service.BookOwnerRatingService;
 import com.koobym.service.BookOwnerService;
 
 @Service
@@ -31,6 +32,9 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 	private UserDao userDao;
 	private RentalHeaderDao rentalHeaderDao;
 	private SwapHeaderDao swapHeaderDao;
+
+	@Autowired
+	private BookOwnerRatingService bookOwnerRatingService;
 
 	@Autowired
 	public BookOwnerServiceImpl(BookOwnerDao bookOwnerDao, RentalHeaderDao rentalHeaderDao, SwapHeaderDao swapHeaderDao,
@@ -54,7 +58,11 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 
 	@Override
 	public List<BookOwner> getMyBooksById(int userId) {
-		return bookOwnerDao.getMyBooksById(userId);
+		List<BookOwner> flag = bookOwnerDao.getMyBooksById(userId);
+		for (BookOwner bo : flag) {
+			bo.setRate(bookOwnerRatingService.averageRatingOfBookOwner(bo.getBook_ownerId()));
+		}
+		return flag;
 	}
 
 	@Override

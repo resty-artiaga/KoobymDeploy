@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.SwapHeaderDao;
+import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
 
 @Repository
@@ -250,7 +251,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
 	}
-	
+
 	public List<SwapHeader> getOngoingSwapRequestsByUser(long userId) {
 		List<SwapHeader> flag = null;
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
@@ -260,5 +261,16 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
+	}
+
+	public void rejectAllOtherRequests(SwapHeader swapHeader) {
+
+		String sQuery = "update swap_header set Status = 'Rejected' where "
+				+ "swap_header.swap_detailId = :swapDetailId and swap_header.swapHeaderId != :swapHeaderId";
+
+		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(sQuery);
+		query.setLong("swapDetailId", swapHeader.getSwapDetail().getSwapDetailId());
+		query.setLong("swapHeaderId", swapHeader.getSwapHeaderId());
+		query.executeUpdate();
 	}
 }

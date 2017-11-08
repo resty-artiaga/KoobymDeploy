@@ -6,6 +6,8 @@ import com.koobym.model.RentalHeader;
 
 public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 
+	public void rejectAllOtherRequests(RentalHeader rentalHeader);
+
 	public List<RentalHeader> getOngoingRequestsByUser(int userId);
 
 	public List<RentalHeader> getOngoingByOwner(int userId);

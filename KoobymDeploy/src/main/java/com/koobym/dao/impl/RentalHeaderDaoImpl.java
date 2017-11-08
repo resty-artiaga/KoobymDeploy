@@ -342,7 +342,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
 	}
-	
+
 	public List<RentalHeader> getOngoingRequestsByUser(int userId) {
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 
@@ -353,6 +353,17 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
+	}
+
+	public void rejectAllOtherRequests(RentalHeader rentalHeader) {
+
+		String sQuery = "update rental_header set Status = 'Rejected' where "
+				+ "rental_header.rentalDetailId = :rentalDetailId and rental_header.rentalHeaderId != :rentalHeaderId";
+
+		SQLQuery query = getSessionFactory().getCurrentSession().createSQLQuery(sQuery);
+		query.setLong("rentalDetailId", rentalHeader.getRentalDetail().getRental_detailId());
+		query.setLong("rentalHeaderId", rentalHeader.getRentalHeaderId());
+		query.executeUpdate();
 	}
 
 }

@@ -6,6 +6,8 @@ import com.koobym.model.SwapHeader;
 
 public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 
+	public void rejectAllOtherRequests(SwapHeader swapHeader);
+
 	public List<SwapHeader> getOngoingSwapRequestsByUser(long userId);
 
 	public List<SwapHeader> getListSwapHeaderByBookOwnerId(long bookOwnerId);

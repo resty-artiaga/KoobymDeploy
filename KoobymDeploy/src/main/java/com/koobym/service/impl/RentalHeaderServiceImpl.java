@@ -117,6 +117,7 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			userNotif.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
 
+			rentalHeaderDao.rejectAllOtherRequests(rentalHeader);
 			pusherServer.sendNotification(userNotif);
 		}
 
@@ -133,7 +134,7 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 			pusherServer.sendNotification(userNotif);
 		}
 
-		if("Confirm".equals(status)){
+		if ("Confirm".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUser(rentalHeader.getRentalDetail().getBookOwner().getUser());
 			userNotif.setActionId(rentalHeader.getRentalHeaderId());

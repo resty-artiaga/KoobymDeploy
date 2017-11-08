@@ -22,7 +22,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	private SwapHeaderDao swapHeaderDao;
 	private LocationDao locationDao;
 	private UserNotificationDao userNotificationDao;
-	
+
 	@Autowired
 	private PusherServer pusherServer;
 
@@ -48,20 +48,20 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	@Override
 	public SwapHeader setApprovedExam(String status, long swapHeaderId, String date) {
 		SwapHeader swapHeader = get(swapHeaderId);
-	
-//		if ("Request".equals(status)||"request".equals(status)) {
-//			UserNotification userNotif = new UserNotification();
-//			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
-//			userNotif.setActionId(swapHeader.getSwapHeaderId());
-//			userNotif.setActionName("swap");
-//			userNotif.setActionStatus(status);
-//			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
-//			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
-//			userNotificationDao.save(userNotif);
-//
-//			pusherServer.sendNotification(userNotif);
-//		}
-//
+
+		// if ("Request".equals(status)||"request".equals(status)) {
+		// UserNotification userNotif = new UserNotification();
+		// userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
+		// userNotif.setActionId(swapHeader.getSwapHeaderId());
+		// userNotif.setActionName("swap");
+		// userNotif.setActionStatus(status);
+		// userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
+		// userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+		// userNotificationDao.save(userNotif);
+		//
+		// pusherServer.sendNotification(userNotif);
+		// }
+		//
 		if ("Approved".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
@@ -72,6 +72,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			userNotif.setBookActionPerformedOn(swapHeader.getRequestedSwapDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
 
+			swapHeaderDao.rejectAllOtherRequests(swapHeader);
 			pusherServer.sendNotification(userNotif);
 		}
 
@@ -88,7 +89,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			pusherServer.sendNotification(userNotif);
 		}
 
-		if("Confirm".equals(status)){
+		if ("Confirm".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
 			userNotif.setActionId(swapHeader.getSwapHeaderId());
@@ -115,9 +116,9 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 		userNotif.setUserPerformer(swapHeader.getUser());
 		userNotif.setBookActionPerformedOn(swapHeader.getRequestedSwapDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
-		
+
 		pusherServer.sendNotification(userNotif);
-		
+
 		return swapHeader;
 	}
 
