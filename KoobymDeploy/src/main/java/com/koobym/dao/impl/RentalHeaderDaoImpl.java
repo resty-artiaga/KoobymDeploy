@@ -326,6 +326,16 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
 	}
+	
+	public List<RentalHeader> getToDeliverToday() {
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.add(Restrictions.ge("dateDeliver", new Date()));
+		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+		return flag;
+	}
 
 	public List<RentalHeader> getOngoingByOwner(int userId) {
 

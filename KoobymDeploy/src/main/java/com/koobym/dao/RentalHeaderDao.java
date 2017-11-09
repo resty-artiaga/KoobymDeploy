@@ -5,6 +5,8 @@ import java.util.List;
 import com.koobym.model.RentalHeader;
 
 public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
+	
+	public List<RentalHeader> getToDeliverToday();
 
 	public void rejectAllOtherRequests(RentalHeader rentalHeader);
 

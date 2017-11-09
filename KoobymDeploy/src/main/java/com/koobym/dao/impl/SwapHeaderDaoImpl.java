@@ -187,7 +187,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 			squery = "update swap_header set status = :status , dateConfirmed = :date where swapHeaderId = :swapHeaderId";
 		} else if (status.equals("Rejected")) {
 			squery = "update swap_header set status = :status , dateRejected = :date where swapHeaderId = :swapHeaderId";
-		}
+		} 
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setString("status", status);

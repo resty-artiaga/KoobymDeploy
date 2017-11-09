@@ -108,13 +108,14 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	@Override
 	public SwapHeader addNewSwapHeader(SwapHeader swapHeader) {
 		swapHeaderDao.save(swapHeader);
+
 		UserNotification userNotif = new UserNotification();
-		userNotif.setUser(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
+		userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
 		userNotif.setActionId(swapHeader.getSwapHeaderId());
 		userNotif.setActionName("swap");
 		userNotif.setActionStatus("Request");
 		userNotif.setUserPerformer(swapHeader.getUser());
-		userNotif.setBookActionPerformedOn(swapHeader.getRequestedSwapDetail().getBookOwner());
+		userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
 		userNotificationDao.save(userNotif);
 
 		pusherServer.sendNotification(userNotif);

@@ -60,4 +60,37 @@ public class TaskScheduler {
 			pusherServer.sendNotification(un);
 		}
 	}
+
+	@Transactional
+	@Scheduled(fixedRate = 1500000)
+	public void checkToDeliver() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		List<RentalHeader> rentalHeadersWithElapsedEndDates = rentalHeaderDao.getToDeliverToday();
+		UserNotification un;
+		for (RentalHeader rh : rentalHeadersWithElapsedEndDates) {
+			rentalHeaderDao.setApprovedExam(rh.getRentalHeaderId(), "Due", format.format(new Date()));
+			un = new UserNotification();
+
+			un.setActionId(rh.getRentalHeaderId());
+			un.setActionName("rental");
+			un.setActionStatus("To receive");
+			un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+			un.setUser(rh.getUserId());
+			un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
+
+			userNotificationDao.save(un);
+			pusherServer.sendNotification(un);
+
+			un = new UserNotification();
+			un.setActionId(rh.getRentalHeaderId());
+			un.setActionName("rental");
+			un.setActionStatus("To deliver");
+			un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+			un.setUser(rh.getRentalDetail().getBookOwner().getUser());
+			un.setUserPerformer(rh.getUserId());
+
+			userNotificationDao.save(un);
+			pusherServer.sendNotification(un);
+		}
+	}
 }
