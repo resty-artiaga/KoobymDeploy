@@ -96,6 +96,12 @@ public class BookOwnerController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/searchBooks/{searchKey}", method = RequestMethod.GET)
+	public ResponseEntity<List<BookOwner>> searchBooks(@PathVariable("searchKey") String searchKey) {
+		ResponseEntity<List<BookOwner>> flag = ResponseEntity.ok(bookOwnerService.searchBookOwner(searchKey));
+		return flag;
+	}
+
 	@RequestMapping(value = "/bookActivity/own/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<Set<BookActivityObject>> getBookActivityOwn(@PathVariable("userId") int userId) {
 		ResponseEntity<Set<BookActivityObject>> flag = ResponseEntity

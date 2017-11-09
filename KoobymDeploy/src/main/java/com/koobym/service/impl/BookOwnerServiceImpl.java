@@ -105,11 +105,15 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 
 	public List<BookOwner> getSuggestedBooks(int userId) {
 		List<BookOwner> flags = bookOwnerDao.suggestedBooks(userId);
+		List<BookOwner> toReturn = new ArrayList<BookOwner>();
 		for (BookOwner flag : flags) {
-			flag.setBook(bookDao.get(flag.getBook().getBookId()));
-			flag.setUser(userDao.get(flag.getUser().getUserId()));
+			if (flag.getStatus() != null && !"none".equals(flag.getStatus())) {
+				flag.setBook(bookDao.get(flag.getBook().getBookId()));
+				flag.setUser(userDao.get(flag.getUser().getUserId()));
+				toReturn.add(flag);
+			}
 		}
-		return flags;
+		return toReturn;
 	}
 
 	public Set<BookActivityObject> getUserOwnBookActivities(int userId) {
@@ -176,5 +180,18 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 		}
 
 		return bookActivityObjects;
+	}
+
+	public List<BookOwner> searchBookOwner(String searchKey) {
+		List<BookOwner> searchResult = bookOwnerDao.searchBookOwner(searchKey);
+		List<BookOwner> toReturn = new ArrayList<BookOwner>();
+		for (BookOwner bo : searchResult) {
+			if (bo.getStatus() != null && !"none".equals(bo.getStatus())
+					&& bookOwnerDao.isCurrentlyAvailableForRent(bo.getBook_OwnerId())) {
+				bo.setRate(bookOwnerRatingService.averageRatingOfBookOwner(bo.getBook_OwnerId()));
+				toReturn.add(bo);
+			}
+		}
+		return toReturn;
 	}
 }

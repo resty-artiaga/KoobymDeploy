@@ -8,6 +8,7 @@ import com.koobym.dto.Transaction;
 import com.koobym.model.BookOwner;
 
 public interface BookOwnerService extends BaseService<BookOwner, Long> {
+	public List<BookOwner> searchBookOwner(String searchKey);
 
 	public Set<BookActivityObject> getUserRequestsBookActivities(int userId);
 

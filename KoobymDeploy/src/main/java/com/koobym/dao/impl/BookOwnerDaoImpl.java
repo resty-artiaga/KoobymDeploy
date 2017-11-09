@@ -130,7 +130,7 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 		return flag;
 	}
 
-	private boolean isCurrentlyAvailableForRent(long bookOwnerId) {
+	public boolean isCurrentlyAvailableForRent(long bookOwnerId) {
 		boolean flag = false;
 
 		String sQuery = "select count(rentalHeaderId) from rental_header join rental_detail on "
@@ -146,6 +146,18 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 			flag = true;
 		}
 
+		return flag;
+	}
+
+	public List<BookOwner> searchBookOwner(String searchKey) {
+		List<BookOwner> flag = new ArrayList<BookOwner>();
+		searchKey = "%" + searchKey + "%";
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(BookOwner.class);
+		criteria = criteria.createAlias("book", "book");
+		criteria = criteria.add(Restrictions.like("book.bookTitle", searchKey));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<BookOwner>) criteria.list();
 		return flag;
 	}
 
