@@ -125,7 +125,17 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
 
+			UserNotification userNotif1 = new UserNotification();
+			userNotif.setUser(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("swap");
+			userNotif.setActionStatus(status);
+			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getRequestedSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+			
 			pusherServer.sendNotification(userNotif);
+			pusherServer.sendNotification(userNotif1);
 		}
 		return swapHeaderDao.setApprovedExam(status, swapHeaderId, date);
 
