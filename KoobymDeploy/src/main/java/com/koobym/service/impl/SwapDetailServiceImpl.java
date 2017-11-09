@@ -1,5 +1,6 @@
 package com.koobym.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,16 @@ public class SwapDetailServiceImpl extends BaseServiceImpl<SwapDetail, Long> imp
 
 	@Override
 	public List<SwapDetail> getSwapPriceById(int userId, float price) {
-		return swapDetailDao.getSwapPriceById(userId, price);
+		List<SwapDetail> flag = swapDetailDao.getSwapPriceById(userId, price);
+		List<SwapDetail> toReturn = new ArrayList<SwapDetail>();
+
+		for (SwapDetail sd : flag) {
+			if ("Swap".equals(sd.getBookOwner().getStatus())) {
+				toReturn.add(sd);
+			}
+		}
+
+		return toReturn;
 	}
 
 	@Override

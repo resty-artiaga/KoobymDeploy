@@ -64,11 +64,12 @@ public class TaskScheduler {
 	@Transactional
 	@Scheduled(fixedRate = 1500000)
 	public void checkToDeliver() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		/*SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 		List<RentalHeader> rentalHeadersWithElapsedEndDates = rentalHeaderDao.getToDeliverToday();
 		UserNotification un;
 		for (RentalHeader rh : rentalHeadersWithElapsedEndDates) {
 			rentalHeaderDao.setApprovedExam(rh.getRentalHeaderId(), "Due", format.format(new Date()));
+			
 			un = new UserNotification();
 
 			un.setActionId(rh.getRentalHeaderId());
@@ -91,6 +92,6 @@ public class TaskScheduler {
 
 			userNotificationDao.save(un);
 			pusherServer.sendNotification(un);
-		}
+		}*/
 	}
 }
