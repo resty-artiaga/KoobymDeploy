@@ -101,6 +101,32 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 			pusherServer.sendNotification(userNotif);
 		}
+		
+		if ("ToReceive".equals(status)) {
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUser(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("swap");
+			userNotif.setActionStatus(status);
+			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
+		
+		if ("Complete".equals(status)) {
+			UserNotification userNotif = new UserNotification();
+			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
+			userNotif.setActionId(swapHeader.getSwapHeaderId());
+			userNotif.setActionName("swap");
+			userNotif.setActionStatus(status);
+			userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
+			userNotif.setBookActionPerformedOn(swapHeader.getSwapDetail().getBookOwner());
+			userNotificationDao.save(userNotif);
+
+			pusherServer.sendNotification(userNotif);
+		}
 		return swapHeaderDao.setApprovedExam(status, swapHeaderId, date);
 
 	}

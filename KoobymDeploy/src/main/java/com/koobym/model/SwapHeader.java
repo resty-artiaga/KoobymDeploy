@@ -51,6 +51,9 @@ public class SwapHeader {
 	@Column(name="dateReceived")
 	private String dateReceived;
 	
+	@Column(name="dateDelivered")
+	private String dateDelivered;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userDayTimeId")
 	private UserDayTime userDayTime; 
