@@ -12,6 +12,7 @@ import com.koobym.dao.BookOwnerDao;
 import com.koobym.dao.AuctionDetailDao;
 import com.koobym.dao.UserDao;
 import com.koobym.model.AuctionDetail;
+import com.koobym.model.RentalDetail;
 import com.koobym.service.AuctionDetailService;
 
 @Service
@@ -40,5 +41,25 @@ public class AuctionDetailServiceImpl extends BaseServiceImpl<AuctionDetail, Lon
 	@Override
 	public AuctionDetail getAuctionDetail(long bookOwnerId) {
 		return auctionDetailDao.getAuctionDetail(bookOwnerId);
+	}
+	
+	@Override
+	public AuctionDetail setBookOwnerAsAuction(AuctionDetail auctionDetail) {
+		AuctionDetail ad = auctionDetailDao.getAuctionDetail(auctionDetail.getBookOwner().getBook_OwnerId());
+		if (ad != null) {
+			ad.setStartingPrice(auctionDetail.getStartingPrice());
+			ad.setAuctionDescription(auctionDetail.getAuctionDescription());
+			ad.setBookOwner(auctionDetail.getBookOwner());
+			ad.setEndDate(auctionDetail.getEndDate());
+			ad.setStartDate(auctionDetail.getStartDate());
+			ad.setUser(auctionDetail.getUser());
+			auctionDetailDao.update(ad);
+			auctionDetail.setAuctionDetailId(ad.getAuctionDetailId());
+		} else {
+			auctionDetailDao.save(auctionDetail);
+		}
+
+		return auctionDetail;
+
 	}
 }

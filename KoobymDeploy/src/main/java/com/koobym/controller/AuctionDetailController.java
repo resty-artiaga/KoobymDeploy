@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koobym.model.AuctionDetail;
+import com.koobym.model.RentalDetail;
 import com.koobym.service.AuctionDetailService;
 
 @RestController
@@ -56,5 +57,17 @@ public class AuctionDetailController {
 	public ResponseEntity<AuctionDetail> getAuctionDetail(@PathVariable("bookOwnerId") long bookOwnerId) {
 		ResponseEntity<AuctionDetail> flag = ResponseEntity.ok(auctionDetailService.getAuctionDetail(bookOwnerId));
 		return flag;
+	}
+	
+	@RequestMapping(value = "/setBookOwnerAsAuction", method = RequestMethod.POST)
+	public ResponseEntity<AuctionDetail> setBookOwnerAsAuction(@RequestBody AuctionDetail auctionDetail) {
+		ResponseEntity<AuctionDetail> ent = null;
+		auctionDetailService.setBookOwnerAsAuction(auctionDetail);
+		if (auctionDetail == null) {
+			ent = ResponseEntity.badRequest().body(null);
+		} else {
+			ent = ResponseEntity.ok(auctionDetail);
+		}
+		return ent;
 	}
 }
