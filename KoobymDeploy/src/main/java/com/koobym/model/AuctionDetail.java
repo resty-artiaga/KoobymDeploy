@@ -20,10 +20,6 @@ public class AuctionDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long auctionDetailId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Column(name = "userId")
-	private User user;
-
 	@Column(name = "startingPrice")
 	private float startingPrice;
 		
@@ -46,14 +42,6 @@ public class AuctionDetail {
 	
 	public void setAuctionDetailId(long auctionDetailId){
 		this.auctionDetailId=auctionDetailId;
-	}
-	
-	public User getUser(){
-		return this.user;
-	}
-	
-	public void setUser(User user){
-		this.user = user;
 	}
 	
 	public float getStartingPrice(){
