@@ -20,6 +20,7 @@ public class AuctionDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long auctionDetailId;
 
+	@ManyToOne(fetch = FetchType.EAGER)
 	@Column(name = "userId")
 	private User user;
 
