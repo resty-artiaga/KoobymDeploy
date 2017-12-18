@@ -65,7 +65,7 @@ public class AuctionCommentDetailController {
 		return flag;
 	}
 
-	@RequestMapping(value = "/getSwapCommentDetailsOfSwapDetail/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAuctionCommentDetailsOfAuctionDetail/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionCommentDetail>> deleteUser(@PathVariable("id") long id) {
 		ResponseEntity<List<AuctionCommentDetail>> flag = ResponseEntity
 				.ok(auctionCommentDetailService.getAuctionCommentDetailOfAuctionDetail(id));
