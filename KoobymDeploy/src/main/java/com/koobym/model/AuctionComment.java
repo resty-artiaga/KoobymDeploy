@@ -27,7 +27,7 @@ public class AuctionComment {
 	private long auctionCommentId;
 
 	@Column(name = "auctionComment")
-	private String auctionComment;
+	private double auctionComment;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userId")
@@ -42,11 +42,11 @@ public class AuctionComment {
 		return auctionCommentId;
 	}
 	
-	public void setAuctionComment(String auctionComment) {
+	public void setAuctionComment(double auctionComment) {
 		this.auctionComment = auctionComment;
 	}
 	
-	public String getAuctionComment() {
+	public double getAuctionComment() {
 		return auctionComment;
 	}
 	

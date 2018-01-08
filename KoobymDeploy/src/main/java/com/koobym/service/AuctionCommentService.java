@@ -4,4 +4,5 @@ import com.koobym.model.AuctionComment;
 
 public interface AuctionCommentService extends BaseService<AuctionComment, Long> {
 
+	public AuctionComment getMaximumBid(int auctionDetailId);
 }

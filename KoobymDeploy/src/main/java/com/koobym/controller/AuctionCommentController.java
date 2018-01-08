@@ -65,5 +65,12 @@ public class AuctionCommentController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getMaximumBid/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<AuctionComment> getMaximumBid(@PathVariable("id") int id) {
+		auctionCommentService.getMaximumBid(id);
+		ResponseEntity<AuctionComment> flag = ResponseEntity.ok(auctionCommentService.getMaximumBid(id));
+		return flag;
+	}
 
 }

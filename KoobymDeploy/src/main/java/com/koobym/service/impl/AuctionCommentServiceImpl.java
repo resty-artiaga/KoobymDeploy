@@ -23,5 +23,9 @@ public class AuctionCommentServiceImpl extends BaseServiceImpl<AuctionComment, L
 		super(auctionCommentDao);
 		this.auctionCommentDao = auctionCommentDao;
 	}
+	
+	public AuctionComment getMaximumBid(int auctionDetailId){
+		return auctionCommentDao.getMaximumBid(auctionDetailId);
+	}
 
 }
