@@ -10,6 +10,6 @@ public interface AuctionDetailService extends BaseService<AuctionDetail, Long> {
 	public AuctionDetail setBookOwnerAsAuction(AuctionDetail auctionDetail);
 	
 	public List<AuctionDetail> getAuctionById(int userId);
-
+	public List<AuctionDetail> getAuctionEndDate();
 	public AuctionDetail getAuctionDetail(long bookOwnerId);
 }

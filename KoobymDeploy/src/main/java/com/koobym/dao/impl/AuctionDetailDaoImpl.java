@@ -1,7 +1,7 @@
 package com.koobym.dao.impl;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.AuctionDetailDao;
 import com.koobym.model.BookOwner;
+import com.koobym.model.RentalHeader;
 import com.koobym.model.AuctionDetail;
 
 @Repository
@@ -130,6 +131,15 @@ public class AuctionDetailDaoImpl extends BaseDaoImpl<AuctionDetail, Long> imple
 		auctionDetail = (AuctionDetail) criteria.uniqueResult();
 
 		return auctionDetail;
+	}
+	
+	public List<AuctionDetail> getAuctionEndDate(){
+		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
+		criteria = criteria.add(Restrictions.ge("endDate", new Date()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionDetail>) criteria.list();
+		return flag;
 	}
 
 //	public void updateAuctionD(RentalDetail t) {

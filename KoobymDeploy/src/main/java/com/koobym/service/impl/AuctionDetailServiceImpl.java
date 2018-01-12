@@ -61,4 +61,9 @@ public class AuctionDetailServiceImpl extends BaseServiceImpl<AuctionDetail, Lon
 		return auctionDetail;
 
 	}
+	
+	public List<AuctionDetail> getAuctionEndDate(){
+		return auctionDetailDao.getAuctionEndDate();
+	}
+	
 }

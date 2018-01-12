@@ -10,8 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.koobym.dao.AuctionCommentDao;
+import com.koobym.dao.AuctionDetailDao;
+import com.koobym.dao.AuctionHeaderDao;
 import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.UserNotificationDao;
+import com.koobym.model.AuctionComment;
+import com.koobym.model.AuctionDetail;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
@@ -22,6 +27,12 @@ public class TaskScheduler {
 	@Autowired
 	private RentalHeaderDao rentalHeaderDao;
 
+	@Autowired
+	private AuctionCommentDao auctionCommentDao;
+	
+	@Autowired
+	private AuctionDetailDao auctionDetailDao;
+	
 	@Autowired
 	private UserNotificationDao userNotificationDao;
 
@@ -61,6 +72,29 @@ public class TaskScheduler {
 		}
 	}
 
+	@Transactional
+	@Scheduled(fixedRate = 1500000)
+	public void checkAuctionEndDate() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		List<AuctionDetail> auctionDetailEndDates = auctionDetailDao.getAuctionEndDate();
+		UserNotification un;
+		for (AuctionDetail rh : auctionDetailEndDates) {
+			un = new UserNotification();
+
+			un.setActionId(rh.getAuctionDetailId());
+			un.setActionName("auction");
+			un.setActionStatus("Stop");
+			un.setBookActionPerformedOn(rh.getBookOwner());
+			AuctionComment modelComment = auctionCommentDao.getMaximumBid((int) rh.getAuctionDetailId());
+			un.setUserPerformer(modelComment.getUser());
+			un.setUser(rh.getBookOwner().getUser());
+			
+			
+			userNotificationDao.save(un);
+			pusherServer.sendNotification(un);
+		}
+	}
+	
 	@Transactional
 	@Scheduled(fixedRate = 1500000)
 	public void checkToDeliver() {
