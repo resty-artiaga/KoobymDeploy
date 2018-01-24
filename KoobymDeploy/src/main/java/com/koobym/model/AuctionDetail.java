@@ -33,8 +33,19 @@ public class AuctionDetail {
 	@Column(name = "startDate")
 	private String startDate;
 	
+	@Column(name = "auctionStatus")
+	private String auctionStatus;
+	
 	@Column(name = "auctionDescription")
 	private String auctionDescription;
+
+	public String getAuctionStatus(){
+		return this.auctionStatus;
+	}
+	
+	public void setAuctionStatus(String auctionStatus){
+		this.auctionStatus=auctionStatus;
+	}
 	
 	public long getAuctionDetailId(){
 		return this.auctionDetailId;
