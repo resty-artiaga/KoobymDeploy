@@ -75,8 +75,10 @@ public class TaskScheduler {
 	@Transactional
 	@Scheduled(fixedRate = 1500000)
 	public void checkAuctionEndDate() {
+		System.out.println("nagdagan");
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 		List<AuctionDetail> auctionDetailEndDates = auctionDetailDao.getAuctionEndDate();
+		System.out.println("kuan = " + auctionDetailEndDates.size());
 		UserNotification un;
 		for (AuctionDetail rh : auctionDetailEndDates) {
 			un = new UserNotification();
@@ -88,7 +90,6 @@ public class TaskScheduler {
 			AuctionComment modelComment = auctionCommentDao.getMaximumBid((int) rh.getAuctionDetailId());
 			un.setUserPerformer(modelComment.getUser());
 			un.setUser(rh.getBookOwner().getUser());
-			
 			
 			userNotificationDao.save(un);
 			pusherServer.sendNotification(un);
