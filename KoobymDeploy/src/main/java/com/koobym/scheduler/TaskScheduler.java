@@ -1,5 +1,7 @@
 package com.koobym.scheduler;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -93,6 +95,46 @@ public class TaskScheduler {
 			
 			userNotificationDao.save(un);
 			pusherServer.sendNotification(un);
+		}
+	}
+
+	@Transactional
+	@Scheduled(fixedRate=1000000)
+	public void changeAuctionStatus() throws ParseException{
+
+		boolean seenDate = false, seenTime=false;
+		
+		System.out.println("agi siya nganhi");
+		
+		Date date = new Date();
+		String stdDateFormat = "hh:mm a";
+		DateFormat dateFormat = new SimpleDateFormat(stdDateFormat);
+		String formattedData = dateFormat.format(date);
+		System.out.println("ang time kay : "+formattedData);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+		Date dateDate = new Date();
+		String formattedDate = formatter.format(dateDate);
+		System.out.println("ang date kay : "+formattedDate);
+		
+		List<AuctionDetail> auctionDetailStartDates = auctionDetailDao.getAuctionStartDate();
+		System.out.println("size niya = " + auctionDetailStartDates.size());		
+		
+		for(AuctionDetail ad : auctionDetailStartDates){
+			
+			Date theDate = formatter.parse(ad.getEndDate());
+			
+			System.out.println("mao ni ang date : "+ad.getStartDate());
+			
+			if(ad.getStartDate().equals(formattedDate)){
+				if(ad.getStartTime().equals(formattedData)){
+					ad.setAuctionStatus("start");
+				}
+			}else if(theDate.before(dateDate)){
+				System.out.println("magicDate : "+ad.getStartDate());
+				ad.setAuctionStatus("stop");
+			}
+			
 		}
 	}
 	

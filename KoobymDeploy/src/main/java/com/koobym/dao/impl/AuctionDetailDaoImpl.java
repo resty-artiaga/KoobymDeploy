@@ -136,12 +136,38 @@ public class AuctionDetailDaoImpl extends BaseDaoImpl<AuctionDetail, Long> imple
 	public List<AuctionDetail> getAuctionEndDate(){
 		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
-		criteria = criteria.add(Restrictions.ge("endDate", new Date()));
+//		criteria = criteria.add(Restrictions.ge("endDate", new Date()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionDetail>) criteria.list();
+		return flag;
+	}
+	
+	public List<AuctionDetail> getAuctionStartDate(){
+		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
+//		criteria = criteria.add(Restrictions.ge("startDate", new Date()));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<AuctionDetail>) criteria.list();
 		return flag;
 	}
 
+	public List<AuctionDetail> getAuctionStartTime(){
+		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
+		criteria = criteria.add(Restrictions.ge("startTime", new String()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionDetail>) criteria.list();
+		return flag;
+	}
+	
+	public List<AuctionDetail> getAuctionEndTime(){
+		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
+		criteria = criteria.add(Restrictions.ge("endTime", new String()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionDetail>) criteria.list();
+		return flag;
+	}
 //	public void updateAuctionD(RentalDetail t) {
 //		getSessionFactory().getCurrentSession().flush();
 //		getSessionFactory().getCurrentSession().update(t);

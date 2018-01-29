@@ -12,4 +12,10 @@ public interface AuctionDetailDao extends BaseDao<AuctionDetail, Long> {
 	public AuctionDetail getAuctionDetail(long bookOwnerId);
 	
 	public List<AuctionDetail> getAuctionEndDate();
+	
+	public List<AuctionDetail> getAuctionStartDate();
+
+	public List<AuctionDetail> getAuctionStartTime();
+	
+	public List<AuctionDetail> getAuctionEndTime();
 }
