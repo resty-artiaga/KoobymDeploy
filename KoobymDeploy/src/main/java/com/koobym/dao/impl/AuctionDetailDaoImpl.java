@@ -122,6 +122,15 @@ public class AuctionDetailDaoImpl extends BaseDaoImpl<AuctionDetail, Long> imple
 		return flag;
 	}
 
+	public List<AuctionDetail> getAuctionEndDate(){
+		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
+//		criteria = criteria.add(Restrictions.ge("endDate", new Date()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionDetail>) criteria.list();
+		return flag;
+	}
+
 	public AuctionDetail getAuctionDetail(long bookOwnerId) {
 		AuctionDetail auctionDetail = new AuctionDetail();
 
@@ -131,15 +140,6 @@ public class AuctionDetailDaoImpl extends BaseDaoImpl<AuctionDetail, Long> imple
 		auctionDetail = (AuctionDetail) criteria.uniqueResult();
 
 		return auctionDetail;
-	}
-	
-	public List<AuctionDetail> getAuctionEndDate(){
-		List<AuctionDetail> flag = new ArrayList<AuctionDetail>();
-		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionDetail.class);
-//		criteria = criteria.add(Restrictions.ge("endDate", new Date()));
-		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		flag = (List<AuctionDetail>) criteria.list();
-		return flag;
 	}
 	
 	public List<AuctionDetail> getAuctionStartDate(){
