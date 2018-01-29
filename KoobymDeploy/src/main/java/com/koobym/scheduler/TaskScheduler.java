@@ -48,6 +48,8 @@ public class TaskScheduler {
 		List<RentalHeader> rentalHeadersWithElapsedEndDates = rentalHeaderDao.getElapsedRentalDate();
 		UserNotification un;
 		for (RentalHeader rh : rentalHeadersWithElapsedEndDates) {
+			
+			
 			rentalHeaderDao.setApprovedExam(rh.getRentalHeaderId(), "Due", format.format(new Date()));
 			un = new UserNotification();
 
@@ -106,9 +108,6 @@ public class TaskScheduler {
 				if(ad.getStartTime().equals(formattedData)){
 					ad.setAuctionStatus("start");
 				}
-			}else if(theDate.before(dateDate)){
-				System.out.println("magicDate : "+ad.getStartDate());
-				ad.setAuctionStatus("stop");
 			}
 			
 		}
@@ -116,25 +115,48 @@ public class TaskScheduler {
 
 	@Transactional
 	@Scheduled(fixedRate = 1500000)
-	public void checkAuctionEndDate() {
+	public void sendEndAuctionNotif() {
 		System.out.println("nagdagan");
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		
+		Date date = new Date();
+		String stdDateFormat = "hh:mm a";
+		DateFormat dateFormat = new SimpleDateFormat(stdDateFormat);
+		String formattedData = dateFormat.format(date);
+		System.out.println("notifTime kay : "+formattedData);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+		Date dateDate = new Date();
+		String formattedDate = formatter.format(dateDate);
+		System.out.println("notifDate kay : "+formattedDate);
+		
 		List<AuctionDetail> auctionDetailEndDates = auctionDetailDao.getAuctionEndDate();
 		System.out.println("kuan = " + auctionDetailEndDates.size());
 		UserNotification un;
+		
 		for (AuctionDetail rh : auctionDetailEndDates) {
-			un = new UserNotification();
-
-			un.setActionId(rh.getAuctionDetailId());
-			un.setActionName("auction");
-			un.setActionStatus("Stop");
-			un.setBookActionPerformedOn(rh.getBookOwner());
-			AuctionComment modelComment = auctionCommentDao.getMaximumBid((int) rh.getAuctionDetailId());
-			un.setUserPerformer(modelComment.getUser());
-			un.setUser(rh.getBookOwner().getUser());
+			System.out.println("nisulod siya sa for loop");
 			
-			userNotificationDao.save(un);
-			pusherServer.sendNotification(un);
+			if(formattedDate.equals(rh.getEndDate())){
+				if(formattedData.equals(rh.getEndTime())){
+					
+					System.out.println("sulod sa rh : "+rh.getEndDate());
+					
+					
+					un = new UserNotification();
+					
+
+					un.setActionId(rh.getAuctionDetailId());
+					un.setActionName("auction");
+					un.setActionStatus("stop");
+					un.setBookActionPerformedOn(rh.getBookOwner());
+					AuctionComment modelComment = auctionCommentDao.getMaximumBid((int) rh.getAuctionDetailId());
+					un.setUserPerformer(modelComment.getUser());
+					un.setUser(rh.getBookOwner().getUser());
+					
+					userNotificationDao.save(un);
+					pusherServer.sendNotification(un);
+				}
+			}
 		}
 	}
 	
