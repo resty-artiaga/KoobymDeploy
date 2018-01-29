@@ -26,6 +26,12 @@ public class AuctionDetail {
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="bookOwnerId")
 	private BookOwner bookOwner;
+
+	@Column(name = "endTime")
+	private String endTime;
+	
+	@Column(name = "startTime")
+	private String startTime;
 	
 	@Column(name = "endDate")
 	private String endDate;
@@ -39,6 +45,22 @@ public class AuctionDetail {
 	@Column(name = "auctionDescription")
 	private String auctionDescription;
 
+	public String getStartTime(){
+		return this.startTime;
+	}
+	
+	public void setStartTime(String startTime){
+		this.startTime = startTime;
+	}
+	
+	public String getEndTime(){
+		return this.endTime;
+	}
+	
+	public void setEndTime(String endTime){
+		this.endTime = endTime;
+	}
+	
 	public String getAuctionStatus(){
 		return this.auctionStatus;
 	}
