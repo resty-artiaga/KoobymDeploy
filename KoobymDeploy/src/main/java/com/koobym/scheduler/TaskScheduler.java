@@ -146,17 +146,6 @@ public class TaskScheduler {
 					List<AuctionComment> modelComments = auctionCommentDao.getMaximumBid((int) rh.getAuctionDetailId());
 					System.out.println("after getting maximum bid");
 
-					un = new UserNotification();
-					un.setUser(rh.getBookOwner().getUser());
-					un.setBookActionPerformedOn(rh.getBookOwner());
-					un.setActionId(rh.getAuctionDetailId());
-					un.setActionName("auction");
-					un.setActionStatus("own");
-					un.setUserPerformer(rh.getBookOwner().getUser());
-					
-					userNotificationDao.save(un);
-					pusherServer.sendNotification(un);
-					
 					for (int i = 0; i < modelComments.size(); i++) {
 						un = new UserNotification();
 						un.setActionId(rh.getAuctionDetailId());
@@ -175,6 +164,18 @@ public class TaskScheduler {
 						userNotificationDao.save(un);
 						pusherServer.sendNotification(un);
 					}
+					
+					un = new UserNotification();
+					un.setUser(rh.getBookOwner().getUser());
+					un.setBookActionPerformedOn(rh.getBookOwner());
+					un.setActionId(rh.getAuctionDetailId());
+					un.setActionName("auction");
+					un.setActionStatus("own");
+					un.setUserPerformer(rh.getBookOwner().getUser());
+					
+					userNotificationDao.save(un);
+					pusherServer.sendNotification(un);
+					
 				}
 			}
 		}
