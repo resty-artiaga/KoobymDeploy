@@ -32,6 +32,9 @@ public class UserNotification {
 	@Column(name = "actionStatus")
 	private String actionStatus;
 
+	@Column(name = "extraMessage")
+	private String extraMessage;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_actionPerformerId")
 	private User userPerformer;
@@ -39,10 +42,19 @@ public class UserNotification {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "book_actionPerformedId")
 	private BookOwner bookActionPerformedOn;
+	
 
 	@Column(name = "isRead")
 	private boolean isRead;
 
+	public String getExtraMessage(){
+		return this.extraMessage;
+	}
+	
+	public void setExtraMessage(String extraMessage){
+		this.extraMessage = extraMessage;
+	}
+	
 	public long getUserNotificationId() {
 		return userNotificationId;
 	}

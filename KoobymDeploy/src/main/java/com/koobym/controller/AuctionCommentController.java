@@ -2,8 +2,6 @@ package com.koobym.controller;
 
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,11 +63,11 @@ public class AuctionCommentController {
 		ResponseEntity<Integer> flag = ResponseEntity.ok(id);
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/getMaximumBid/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<AuctionComment> getMaximumBid(@PathVariable("id") int id) {
+	public ResponseEntity<List<AuctionComment>> getMaximumBid(@PathVariable("id") int id) {
 		auctionCommentService.getMaximumBid(id);
-		ResponseEntity<AuctionComment> flag = ResponseEntity.ok(auctionCommentService.getMaximumBid(id));
+		ResponseEntity<List<AuctionComment>> flag = ResponseEntity.ok(auctionCommentService.getMaximumBid(id));
 		return flag;
 	}
 

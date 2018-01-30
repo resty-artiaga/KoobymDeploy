@@ -1,9 +1,8 @@
 package com.koobym.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
-
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ public class AuctionCommentServiceImpl extends BaseServiceImpl<AuctionComment, L
 		this.auctionCommentDao = auctionCommentDao;
 	}
 	
-	public AuctionComment getMaximumBid(int auctionDetailId){
+	public List<AuctionComment> getMaximumBid(int auctionDetailId){
 		return auctionCommentDao.getMaximumBid(auctionDetailId);
 	}
 
