@@ -64,7 +64,7 @@ public class AuctionCommentController {
 		return flag;
 	}
 
-	@RequestMapping(value = "/getMaximumBid/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/getMaximumBid/{id}", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionComment>> getMaximumBid(@PathVariable("id") int id) {
 		auctionCommentService.getMaximumBid(id);
 		ResponseEntity<List<AuctionComment>> flag = ResponseEntity.ok(auctionCommentService.getMaximumBid(id));
