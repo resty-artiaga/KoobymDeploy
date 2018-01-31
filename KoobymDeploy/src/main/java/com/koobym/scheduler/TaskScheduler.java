@@ -130,7 +130,7 @@ public class TaskScheduler {
 
 		List<AuctionDetail> auctionDetailEndDates = auctionDetailDao.getAuctionEndDate();
 		System.out.println("kuan = " + auctionDetailEndDates.size());
-		UserNotification un;
+		UserNotification un, unO;
 
 		for (AuctionDetail rh : auctionDetailEndDates) {
 			System.out.println("nisulod siya sa for loop");
@@ -157,6 +157,19 @@ public class TaskScheduler {
 						if (i == 0) {
 							un.setActionStatus("win");
 							un.setExtraMessage(message);
+							
+							
+							unO = new UserNotification();
+							unO.setUser(rh.getBookOwner().getUser());
+							unO.setBookActionPerformedOn(rh.getBookOwner());
+							unO.setActionId(rh.getAuctionDetailId());
+							unO.setActionName("auction");
+							unO.setActionStatus("own");
+							unO.setUserPerformer(modelComments.get(i).getUser());
+							unO.setExtraMessage(message);
+							
+							userNotificationDao.save(unO);
+							pusherServer.sendNotification(unO);
 						} else {
 							un.setActionStatus("lose");
 							un.setExtraMessage(message);
@@ -165,16 +178,6 @@ public class TaskScheduler {
 						pusherServer.sendNotification(un);
 					}
 					
-					un = new UserNotification();
-					un.setUser(rh.getBookOwner().getUser());
-					un.setBookActionPerformedOn(rh.getBookOwner());
-					un.setActionId(rh.getAuctionDetailId());
-					un.setActionName("auction");
-					un.setActionStatus("own");
-					un.setUserPerformer(rh.getBookOwner().getUser());
-					
-					userNotificationDao.save(un);
-					pusherServer.sendNotification(un);
 					
 				}
 			}

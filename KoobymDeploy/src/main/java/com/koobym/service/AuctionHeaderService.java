@@ -10,5 +10,5 @@ import com.koobym.model.AuctionHeader;
 public interface AuctionHeaderService extends BaseService<AuctionHeader, Long> {
 	
 	public AuctionHeader addNewAuctionHeader(AuctionHeader auctionHeader);
-
+	public AuctionHeader getAuctionHeader(long auctionDetailId, long userId);
 }

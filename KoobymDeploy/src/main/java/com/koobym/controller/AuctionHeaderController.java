@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.koobym.model.BookOwner;
+import com.koobym.model.RentalHeader;
 import com.koobym.model.AuctionHeader;
 import com.koobym.service.AuctionHeaderService;
 
@@ -67,4 +68,9 @@ public class AuctionHeaderController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/getAuctionHeader/{auctionDetailId}/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<AuctionHeader> getAuctionHeader(@PathVariable("auctionDetailId") int auctionDetailId, @PathVariable("userId") int userId) {
+		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.getAuctionHeader(auctionDetailId, userId));
+		return flag;
+	}
 }
