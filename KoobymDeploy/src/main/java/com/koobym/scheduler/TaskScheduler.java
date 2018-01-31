@@ -19,6 +19,7 @@ import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.AuctionComment;
 import com.koobym.model.AuctionDetail;
+import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
@@ -29,6 +30,9 @@ public class TaskScheduler {
 	@Autowired
 	private RentalHeaderDao rentalHeaderDao;
 
+	@Autowired
+	private AuctionHeaderDao auctionHeaderDao;
+	
 	@Autowired
 	private AuctionCommentDao auctionCommentDao;
 
@@ -132,7 +136,7 @@ public class TaskScheduler {
 		System.out.println("kuan = " + auctionDetailEndDates.size());
 		UserNotification un, unO;
 
-		for (AuctionDetail rh : auctionDetailEndDates) {
+		for (AuctionDetail rh : auctionDetailEndDates) {			
 			System.out.println("nisulod siya sa for loop");
 
 			if (formattedDate.equals(rh.getEndDate())) {
@@ -147,8 +151,10 @@ public class TaskScheduler {
 					System.out.println("after getting maximum bid");
 
 					for (int i = 0; i < modelComments.size(); i++) {
+						AuctionHeader ah = new AuctionHeader();
+						ah = auctionHeaderDao.getAuctionHeader(rh.getAuctionDetailId(), modelComments.get(i).getUser().getUserId());
 						un = new UserNotification();
-						un.setActionId(rh.getAuctionDetailId());
+						un.setActionId(ah.getAuctionHeaderId());
 						un.setActionName("auction");
 						un.setBookActionPerformedOn(rh.getBookOwner());
 						un.setUser(modelComments.get(i).getUser());
@@ -162,7 +168,7 @@ public class TaskScheduler {
 							unO = new UserNotification();
 							unO.setUser(rh.getBookOwner().getUser());
 							unO.setBookActionPerformedOn(rh.getBookOwner());
-							unO.setActionId(rh.getAuctionDetailId());
+							unO.setActionId(ah.getAuctionHeaderId());
 							unO.setActionName("auction");
 							unO.setActionStatus("own");
 							unO.setUserPerformer(modelComments.get(i).getUser());
