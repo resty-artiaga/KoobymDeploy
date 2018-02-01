@@ -120,7 +120,8 @@ public class TaskScheduler {
 //				
 				if(formattedData.equals(ad.getEndTime())){
 					ad.setAuctionStatus("stop");
-					System.out.println("sulod sa End Time");	
+					System.out.println("sulod sa End Time");
+					ad.getBookOwner().setStatus("none");
 					auctionDetailDao.save(ad);
 				}
 //								
