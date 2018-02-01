@@ -32,12 +32,23 @@ public class AuctionHeader {
 	@Column(name="auctionHeaderDateStamp")
 	private String auctionHeaderDateStamp;
 
+	@Column(name="dateDelivered")
+	private String dateDelivered;
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "meetUpId")
 	private MeetUp meetUp;
 	
 	@Column(name="status")
 	private String status;
+	
+	public String getDateDelivered(){
+		return this.dateDelivered;
+	}
+	
+	public void setDateDelivered(String dateDelivered){
+		this.dateDelivered = dateDelivered;
+	}
 
 	public long getAuctionHeaderId(){
 		return auctionHeaderId;
