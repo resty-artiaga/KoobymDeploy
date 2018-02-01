@@ -83,7 +83,6 @@ public class TaskScheduler {
 	@Scheduled(fixedRate = 60000)
 	public void changeAuctionStatus() throws ParseException {
 
-		boolean seenDate = false, seenTime = false;
 
 		System.out.println("agi siya nganhi");
 
@@ -102,16 +101,32 @@ public class TaskScheduler {
 		System.out.println("size niya = " + auctionDetailStartDates.size());
 
 		for (AuctionDetail ad : auctionDetailStartDates) {
+			System.out.println("inside loop");
 
-			Date theDate = formatter.parse(ad.getEndDate());
-
-			System.out.println("mao ni ang date : " + ad.getStartDate());
-
-			if (ad.getStartDate().equals(formattedDate)) {
-				if (ad.getStartTime().equals(formattedData)) {
+			if(ad.getStartDate().equals(formattedDate)) {
+				System.out.println("compare ni Start: " + ad.getStartDate()+", "+formattedDate);	
+//				System.out.println("status, parehas silag date, startDate, "+formattedDate);
+//				
+				if(formattedData.equals(ad.getStartTime())){
+					System.out.println("sulod sa Start Time");
 					ad.setAuctionStatus("start");
+					auctionDetailDao.save(ad);
 				}
+//				
+			}else if(ad.getEndDate().equals(formattedDate)){
+				System.out.println("compare ni End: " + ad.getEndDate()+", "+formattedDate);
+				
+//				System.out.println("status, parehas silag date, endDate, "+formattedDate);	
+//				
+				if(formattedData.equals(ad.getEndTime())){
+					ad.setAuctionStatus("stop");
+					System.out.println("sulod sa End Time");	
+					auctionDetailDao.save(ad);
+				}
+//								
 			}
+			
+			
 
 		}
 	}
