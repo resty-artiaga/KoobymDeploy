@@ -36,28 +36,28 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		return auctionHeader;
 	}
 
-	// public AuctionHeader setApprovedExam(long userId, String status) {
-	// AuctionHeader auctionHeader = new AuctionHeader();
-	//
-	// Session session = getSessionFactory().getCurrentSession();
-	//
-	// String squery = "";
-	//
-	// if (status.equals("win")) {
-	// squery = "update auction_header set status = :status where userId =
-	// :userId";
-	// } else if (status.equals("lose")) {
-	// squery = "update auction_header set status = :status where userId =
-	// :userId";
-	// }
-	//
-	// SQLQuery query = session.createSQLQuery(squery);
-	// query.setString("status", status);
-	// query.setLong("userId", userId);
-	// query.executeUpdate();
-	//
-	// auctionHeader = get(rentalHeaderId);
-	//
-	// return auctionHeader;
-	// }
+	 public AuctionHeader setApprovedExam(long auctionHeaderId, String status, String date) {
+	 AuctionHeader auctionHeader = new AuctionHeader();
+	
+	 Session session = getSessionFactory().getCurrentSession();
+	
+	 String squery = "";
+	
+	 if (status.equals("win")) {
+		 squery = "update auction_header set status = :status where auctionHeaderId = :auctionHeaderId";
+	 } else if (status.equals("lose")) {
+		 squery = "update auction_header set status = :status where auctionHeaderId = :auctionHeaderId";
+	 }else if(status.equals("own")) {
+		 squery = "update auction_header set status = :status where auctionHeaderId = :auctionHeaderId";
+	}
+	
+	 SQLQuery query = session.createSQLQuery(squery);
+	 query.setString("status", status);
+	 query.setLong("auctionHeaderId", auctionHeaderId);
+	 query.executeUpdate();
+	
+	 auctionHeader = get(auctionHeaderId);
+	
+	 return auctionHeader;
+	 }
 }
