@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -65,6 +66,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Approved"));
+		criteria = criteria.addOrder(Order.desc("dateDeliver")); 
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
@@ -78,6 +80,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("status", "Approved"));
+		criteria = criteria.addOrder(Order.desc("dateReceive"));
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
@@ -93,6 +96,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Received"));
+		criteria = criteria.addOrder(Order.desc("rentalEndDate"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
@@ -109,6 +113,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Received"));
+		criteria = criteria.addOrder(Order.desc("rentalEndDate"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
@@ -139,6 +144,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("status", "Received"));
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.addOrder(Order.desc("dateDeliver"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 
@@ -173,7 +179,6 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		} else if (status.equals("Confirm")) {
 			squery = "update rental_header set status = :status, dateConfirmed = :dateApproved where rentalHeaderId = :rentalHeaderId";
 		}
-
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setString("status", status);
 		query.setString("dateApproved", dateApproved);
@@ -187,9 +192,11 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId) {
 		RentalHeader rentalHeader = new RentalHeader();
+		
+		
 
 		Session session = getSessionFactory().getCurrentSession();
-		String squery = "update rental_header set meet_upId = :meetUpId where rentalHeaderId = :rentalHeaderId";
+		String squery = "update rental_header set meet_upId = :meetUpId  where rentalHeaderId = :rentalHeaderId";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setLong("rentalHeaderId", rentalHeaderId);
