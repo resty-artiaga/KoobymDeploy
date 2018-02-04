@@ -48,8 +48,8 @@ public class SwapHeader {
 	@Column(name="dateConfirmed")
 	private String dateConfirmed;
 
-	@Column(name="dateReceived")
-	private String dateReceived;
+	@Column(name="dateReceive")
+	private String dateReceive;
 	
 	@Column(name="dateDelivered")
 	private String dateDelivered;
