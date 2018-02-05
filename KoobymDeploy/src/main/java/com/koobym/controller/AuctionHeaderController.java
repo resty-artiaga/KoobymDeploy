@@ -49,6 +49,12 @@ public class AuctionHeaderController {
 		return ent;
 	}
 
+	@RequestMapping(value = "/toDeliverById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<AuctionHeader>> getToDeliverById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getToDeliverById(userId));
+		return flag;
+	}
+	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionHeader>> getRoles() {
 		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.list());

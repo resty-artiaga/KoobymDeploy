@@ -65,4 +65,9 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		return auctionHeaderDao.setApprovedExam(auctionHeaderId, status, dateApproved);
 	}
 	
+	@Override
+	public List<AuctionHeader> getToDeliverById(int userId){
+		return auctionHeaderDao.getToDeliverById(userId);
+	}
+	
 }
