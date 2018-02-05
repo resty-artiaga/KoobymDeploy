@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.SwapHeader;
 import com.koobym.model.AuctionHeader;
 import com.koobym.service.AuctionHeaderService;
 
@@ -35,6 +36,12 @@ public class AuctionHeaderController {
 			ent = ResponseEntity.ok(auctionHeader);
 		}
 		return ent;
+	}
+
+	@RequestMapping(value = "/toReceiveById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<AuctionHeader>> getToReceiveById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getToReceiveById(userId));
+		return flag;
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)

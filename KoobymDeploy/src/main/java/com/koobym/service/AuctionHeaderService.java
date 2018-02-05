@@ -13,5 +13,5 @@ public interface AuctionHeaderService extends BaseService<AuctionHeader, Long> {
 	public AuctionHeader getAuctionHeader(long auctionDetailId, long userId);
 	public AuctionHeader setApprovedExam(long auctionHeaderId, String status, String dateApproved);
 	public List<AuctionHeader> getToDeliverById(int userId);
-	
+	public List<AuctionHeader> getToReceiveById(int userId);
 }

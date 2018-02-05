@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.AuctionHeaderDao;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.SwapHeader;
 import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalDetail;
 
@@ -37,6 +38,22 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		return auctionHeader;
 	}
 
+	public List<AuctionHeader> getToReceiveById(int userId) {
+
+		List<AuctionHeader> flag = new ArrayList<AuctionHeader>();
+
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
+		criteria = criteria.createAlias("auctionDetail", "auctionDetail");
+		criteria = criteria.createAlias("auctionDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("auctionDetail.bookOwner.user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("status", "stop"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionHeader>) criteria.list();
+		return flag;
+
+	}
+	
 	public List<AuctionHeader> getToDeliverById(int userId) {
 
 		List<AuctionHeader> flag = new ArrayList<AuctionHeader>();
