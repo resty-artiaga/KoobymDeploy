@@ -51,13 +51,13 @@ public class ImageController {
 			// save file in server - you may need an another scenario
 			filename = pre1 + pre2 + Long.toString(new Date().getTime()) + file.getOriginalFilename();
 
-			Path path = Paths.get("/home/artiagajoane/Koobym/images/" + filename);
+			Path path = Paths.get("/home/joane_artiaga/Koobym/images/" + filename);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		String imagePath = "http://104.198.152.85/Koobym/image/" + filename;
+		String imagePath = "http://104.154.192.131/Koobym/image/" + filename;
 
 		// redirect to an another url end point
 		return imagePath;
@@ -69,7 +69,7 @@ public class ImageController {
 		byte[] flag = null;
 		try {
 			// Retrieve image from the classpath.
-			File f = new File("/home/artiagajoane/Koobym/images/" + filename);
+			File f = new File("/home/joane_artiaga/Koobym/images/" + filename);
 			InputStream is = new FileInputStream(f);
 
 			// Prepare buffered image.
