@@ -139,6 +139,15 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		return flag;
 
 	}
+	
+//	public SwapHeader swapOwner(long userId){
+//		SwapHeader flag = new SwapHeader();
+//		
+//		flag = get(userId);
+//		
+//		
+//		return flag;
+//	}
 
 	public SwapHeader swapRequested(SwapHeader swapHeader) {
 
