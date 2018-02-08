@@ -11,8 +11,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.SwapHeaderDao;
+import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.SwapDetail;
 import com.koobym.model.SwapHeader;
+import com.koobym.model.User;
 
 @Repository
 public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements SwapHeaderDao {
@@ -140,15 +143,32 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 	}
 	
-//	public SwapHeader swapOwner(long userId){
-//		SwapHeader flag = new SwapHeader();
-//		
-//		flag = get(userId);
-//		
-//		
-//		return flag;
-//	}
-
+	public SwapHeader swapOwner(long userId){
+		SwapHeader flag = new SwapHeader();
+		SwapDetail mySwapDetail = new SwapDetail();
+		SwapDetail toBeSwapped = new SwapDetail();	
+		User ms = new User();
+		User tbs = new User();
+		
+		
+		flag = get(userId);
+		mySwapDetail = flag.getRequestedSwapDetail();
+		toBeSwapped = flag.getSwapDetail();
+		ms = mySwapDetail.getBookOwner().getUser();
+		tbs = toBeSwapped.getBookOwner().getUser();
+		
+		mySwapDetail.getBookOwner().setUser(tbs);
+		toBeSwapped.getBookOwner().setUser(ms);
+		flag.setSwapDetail(toBeSwapped);
+		flag.setRequestedSwapDetail(mySwapDetail);
+		
+		
+		Session session = getSessionFactory().getCurrentSession();
+		
+		session.update(flag);
+		return flag;
+	}
+	
 	public SwapHeader swapRequested(SwapHeader swapHeader) {
 
 		String squery = "insert into swap_header (userId, swap_detailId, locationId, userDayTimeId, dateSwap, status) "

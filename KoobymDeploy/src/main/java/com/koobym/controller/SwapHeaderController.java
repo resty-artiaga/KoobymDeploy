@@ -134,4 +134,9 @@ public class SwapHeaderController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/swapOwner/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapHeader> swapOwner(@PathVariable("userId") int userId) {
+		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.swapOwner(userId));
+		return flag;
+	}
 }

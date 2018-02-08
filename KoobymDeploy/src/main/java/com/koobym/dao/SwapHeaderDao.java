@@ -35,4 +35,6 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public List<SwapHeader> getCompleteAllById(int userId);
 
 	public List<SwapHeader> getOngoingSwaps(long userId);
+	
+	public SwapHeader swapOwner(long userId);
 }

@@ -199,5 +199,10 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> getCompleteAllById(int userId) {
 		return swapHeaderDao.getCompleteAllById(userId);
 	}
+	
+	@Override
+	public SwapHeader swapOwner(long userId){
+		return swapHeaderDao.swapOwner(userId);
+	}
 
 }
