@@ -208,6 +208,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		SwapHeader swapHeader = new SwapHeader();
 		SwapDetail swapDetail = new SwapDetail();
 		SwapDetail swapDetailReq = new SwapDetail();
+		BookOwner bookOwner = new BookOwner();
 
 		Session session = getSessionFactory().getCurrentSession();
 		String squery = "";
@@ -240,7 +241,9 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		
 		if(status.equals("Approved")){
 			swapDetail.setSwapStatus("Not Available");
+			swapDetail.getBookOwner().setBookStat("Not Available");
 			swapDetailReq.setSwapStatus("Not Available");
+			swapDetailReq.getBookOwner().setBookStat("Not Available");
 		}
 		
 		swapHeader.setSwapDetail(swapDetail);

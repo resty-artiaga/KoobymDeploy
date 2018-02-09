@@ -41,6 +41,17 @@ public class BookOwner {
 	@Column(name = "status")
 	private String status;
 
+	@Column(name = "bookStat")
+	private String bookStat;
+	
+	public String getBookStat(){
+		return this.bookStat;
+	}
+	
+	public void setBookStat(String bookStat){
+		this.bookStat = bookStat;
+	}
+	
 	@Transient
 	private double rate;
 

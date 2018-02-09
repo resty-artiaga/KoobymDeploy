@@ -101,6 +101,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 	 
 	 if(status.equals("win")){
 		 auctionDetail.setStatus("Not Available");
+		 auctionDetail.getBookOwner().setBookStat("Not Available");
 		 auctionHeader.setAuctionDetail(auctionDetail);
 	 }
 	 

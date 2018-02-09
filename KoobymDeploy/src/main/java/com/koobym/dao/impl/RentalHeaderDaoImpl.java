@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.RentalHeaderDao;
+import com.koobym.model.BookOwner;
 import com.koobym.model.RentalDetail;
 import com.koobym.model.RentalHeader;
 
@@ -171,6 +172,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved) {
 		RentalHeader rentalHeader = new RentalHeader();
 		RentalDetail rentalDetail = new RentalDetail();
+		BookOwner bookOwner = new BookOwner(); 
 
 		Session session = getSessionFactory().getCurrentSession();
 
@@ -196,12 +198,17 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		rentalHeader = get(rentalHeaderId);
 		
 		rentalDetail = rentalHeader.getRentalDetail();
+		bookOwner = rentalDetail.getBookOwner();
 		
 		if(status.equals("Approved")){
 			rentalDetail.setRentalStatus("Not Available");
+			bookOwner.setBookStat("Not Available");
+			rentalDetail.setBookOwner(bookOwner);
 			rentalHeader.setRentalDetail(rentalDetail);
 		}else if(status.equals("Complete")){
 			rentalDetail.setRentalStatus("Available");
+			bookOwner.setBookStat("Not Available");
+			rentalDetail.setBookOwner(bookOwner);
 			rentalHeader.setRentalDetail(rentalDetail);
 			rentalHeader.setStatus("Complete");
 		}
