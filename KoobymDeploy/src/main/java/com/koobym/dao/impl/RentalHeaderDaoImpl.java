@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.RentalHeaderDao;
+import com.koobym.model.RentalDetail;
 import com.koobym.model.RentalHeader;
 
 @Repository
@@ -169,6 +170,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 	public RentalHeader setApprovedExam(long rentalHeaderId, String status, String dateApproved) {
 		RentalHeader rentalHeader = new RentalHeader();
+		RentalDetail rentalDetail = new RentalDetail();
 
 		Session session = getSessionFactory().getCurrentSession();
 
@@ -176,16 +178,37 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 		if (status.equals("Approved")) {
 			squery = "update rental_header set status = :status, dateApproved = :dateApproved where rentalHeaderId = :rentalHeaderId";
+			SQLQuery query = session.createSQLQuery(squery);
+			query.setString("status", status);
+			query.setString("dateApproved", dateApproved);
+			query.setLong("rentalHeaderId", rentalHeaderId);
+			query.executeUpdate();
 		} else if (status.equals("Confirm")) {
 			squery = "update rental_header set status = :status, dateConfirmed = :dateApproved where rentalHeaderId = :rentalHeaderId";
+			SQLQuery query = session.createSQLQuery(squery);
+			query.setString("status", status);
+			query.setString("dateApproved", dateApproved);
+			query.setLong("rentalHeaderId", rentalHeaderId);
+			query.executeUpdate();
 		}
-		SQLQuery query = session.createSQLQuery(squery);
-		query.setString("status", status);
-		query.setString("dateApproved", dateApproved);
-		query.setLong("rentalHeaderId", rentalHeaderId);
-		query.executeUpdate();
+		
 
 		rentalHeader = get(rentalHeaderId);
+		
+		rentalDetail = rentalHeader.getRentalDetail();
+		
+		if(status.equals("Approved")){
+			rentalDetail.setRentalStatus("Not Available");
+			rentalHeader.setRentalDetail(rentalDetail);
+		}else if(status.equals("Complete")){
+			rentalDetail.setRentalStatus("Available");
+			rentalHeader.setRentalDetail(rentalDetail);
+			rentalHeader.setStatus("Complete");
+		}
+		
+		Session sessionStat = getSessionFactory().getCurrentSession();
+		
+		sessionStat.update(rentalHeader);
 
 		return rentalHeader;
 	}
