@@ -42,8 +42,19 @@ public class AuctionDetail {
 	@Column(name = "auctionStatus")
 	private String auctionStatus;
 	
+	@Column(name = "status")
+	private String status;
+	
 	@Column(name = "auctionDescription")
 	private String auctionDescription;
+	
+	public String getStatus(){
+		return this.status;
+	}
+	
+	public void setStatus(String status){
+		this.status = status;
+	}
 
 	public String getStartTime(){
 		return this.startTime;

@@ -55,6 +55,13 @@ public class AuctionHeaderController {
 		}
 		return ent;
 	}
+	
+	@RequestMapping(value = "/updateStatus/{status}/{auctionHeaderId}/{date}", method = RequestMethod.GET)
+	public ResponseEntity<AuctionHeader> setApprovedExam(@PathVariable("auctionHeaderId") int auctionHeaderId,
+			@PathVariable("status") String status, @PathVariable("date") String date) {
+		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.setApprovedExam(auctionHeaderId, status, date));
+		return flag;
+	}
 
 	@RequestMapping(value = "/toDeliverById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionHeader>> getToDeliverById(@PathVariable("userId") int userId) {

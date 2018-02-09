@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.koobym.dao.AuctionHeaderDao;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
+import com.koobym.model.AuctionDetail;
 import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalDetail;
 
@@ -73,6 +74,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 	
 	 public AuctionHeader setApprovedExam(long auctionHeaderId, String status, String date) {
 	 AuctionHeader auctionHeader = new AuctionHeader();
+	 AuctionDetail auctionDetail = new AuctionDetail();
 	
 	 Session session = getSessionFactory().getCurrentSession();
 	
@@ -92,6 +94,18 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 	 query.executeUpdate();
 	
 	 auctionHeader = get(auctionHeaderId);
+	 
+	 auctionDetail = auctionHeader.getAuctionDetail();
+	 
+	 Session sessionStat = getSessionFactory().getCurrentSession();
+	 
+	 if(status.equals("win")){
+		 auctionDetail.setStatus("Not Available");
+		 auctionHeader.setAuctionDetail(auctionDetail);
+	 }
+	 
+	 sessionStat.update(auctionHeader);
+	 
 	
 	 return auctionHeader;
 	 }
