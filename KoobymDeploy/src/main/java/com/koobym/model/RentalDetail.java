@@ -23,6 +23,9 @@ public class RentalDetail {
 	@Column(name = "daysForRent")
 	private int daysForRent;
 
+	@Column(name = "rentalStatus")
+	private String rentalStatus;
+	
 	@Column(name = "calculatedPrice", nullable = false)
 	private Double calculatedPrice;
 		
@@ -30,6 +33,13 @@ public class RentalDetail {
 	@JoinColumn(name="bookOwnerId")
 	private BookOwner bookOwner;
 	
+	public String getRentalStatus(){
+		return this.rentalStatus;
+	}
+	
+	public void setRentalStatus(String rentalStatus){
+		this.rentalStatus = rentalStatus;
+	}
 	
 	public long getRental_detailId() {
 		return rental_detailId;

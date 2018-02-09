@@ -206,6 +206,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 	public SwapHeader setApprovedExam(String status, long swapHeaderId, String date) {
 		SwapHeader swapHeader = new SwapHeader();
+		SwapDetail swapDetail = new SwapDetail();
+		SwapDetail swapDetailReq = new SwapDetail();
 
 		Session session = getSessionFactory().getCurrentSession();
 		String squery = "";
@@ -229,7 +231,23 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		query.executeUpdate();
 
 		swapHeader = get(swapHeaderId);
+		
+		swapDetail = swapHeader.getSwapDetail();
+		swapDetailReq = swapHeader.getRequestedSwapDetail();
+		
+		Session sessionStat = getSessionFactory().getCurrentSession();
 
+		
+		if(status.equals("Approved")){
+			swapDetail.setSwapStatus("Not Available");
+			swapDetailReq.setSwapStatus("Not Available");
+		}
+		
+		swapHeader.setSwapDetail(swapDetail);
+		swapHeader.setRequestedSwapDetail(swapDetailReq);
+		
+		sessionStat.update(swapHeader);
+		
 		return swapHeader;
 	}
 

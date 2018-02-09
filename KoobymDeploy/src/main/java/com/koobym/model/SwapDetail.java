@@ -29,6 +29,9 @@ public class SwapDetail {
 
 	@Column(name = "swapTimeStamp")
 	private String swapTimeStamp;
+	
+	@Column(name = "swapStatus")
+	private String swapStatus;
 		
 	@Column(name = "swapPrice")
 	private float price;
@@ -40,6 +43,14 @@ public class SwapDetail {
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "swap_comment_detail", joinColumns = @JoinColumn(name = "swap_detailId", referencedColumnName = "swap_detailId"), inverseJoinColumns = @JoinColumn(name = "swapCommentId", referencedColumnName = "swapCommentId"))
 	private Set<SwapComment> swapComments;
+	
+	public String getSwapStatus(){
+		return this.swapStatus;
+	}
+	
+	public void setSwapStatus(String swapStatus){
+		this.swapStatus = swapStatus;
+	}
 	
 	public Set<SwapComment> getSwapComments(){
 		return swapComments;
