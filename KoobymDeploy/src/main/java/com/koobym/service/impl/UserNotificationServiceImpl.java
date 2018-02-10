@@ -34,4 +34,18 @@ public class UserNotificationServiceImpl extends BaseServiceImpl<UserNotificatio
 		userNotificationDao.notificationIsRead(userNotificationId);
 	}
 
+	@Override
+	public UserNotification sendEarlyNotif(long rentalHeaderId){
+		return userNotificationDao.sendEarlyNotif(rentalHeaderId);
+	}
+	
+	@Override
+	public UserNotification confirmEarlyNotif(long rentalHeaderId){
+		return userNotificationDao.confirmEarlyNotif(rentalHeaderId);
+	}
+
+	@Override
+	public UserNotification rejectEarlyNotif(long rentalHeaderId){
+		return userNotificationDao.rejectEarlyNotif(rentalHeaderId);
+	}
 }

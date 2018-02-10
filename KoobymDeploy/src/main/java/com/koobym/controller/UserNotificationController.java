@@ -78,4 +78,21 @@ public class UserNotificationController {
 		return flag;
 	}
 
+	@RequestMapping(value = "/sendEarlyNotif/{rentalHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<UserNotification> sendEarlyNotif(@PathVariable("rentalHeaderId") long rentalHeaderId) {
+		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.sendEarlyNotif(new Long(rentalHeaderId)));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/confirmEarlyNotif/{rentalHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<UserNotification> confirmEarlyNotif(@PathVariable("rentalHeaderId") long rentalHeaderId) {
+		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.confirmEarlyNotif(new Long(rentalHeaderId)));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/rejectEarlyNotif/{rentalHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<UserNotification> rejectEarlyNotif(@PathVariable("rentalHeaderId") long rentalHeaderId) {
+		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.rejectEarlyNotif(new Long(rentalHeaderId)));
+		return flag;
+	}
 }
