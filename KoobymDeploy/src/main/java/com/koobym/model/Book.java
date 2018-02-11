@@ -40,7 +40,9 @@ public class Book {
 	
 	@Column(name = "bookFilename")
 	private String bookFilename;
-	
+
+	@Column(name = "status")
+	private String status;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "authorId", referencedColumnName = "authorId"))
@@ -49,6 +51,14 @@ public class Book {
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "genre_book", joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "bookId"), inverseJoinColumns = @JoinColumn(name = "genreId", referencedColumnName = "genreId"))
 	private Set<Genre> genresBook;
+	
+	public String getStatus(){
+		return this.status;
+	}
+	
+	public void setStatus(String status){
+		this.status = status;
+	}
 	
 	public String getBookFilename() {
 		return bookFilename;
