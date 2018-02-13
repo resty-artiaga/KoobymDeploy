@@ -75,4 +75,8 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		return auctionHeaderDao.getToReceiveById(userId);
 	}
 	
+	@Override
+	public List<AuctionHeader> getWinById(long userId){
+		return auctionHeaderDao.getWinById(userId);
+	}
 }

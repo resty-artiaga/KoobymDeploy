@@ -93,4 +93,10 @@ public class AuctionHeaderController {
 		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.getAuctionHeader(auctionDetailId, userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getWinById/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<AuctionHeader>> getWinById(@PathVariable("userId") int userId) {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getWinById(new Long (userId)));
+		return flag;
+	}
 }

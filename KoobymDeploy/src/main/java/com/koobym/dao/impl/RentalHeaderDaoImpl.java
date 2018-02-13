@@ -265,7 +265,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 		return rentalHeader;
 	}
-
+	
 	public List<RentalHeader> getCompleteByIdRenter(int userId) {
 
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();

@@ -10,6 +10,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.hql.internal.ast.tree.RestrictableStatement;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.AuctionHeaderDao;
@@ -37,6 +38,19 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		auctionHeader = (AuctionHeader) criteria.uniqueResult();
 
 		return auctionHeader;
+	}
+	
+	public List<AuctionHeader> getWinById(long userId){
+		List<AuctionHeader> flag = new ArrayList<AuctionHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.add(Restrictions.eq("status", "win"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<AuctionHeader>) criteria.list();
+		
+		return flag;
 	}
 
 	public List<AuctionHeader> getToReceiveById(int userId) {
