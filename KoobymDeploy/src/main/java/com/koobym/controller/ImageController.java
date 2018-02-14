@@ -57,7 +57,7 @@ public class ImageController {
 			e.printStackTrace();
 		}
 
-		String imagePath = "http://104.154.192.131/Koobym/image/" + filename;
+		String imagePath = "http://35.188.36.114/Koobym/images/" + filename;
 
 		// redirect to an another url end point
 		return imagePath;
