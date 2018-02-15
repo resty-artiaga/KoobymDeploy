@@ -52,8 +52,8 @@ public class AuctionDetailServiceImpl extends BaseServiceImpl<AuctionDetail, Lon
 			ad.setBookOwner(auctionDetail.getBookOwner());
 			ad.setEndDate(auctionDetail.getEndDate());
 			ad.setStartDate(auctionDetail.getStartDate());
-			ad.setStatus("start");
-			ad.setAuctionStatus("Available");
+			ad.setStatus("Available");
+			ad.setAuctionStatus("status");
 			auctionDetailDao.update(ad);
 			auctionDetail.setAuctionDetailId(ad.getAuctionDetailId());
 		} else {
