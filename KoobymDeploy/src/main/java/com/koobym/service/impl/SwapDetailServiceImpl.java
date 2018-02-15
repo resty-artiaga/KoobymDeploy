@@ -64,8 +64,10 @@ public class SwapDetailServiceImpl extends BaseServiceImpl<SwapDetail, Long> imp
 			sd.setSwapDescription(swapDetail.getSwapDescription());
 			sd.setSwapPrice(swapDetail.getSwapPrice());
 			sd.setSwapTimeStamp(swapDetail.getSwapTimeStamp());
+			sd.setSwapStatus("Available");
 			swapDetailDao.update(sd);
 			swapDetail.setSwapDetailId(sd.getSwapDetailId());
+			
 		} else {
 			swapDetailDao.save(swapDetail);
 		}

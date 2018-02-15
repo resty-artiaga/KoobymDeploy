@@ -70,7 +70,8 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 		RentalDetail rd = rentalDetailDao.getRentalDetail(rentalDetail.getBookOwner().getBook_OwnerId());
 		if (rd != null) {
 			rd.setCalculatedPrice(rentalDetail.getCalculatedPrice());
-			rd.setDaysForRent(rentalDetail.getDaysForRent());			
+			rd.setDaysForRent(rentalDetail.getDaysForRent());
+			rd.setRentalStatus("Available");
 			rentalDetailDao.update(rd);
 			rentalDetail.setRental_detailId(rd.getRental_detailId());
 		} else {
