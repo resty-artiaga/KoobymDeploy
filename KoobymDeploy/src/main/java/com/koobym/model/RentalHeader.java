@@ -64,6 +64,18 @@ public class RentalHeader {
 	@JoinColumn(name = "user_day_timeId")
 	private UserDayTime userDayTime;
 
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "returnMeetUp")
+	private MeetUp returnMeetUp;
+
+	public MeetUp getReturnMeetUp() {
+		return this.returnMeetUp;
+	}
+	
+	public void setReturnMeetUp(MeetUp returnMeetUp) {
+		this.returnMeetUp = returnMeetUp;
+	}
+	
 	public String getDateDeliver() {
 		return dateDeliver;
 	}
