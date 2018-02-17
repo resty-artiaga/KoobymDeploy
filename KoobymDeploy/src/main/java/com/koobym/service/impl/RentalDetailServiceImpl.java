@@ -74,6 +74,7 @@ public class RentalDetailServiceImpl extends BaseServiceImpl<RentalDetail, Long>
 			rd.setRentalStatus("Available");
 			rentalDetailDao.update(rd);
 			rentalDetail.setRental_detailId(rd.getRental_detailId());
+			rentalDetail.setRentalStatus("Available");
 		} else {
 			rentalDetailDao.save(rentalDetail);
 		}
