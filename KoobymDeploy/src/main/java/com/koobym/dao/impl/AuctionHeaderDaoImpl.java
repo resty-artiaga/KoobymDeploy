@@ -11,18 +11,34 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.hql.internal.ast.tree.RestrictableStatement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.koobym.dao.AuctionDetailDao;
 import com.koobym.dao.AuctionHeaderDao;
+import com.koobym.dao.MeetUpDao;
+import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
+import com.koobym.model.UserNotification;
+import com.koobym.pusher.PusherServer;
 import com.koobym.model.AuctionDetail;
 import com.koobym.model.AuctionHeader;
+import com.koobym.model.MeetUp;
 import com.koobym.model.RentalDetail;
 
 @Repository
 public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> implements AuctionHeaderDao {
 
+	@Autowired
+	private MeetUpDao meetUpDao;
+
+	@Autowired
+	private UserNotificationDao userNotificationDao;
+	
+	@Autowired
+	private PusherServer pusherServer;
+	
 	public AuctionHeaderDaoImpl() {
 		super(AuctionHeader.class);
 	}
@@ -124,5 +140,31 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 	 
 	
 	 return auctionHeader;
+	 }
+	 
+	 public AuctionHeader setReturnMeetUp(long auctionHeaderId, long meetUpId){
+		 AuctionHeader ah = new AuctionHeader();
+		 MeetUp mu = new MeetUp();
+		 
+		 ah = get(auctionHeaderId);
+		 mu = meetUpDao.get(meetUpId);
+		 
+		 ah.setMeetUp(mu);
+		 
+		 Session session = getSessionFactory().getCurrentSession();
+		 session.update(ah);
+		 
+		 UserNotification un = new UserNotification();
+		 un.setActionId(auctionHeaderId);
+		 un.setActionName("rental");
+		 un.setActionStatus("return");
+		 un.setBookActionPerformedOn(ah.getAuctionDetail().getBookOwner());
+		 un.setUserPerformer(ah.getUser());
+		 un.setUser(ah.getAuctionDetail().getBookOwner().getUser());
+		 
+		 userNotificationDao.save(un);
+		 pusherServer.sendNotification(un);
+		 
+		 return ah;
 	 }
 }

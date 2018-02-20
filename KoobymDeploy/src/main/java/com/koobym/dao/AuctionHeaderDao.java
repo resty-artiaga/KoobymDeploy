@@ -14,4 +14,5 @@ public interface AuctionHeaderDao extends BaseDao<AuctionHeader, Long> {
 	public List<AuctionHeader> getToDeliverById(int userId);
 	public List<AuctionHeader> getToReceiveById(int userId);
 	public List<AuctionHeader> getWinById(long userId);
+	public AuctionHeader setReturnMeetUp(long auctionHeaderId, long meetUpId);
 }
