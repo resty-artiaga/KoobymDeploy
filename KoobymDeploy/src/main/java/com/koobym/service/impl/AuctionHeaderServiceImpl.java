@@ -80,8 +80,4 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		return auctionHeaderDao.getWinById(userId);
 	}
 	
-	@Override
-	public AuctionHeader setReturnMeetUp(long auctionHeaderId, long meetUpId){
-		return auctionHeaderDao.setReturnMeetUp(auctionHeaderId, meetUpId);
-	}
 }

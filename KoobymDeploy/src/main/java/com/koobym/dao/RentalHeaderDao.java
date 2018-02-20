@@ -2,6 +2,7 @@ package com.koobym.dao;
 
 import java.util.List;
 
+import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
 
 public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
@@ -55,4 +56,6 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId);
 
 	public List<RentalHeader> getElapsedRentalDate();
+	
+	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId);
 }

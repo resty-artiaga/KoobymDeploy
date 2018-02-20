@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.koobym.dao.RentalHeaderDao;
 import com.koobym.dao.UserNotificationDao;
+import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
@@ -218,5 +219,10 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		pusherServer.sendNotification(userNotif);
 
 		return rentalHeaderDao.setMeetUp(rentalHeaderId, meetUpId);
+	}
+	
+	@Override
+	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId){
+		return rentalHeaderDao.setReturnMeetUp(rentalHeaderId, meetUpId);
 	}
 }

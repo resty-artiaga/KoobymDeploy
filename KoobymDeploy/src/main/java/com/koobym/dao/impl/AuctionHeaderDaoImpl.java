@@ -142,29 +142,4 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 	 return auctionHeader;
 	 }
 	 
-	 public AuctionHeader setReturnMeetUp(long auctionHeaderId, long meetUpId){
-		 AuctionHeader ah = new AuctionHeader();
-		 MeetUp mu = new MeetUp();
-		 
-		 ah = get(auctionHeaderId);
-		 mu = meetUpDao.get(meetUpId);
-		 
-		 ah.setMeetUp(mu);
-		 
-		 Session session = getSessionFactory().getCurrentSession();
-		 session.update(ah);
-		 
-		 UserNotification un = new UserNotification();
-		 un.setActionId(auctionHeaderId);
-		 un.setActionName("rental");
-		 un.setActionStatus("return");
-		 un.setBookActionPerformedOn(ah.getAuctionDetail().getBookOwner());
-		 un.setUserPerformer(ah.getUser());
-		 un.setUser(ah.getAuctionDetail().getBookOwner().getUser());
-		 
-		 userNotificationDao.save(un);
-		 pusherServer.sendNotification(un);
-		 
-		 return ah;
-	 }
 }

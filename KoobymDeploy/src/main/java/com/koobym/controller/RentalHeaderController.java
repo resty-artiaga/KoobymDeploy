@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.UserRental;
 import com.koobym.service.RentalHeaderService;
@@ -178,6 +179,12 @@ public class RentalHeaderController {
 	@RequestMapping(value = "/updateMeetUp/{rentalHeaderId}/{meetUpId}", method = RequestMethod.GET)
 	public ResponseEntity <RentalHeader> setMeetUp(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("meetUp") String status, @PathVariable("dateApproved") String dateApproved) {
 		ResponseEntity <RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setApprovedExam(rentalHeaderId, status, dateApproved));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/setReturnById/{rentalHeaderId}/{meetUpId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> setReturnById(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("meetUpId") long meetUpId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setReturnMeetUp(rentalHeaderId, meetUpId));
 		return flag;
 	}
 }

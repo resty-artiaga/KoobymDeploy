@@ -2,6 +2,7 @@ package com.koobym.service;
 
 import java.util.List;
 
+import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
 
 public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
@@ -25,4 +26,5 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public long numberOfCompletedRentsByBookOwnerId(long bookOwnerId);
 	public List<RentalHeader> getRentalHeader(long bookOwnerId);
 	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId);
+	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId);
 }

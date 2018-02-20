@@ -10,20 +10,62 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.koobym.dao.MeetUpDao;
 import com.koobym.dao.RentalHeaderDao;
+import com.koobym.dao.UserNotificationDao;
+import com.koobym.model.AuctionHeader;
 import com.koobym.model.BookOwner;
+import com.koobym.model.MeetUp;
 import com.koobym.model.RentalDetail;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.UserNotification;
+import com.koobym.pusher.PusherServer;
 
 @Repository
 public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> implements RentalHeaderDao {
 
+	@Autowired
+	private PusherServer pusherServer;
+	
+	@Autowired
+	private MeetUpDao meetUpDao;
+
+	@Autowired
+	private UserNotificationDao userNotificationDao;
+	
 	public RentalHeaderDaoImpl() {
 		super(RentalHeader.class);
 	}
 
+	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId){
+		 RentalHeader ah = new RentalHeader();
+		 MeetUp mu = new MeetUp();
+		 
+		 ah = get(rentalHeaderId);
+		 mu = meetUpDao.get(meetUpId);
+		 
+		 ah.setReturnMeetUp(mu);
+		 
+		 Session session = getSessionFactory().getCurrentSession();
+		 session.update(ah);
+		 
+		 UserNotification un = new UserNotification();
+		 un.setActionId(rentalHeaderId);
+		 un.setActionName("rental");
+		 un.setActionStatus("return");
+		 un.setBookActionPerformedOn(ah.getRentalDetail().getBookOwner());
+		 un.setUserPerformer(ah.getUserId());
+		 un.setUser(ah.getRentalDetail().getBookOwner().getUser());
+		 
+		 userNotificationDao.save(un);
+		 pusherServer.sendNotification(un);
+		 
+		 return ah;
+	 }
+	
 	public List<RentalHeader> getListRentalById(int userId) {
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 
