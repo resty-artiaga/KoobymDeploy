@@ -31,7 +31,8 @@ public class MeetUp {
 	@JoinColumn(name = "locationId")
 	private Location location;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "userDayTimeId")
 	private UserDayTime userDayTime;
 	
