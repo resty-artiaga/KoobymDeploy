@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,13 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		un.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		un.setExtraMessage("Confirm");
 		
+		rentalHeader.setRentalReturnDate(rentalHeader.getMeetUp().getUserDayTime().getDays().getStrDay());
 		
+		Session session = getSessionFactory().getCurrentSession();
+		
+//		session.update(rentalHeader);
+		
+		rentalHeaderDao.update(rentalHeader);
 		
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);

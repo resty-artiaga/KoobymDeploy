@@ -70,6 +70,14 @@ public class RentalHeader {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "returnMeetUp")
 	private MeetUp returnMeetUp;
+	
+	public String getRentalReturnDate(){
+		return this.rentalReturnDate;
+	}
+	
+	public void setRentalReturnDate(String rentalReturnDate){
+		this.rentalReturnDate = rentalReturnDate;
+	}
 
 	public MeetUp getReturnMeetUp() {
 		return this.returnMeetUp;
