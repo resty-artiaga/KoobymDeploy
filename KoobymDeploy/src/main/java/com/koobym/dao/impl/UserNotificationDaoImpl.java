@@ -86,7 +86,7 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		un.setActionId(rentalHeader.getRentalHeaderId());
 		un.setActionName("rental");
 		un.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
-		un.setActionStatus("EarlyNotif");
+		un.setActionStatus("return-confirmed");
 		un.setUser(rentalHeader.getUserId());
 		un.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		un.setExtraMessage("Confirm");
@@ -112,7 +112,7 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		un.setActionId(rentalHeader.getRentalHeaderId());
 		un.setActionName("rental");
 		un.setUserPerformer(rentalHeader.getRentalDetail().getBookOwner().getUser());
-		un.setActionStatus("EarlyNotif");
+		un.setActionStatus("return-rejected");
 		un.setUser(rentalHeader.getUserId());
 		un.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		un.setExtraMessage("Reject");

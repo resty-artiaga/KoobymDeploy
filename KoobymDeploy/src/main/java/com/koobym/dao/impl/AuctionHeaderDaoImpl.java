@@ -20,6 +20,7 @@ import com.koobym.dao.MeetUpDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
+import com.koobym.model.User;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
 import com.koobym.model.AuctionDetail;
@@ -141,5 +142,24 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 	
 	 return auctionHeader;
 	 }
+	
+	public AuctionHeader changeOwner(long auctionHeaderId){
+		AuctionHeader ah = new AuctionHeader();
+		User user = new User();
+		
+		user = ah.getUser();
+		
+		ah = get(auctionHeaderId);
+		
+		ah.getAuctionDetail().getBookOwner().setUser(user);
+		ah.getAuctionDetail().getBookOwner().setBookStat("Not Available");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		
+		session.update(ah);
+		
+		return ah;
+			
+	}
 	 
 }

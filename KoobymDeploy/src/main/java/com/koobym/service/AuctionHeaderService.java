@@ -15,5 +15,6 @@ public interface AuctionHeaderService extends BaseService<AuctionHeader, Long> {
 	public List<AuctionHeader> getToDeliverById(int userId);
 	public List<AuctionHeader> getToReceiveById(int userId);
 	public List<AuctionHeader> getWinById(long userId);
+	public AuctionHeader changeOwner(long auctionHeaderId);
 
 }

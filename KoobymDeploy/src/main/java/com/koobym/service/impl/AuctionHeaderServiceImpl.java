@@ -80,4 +80,9 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		return auctionHeaderDao.getWinById(userId);
 	}
 	
+	@Override
+	public AuctionHeader changeOwner(long auctionHeaderId){
+		return auctionHeaderDao.changeOwner(auctionHeaderId);
+	}
+	
 }
