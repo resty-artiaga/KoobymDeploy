@@ -46,6 +46,9 @@ public class RentalHeader {
 	@Column(name = "rentalEndDate")
 	private String rentalEndDate;
 
+	@Column(name = "rentalReturnDate")
+	private String rentalReturnDate;
+	
 	@Column(name = "totalPrice")
 	private float totalPrice;
 
