@@ -92,13 +92,13 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		un.setBookActionPerformedOn(rentalHeader.getRentalDetail().getBookOwner());
 		un.setExtraMessage("Confirm");
 		
-		rentalHeader.setRentalReturnDate(rentalHeader.getMeetUp().getUserDayTime().getDays().getStrDay());
+		rentalHeader.setRentalReturnDate(rentalHeader.getReturnMeetUp().getUserDayTime().getDays().getStrDay());
 		
 		Session session = getSessionFactory().getCurrentSession();
 		
-//		session.update(rentalHeader);
+		session.update(rentalHeader);
 		
-		rentalHeaderDao.update(rentalHeader);
+//		rentalHeaderDao.update(rentalHeader);
 		
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
