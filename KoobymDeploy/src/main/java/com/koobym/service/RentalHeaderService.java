@@ -7,6 +7,7 @@ import com.koobym.model.RentalHeader;
 
 public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public RentalHeader addNewRentalHeader(RentalHeader rentalHeader);
+	public List<RentalHeader> getToReceive(long userId);
 	public List<RentalHeader> getListRentalById(int userId);
 	public List<RentalHeader> getToDeliverById(int userId);
 	public List<RentalHeader> getToReceiveByIdRenter(int userId);

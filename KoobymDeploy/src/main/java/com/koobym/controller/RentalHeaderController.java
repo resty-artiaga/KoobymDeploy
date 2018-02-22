@@ -187,5 +187,11 @@ public class RentalHeaderController {
 		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setReturnMeetUp(rentalHeaderId, meetUpId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getAllReceive/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> getAllReceive(@PathVariable("userId") long userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getToReceive(userId));
+		return flag;
+	}
 }
 	

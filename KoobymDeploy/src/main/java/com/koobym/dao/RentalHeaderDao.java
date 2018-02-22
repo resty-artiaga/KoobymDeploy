@@ -8,6 +8,8 @@ import com.koobym.model.RentalHeader;
 public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	
 	public List<RentalHeader> getToDeliverToday();
+	
+	public List<RentalHeader> getToReceive(long userId);
 
 	public void rejectAllOtherRequests(RentalHeader rentalHeader);
 
@@ -58,4 +60,6 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public List<RentalHeader> getElapsedRentalDate();
 	
 	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId);
+	
+	public RentalHeader setReturn(long rentalHeaderId);
 }
