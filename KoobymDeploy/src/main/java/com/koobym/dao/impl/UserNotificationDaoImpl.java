@@ -132,5 +132,5 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		return un;
 		
 	}
-
+	
 }

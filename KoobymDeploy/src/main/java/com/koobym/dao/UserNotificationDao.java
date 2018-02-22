@@ -10,4 +10,5 @@ public interface UserNotificationDao extends BaseDao<UserNotification, Long> {
 	public UserNotification sendEarlyNotif(long rentalHeaderId);
 	public UserNotification confirmEarlyNotif(long rentalHeaderId);
 	public UserNotification rejectEarlyNotif(long rentalHeaderId);
+	
 }

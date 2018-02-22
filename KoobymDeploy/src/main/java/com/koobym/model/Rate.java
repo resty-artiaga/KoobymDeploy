@@ -17,7 +17,7 @@ public class Rate {
 	private long rateId;
 
 	@Column(name = "rateNumber")
-	private int rateNumber;
+	private float rateNumber;
 
 	@Column(name = "rateTimeStamp")
 	private String rateTimeStamp;
@@ -26,7 +26,7 @@ public class Rate {
 		return rateId;
 	}
 
-	public int getRateNumber() {
+	public float getRateNumber() {
 		return rateNumber;
 	}
 
@@ -38,7 +38,7 @@ public class Rate {
 		this.rateId = rateId;
 	}
 
-	public void setRateNumber(int rateNumber) {
+	public void setRateNumber(float rateNumber) {
 		this.rateNumber = rateNumber;
 	}
 

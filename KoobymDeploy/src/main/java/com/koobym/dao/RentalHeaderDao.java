@@ -62,4 +62,6 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId);
 	
 	public RentalHeader setReturnToReceive(long rentalHeaderId);
+	
+	public RentalHeader setCompleteRental(long rentalHeaderId);
 }

@@ -199,5 +199,11 @@ public class RentalHeaderController {
 		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setReturnToReceive(rentalHeaderId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/setToComplete/{rentalHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> setToComplete(@PathVariable("rentalHeaderId") long rentalHeaderId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setCompleteRental(rentalHeaderId));
+		return flag;
+	}
 }
 	
