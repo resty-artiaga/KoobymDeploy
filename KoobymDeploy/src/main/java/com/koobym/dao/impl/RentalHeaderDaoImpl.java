@@ -471,6 +471,8 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 	public RentalHeader setReturnToReceive(long rentalHeaderId){
 		RentalHeader rh = new RentalHeader();
+		
+		rh = get(rentalHeaderId);
 
 		rh.setStatus("Received");
 		rh.setRentalExtraMessage("Returned");
