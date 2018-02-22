@@ -193,5 +193,11 @@ public class RentalHeaderController {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.getToReceive(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/returnToReceive/{rentalHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> returnToReceive(@PathVariable("rentalHeaderId") long rentalHeaderId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setReturnToReceive(rentalHeaderId));
+		return flag;
+	}
 }
 	
