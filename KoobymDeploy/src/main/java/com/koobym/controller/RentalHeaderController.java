@@ -200,9 +200,9 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
-	@RequestMapping(value = "/setToComplete/{rentalHeaderId}", method = RequestMethod.GET)
-	public ResponseEntity<RentalHeader> setToComplete(@PathVariable("rentalHeaderId") long rentalHeaderId) {
-		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setCompleteRental(rentalHeaderId));
+	@RequestMapping(value = "/setToComplete/{rentalHeaderId}/{userRatingId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> setToComplete(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("rentalHeaderId") long userRatingId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setCompleteRental(rentalHeaderId, userRatingId));
 		return flag;
 	}
 }

@@ -237,7 +237,7 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	}
 	
 	@Override
-	public RentalHeader setCompleteRental(long rentalHeaderId){
-		return rentalHeaderDao.setCompleteRental(rentalHeaderId);
+	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId){
+		return rentalHeaderDao.setCompleteRental(rentalHeaderId, userRatingId);
 	}
 }
