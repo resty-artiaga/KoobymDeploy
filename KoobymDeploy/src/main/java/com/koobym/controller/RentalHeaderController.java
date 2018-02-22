@@ -201,7 +201,7 @@ public class RentalHeaderController {
 	}
 	
 	@RequestMapping(value = "/setToComplete/{rentalHeaderId}/{userRatingId}", method = RequestMethod.GET)
-	public ResponseEntity<RentalHeader> setToComplete(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("rentalHeaderId") long userRatingId) {
+	public ResponseEntity<RentalHeader> setToComplete(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("userRatingId") long userRatingId) {
 		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setCompleteRental(rentalHeaderId, userRatingId));
 		return flag;
 	}
