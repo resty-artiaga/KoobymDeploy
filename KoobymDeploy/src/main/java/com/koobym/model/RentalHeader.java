@@ -49,6 +49,9 @@ public class RentalHeader {
 	@Column(name = "rentalReturnDate")
 	private String rentalReturnDate;
 	
+	@Column(name = "rentalExtraMessage")
+	private String rentalExtraMessage;
+	
 	@Column(name = "totalPrice")
 	private float totalPrice;
 
@@ -70,6 +73,14 @@ public class RentalHeader {
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "returnMeetUp")
 	private MeetUp returnMeetUp;
+	
+	public String getRentalExtraMessage(){
+		return this.rentalExtraMessage;
+	}
+	
+	public void setRentalExtraMessage(String rentalExtraMessage){
+		this.rentalExtraMessage = rentalExtraMessage;
+	}
 	
 	public String getRentalReturnDate(){
 		return this.rentalReturnDate;
