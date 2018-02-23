@@ -161,5 +161,28 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		return ah;
 			
 	}
+	
+	public AuctionHeader deliveredBook(long auctionHeaderId){
+		AuctionHeader ah = new AuctionHeader();
+		
+		ah = get(auctionHeaderId);
+		
+		ah.setAuctionExtraMessage("Delivered");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(ah);
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(auctionHeaderId);
+		un.setActionName("auction");
+		un.setActionStatus("delivered");
+		un.setBookActionPerformedOn(ah.getAuctionDetail().getBookOwner());
+		un.setUser(ah.getUser());
+		un.setUserPerformer(ah.getAuctionDetail().getBookOwner().getUser());
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		return ah;
+	}
 	 
 }

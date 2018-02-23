@@ -85,4 +85,9 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		return auctionHeaderDao.changeOwner(auctionHeaderId);
 	}
 	
+	@Override
+	public AuctionHeader deliveredBook(long auctionHeaderId){
+		return auctionHeaderDao.deliveredBook(auctionHeaderId);
+	}
+	
 }

@@ -42,6 +42,17 @@ public class AuctionHeader {
 	@Column(name="status")
 	private String status;
 	
+	@Column(name="auctionExtraMessage")
+	private String auctionExtraMessage;
+	
+	public String getAuctionExtraMessage(){
+		return this.auctionExtraMessage;
+	}
+	
+	public void setAuctionExtraMessage(String auctionExtraMessage){
+		this.auctionExtraMessage = auctionExtraMessage;
+	}
+	
 	public String getDateDelivered(){
 		return this.dateDelivered;
 	}
