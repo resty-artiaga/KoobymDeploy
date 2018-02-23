@@ -105,4 +105,10 @@ public class AuctionHeaderController {
 		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.changeOwner(auctionHeaderId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/deliveredBook/{auctionHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<AuctionHeader> deliveredBook(@PathVariable("auctionHeaderId") long auctionHeaderId) {
+		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.deliveredBook(auctionHeaderId));
+		return flag;
+	}
 }
