@@ -245,4 +245,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public RentalHeader delivered(long rentalHeaderId){
 		return rentalHeaderDao.delivered(rentalHeaderId);
 	}
+	
+	@Override
+	public RentalHeader received(long rentalHeaderId){
+		return rentalHeaderDao.received(rentalHeaderId);
+	}
 }

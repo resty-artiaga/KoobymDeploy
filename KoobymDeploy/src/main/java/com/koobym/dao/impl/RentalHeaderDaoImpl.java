@@ -545,4 +545,30 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		
 		return rh;
 	}
+	
+	public RentalHeader received(long rentalHeaderId){
+		RentalHeader rh = new RentalHeader();
+		
+		rh = get(rentalHeaderId);
+		
+		rh.setStatus("Received");
+		rh.getRentalDetail().setRentalStatus("Not Available");
+		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(rh);
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(rentalHeaderId);
+		un.setActionName("rental");
+		un.setActionStatus("received");
+		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+		un.setUser(rh.getRentalDetail().getBookOwner().getUser());
+		un.setUserPerformer(rh.getUserId());
+		
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		return rh;
+	}
 }
