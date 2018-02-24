@@ -204,5 +204,10 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public SwapHeader swapOwner(long userId){
 		return swapHeaderDao.swapOwner(userId);
 	}
+	
+	@Override
+	public SwapHeader setDelivered(long swapHeaderId){
+		return swapHeaderDao.setDelivered(swapHeaderId);
+	}
 
 }

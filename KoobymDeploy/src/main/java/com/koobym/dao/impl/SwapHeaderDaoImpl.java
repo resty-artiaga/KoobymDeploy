@@ -8,18 +8,28 @@ import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.SwapHeaderDao;
+import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapDetail;
 import com.koobym.model.SwapHeader;
 import com.koobym.model.User;
+import com.koobym.model.UserNotification;
+import com.koobym.pusher.PusherServer;
 
 @Repository
 public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements SwapHeaderDao {
 
+	@Autowired
+	private UserNotificationDao userNotificationDao;
+	
+	@Autowired
+	private PusherServer pusherServer;
+	
 	public SwapHeaderDaoImpl() {
 		super(SwapHeader.class);
 	}
@@ -326,5 +336,33 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		query.setLong("swapDetailId", swapHeader.getSwapDetail().getSwapDetailId());
 		query.setLong("swapHeaderId", swapHeader.getSwapHeaderId());
 		query.executeUpdate();
+	}
+	
+	public SwapHeader setDelivered(long swapHeaderId){
+		SwapHeader sh = new SwapHeader();
+		
+		sh = get(swapHeaderId);
+		
+		sh.setSwapExtraMessage("delivered");
+		sh.getSwapDetail().setSwapStatus("Not Available");
+		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
+		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
+		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(session);
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(swapHeaderId);
+		un.setActionName("swap");
+		un.setActionStatus("delivered");
+		un.setBookActionPerformedOn(sh.getRequestedSwapDetail().getBookOwner());
+		un.setExtraMessage(String.valueOf(sh.getSwapDetail().getSwapDetailId()));
+		un.setUser(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		un.setUserPerformer(sh.getSwapDetail().getBookOwner().getUser());
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		return sh;
 	}
 }

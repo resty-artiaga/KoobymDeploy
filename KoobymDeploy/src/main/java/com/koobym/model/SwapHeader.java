@@ -69,6 +69,17 @@ public class SwapHeader {
 	@Column(name="status")
 	private String status;
 
+	@Column(name="swapExtraMessage")
+	private String swapExtraMessage;
+	
+	public String getSwapExtraMessage(){
+		return this.swapExtraMessage;
+	}
+	
+	public void setSwapExtraMessage(String swapExtraMessage){
+		this.swapExtraMessage = swapExtraMessage;
+	}
+
 	public String getDateDelivered(){
 		return this.dateDelivered;
 	}

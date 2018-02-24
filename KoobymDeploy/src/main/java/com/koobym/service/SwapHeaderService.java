@@ -19,4 +19,5 @@ public interface SwapHeaderService extends BaseService<SwapHeader, Long> {
 	public List<SwapHeader> getCompleteAllById(int userId);
 	public SwapHeader addNewSwapHeader(SwapHeader swapHeader);
 	public SwapHeader swapOwner(long userId);
+	public SwapHeader setDelivered(long swapHeaderId);
 }
