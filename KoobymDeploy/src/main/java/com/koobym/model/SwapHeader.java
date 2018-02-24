@@ -69,6 +69,14 @@ public class SwapHeader {
 	@Column(name="status")
 	private String status;
 
+	public String getDateDelivered(){
+		return this.dateDelivered;
+	}
+	
+	public void setDateDelivered(String dateDelivered){
+		this.dateDelivered = dateDelivered;
+	}
+	
 	public MeetUp getMeetUp() {
 		return meetUp;
 	}
