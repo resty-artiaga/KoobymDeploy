@@ -97,6 +97,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		criteria = criteria.createAlias("auctionDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "win"));
+		criteria = criteria.add(Restrictions.and(Restrictions.ne("auctionExtraMessage", "Delivered"), Restrictions.eq("auctionExtraMessage","")));
 		criteria = criteria.addOrder(Order.desc("dateDelivered")); 
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<AuctionHeader>) criteria.list();
