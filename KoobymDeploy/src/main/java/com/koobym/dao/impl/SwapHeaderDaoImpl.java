@@ -350,7 +350,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
 		
 		Session session = getSessionFactory().getCurrentSession();
-		session.update(session);
+		session.update(sh);
 		
 		UserNotification un = new UserNotification();
 		un.setActionId(swapHeaderId);
