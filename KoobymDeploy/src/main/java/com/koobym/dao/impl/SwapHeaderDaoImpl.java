@@ -365,4 +365,42 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		
 		return sh;
 	}
+	
+	public SwapHeader setComplete(long swapHeaderId){
+		SwapHeader sh = new SwapHeader();
+		SwapDetail sd = new SwapDetail();
+		SwapDetail sdMine = new SwapDetail();
+		
+		sd = sh.getSwapDetail();
+		sdMine = sh.getRequestedSwapDetail();
+		sh = get(swapHeaderId);
+		
+		sh.getSwapDetail().getBookOwner().setUser(sdMine.getBookOwner().getUser());
+		sh.getRequestedSwapDetail().getBookOwner().setUser(sd.getBookOwner().getUser());
+		sh.setStatus("Complete");
+		
+		sh.getSwapDetail().setSwapStatus("Not Available");
+		sh.getSwapDetail().getBookOwner().setStatus("none");
+		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
+		
+		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
+		sh.getRequestedSwapDetail().getBookOwner().setStatus("none");
+		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(sh);
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(swapHeaderId);
+		un.setActionName("swap");
+		un.setActionStatus("Completed");
+		un.setBookActionPerformedOn(sd.getBookOwner());
+		un.setExtraMessage(String.valueOf(sdMine.getSwapDetailId()));
+		un.setUser(sd.getBookOwner().getUser());
+		un.setUserPerformer(sdMine.getBookOwner().getUser());
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		return sh;
+	}
 }

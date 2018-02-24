@@ -209,5 +209,10 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public SwapHeader setDelivered(long swapHeaderId){
 		return swapHeaderDao.setDelivered(swapHeaderId);
 	}
+	
+	@Override
+	public SwapHeader setComplete(long swapHeaderId){
+		return swapHeaderDao.setComplete(swapHeaderId);
+	}
 
 }
