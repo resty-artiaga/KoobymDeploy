@@ -21,6 +21,7 @@ import com.koobym.model.BookOwner;
 import com.koobym.model.MeetUp;
 import com.koobym.model.RentalDetail;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.User;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
 
@@ -568,6 +569,36 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
+		
+		return rh;
+	}
+
+
+	public RentalHeader complete(long rentalHeaderId){
+		RentalHeader rh = new RentalHeader();
+		
+		rh = get(rentalHeaderId);
+		
+		rh.setStatus("Complete");
+		rh.getRentalDetail().setRentalStatus("Not Available");
+		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
+		rh.getRentalDetail().getBookOwner().setStatus("none");
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(rentalHeaderId);
+		un.setActionName("rental");
+		un.setActionStatus("Complete");
+		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+		un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
+		un.setUser(rh.getUserId());
+		
+		rh.getRentalDetail().getBookOwner().setUser(rh.getUserId());
+				
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(rh);
 		
 		return rh;
 	}

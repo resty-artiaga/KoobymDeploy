@@ -32,4 +32,5 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId);
 	public RentalHeader delivered(long rentalHeaderId);
 	public RentalHeader received(long rentalHeaderId);
+	public RentalHeader complete(long rentalHeaderId);
 }
