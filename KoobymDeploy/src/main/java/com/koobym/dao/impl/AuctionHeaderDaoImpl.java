@@ -186,7 +186,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		return ah;
 	}
 	
-	public AuctionHeader receivedBook(long auctionHeaderId){
+	public AuctionHeader receivedBook(long auctionHeaderId, long userRatingId){
 		AuctionHeader ah = new AuctionHeader();
 		User user = new User();
 		
@@ -206,6 +206,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		un.setBookActionPerformedOn(ah.getAuctionDetail().getBookOwner());
 		un.setUser(ah.getAuctionDetail().getBookOwner().getUser());
 		un.setUserPerformer(user);
+		un.setExtraMessage(String.valueOf(userRatingId));
 		
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);

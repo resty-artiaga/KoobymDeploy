@@ -112,9 +112,9 @@ public class AuctionHeaderController {
 		return flag;
 	}
 	
-	@RequestMapping(value = "/completeBook/{auctionHeaderId}", method = RequestMethod.GET)
-	public ResponseEntity<AuctionHeader> completeBook(@PathVariable("auctionHeaderId") long auctionHeaderId) {
-		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.receivedBook(auctionHeaderId));
+	@RequestMapping(value = "/completeBook/{auctionHeaderId}/{userRatingId}", method = RequestMethod.GET)
+	public ResponseEntity<AuctionHeader> completeBook(@PathVariable("auctionHeaderId") long auctionHeaderId, @PathVariable("userRatingId") long userRatingId) {
+		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.receivedBook(auctionHeaderId, userRatingId));
 		return flag;
 	}
 }

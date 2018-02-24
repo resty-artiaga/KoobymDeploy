@@ -91,7 +91,8 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 	}
 	
 	@Override
-	public AuctionHeader receivedBook(long auctionHeaderId){
-		return auctionHeaderDao.receivedBook(auctionHeaderId);
+	public AuctionHeader receivedBook(long auctionHeaderId, long userRatingId){
+		return auctionHeaderDao.receivedBook(auctionHeaderId, userRatingId);
 	}
+	
 }
