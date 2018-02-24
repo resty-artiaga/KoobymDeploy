@@ -194,9 +194,9 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
-	@RequestMapping(value = "/returnToReceive/{rentalHeaderId}", method = RequestMethod.GET)
-	public ResponseEntity<RentalHeader> returnToReceive(@PathVariable("rentalHeaderId") long rentalHeaderId) {
-		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setReturnToReceive(rentalHeaderId));
+	@RequestMapping(value = "/returnToReceive/{rentalHeaderId}/{bookRatingId}/{bookReviewRating}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> returnToReceive(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("bookRatingId") long bookRatingId, @PathVariable("bookReviewId") long bookReviewId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setReturnToReceive(rentalHeaderId, bookRatingId, bookReviewId));
 		return flag;
 	}
 	

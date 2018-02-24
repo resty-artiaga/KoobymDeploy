@@ -470,7 +470,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		query.executeUpdate();
 	}
 
-	public RentalHeader setReturnToReceive(long rentalHeaderId){
+	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId){
 		RentalHeader rh = new RentalHeader();
 		
 		rh = get(rentalHeaderId);
@@ -484,7 +484,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setActionName("rental");
 		un.setActionStatus("returned");
 		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
-		un.setExtraMessage("Returned");
+		un.setExtraMessage(String.valueOf(bookRatingId)+", "+String.valueOf(bookReviewId));
 		un.setUser(rh.getRentalDetail().getBookOwner().getUser());
 		un.setUserPerformer(rh.getUserId());
 		

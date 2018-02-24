@@ -28,7 +28,7 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public List<RentalHeader> getRentalHeader(long bookOwnerId);
 	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId);
 	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId);
-	public RentalHeader setReturnToReceive(long rentalHeaderId);
+	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId);
 	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId);
 	public RentalHeader delivered(long rentalHeaderId);
 	public RentalHeader received(long rentalHeaderId);

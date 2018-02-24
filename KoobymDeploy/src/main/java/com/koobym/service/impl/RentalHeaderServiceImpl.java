@@ -232,8 +232,8 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	}
 	
 	@Override
-	public RentalHeader setReturnToReceive(long rentalHeaderId){
-		return rentalHeaderDao.setReturnToReceive(rentalHeaderId);
+	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId){
+		return rentalHeaderDao.setReturnToReceive(rentalHeaderId, bookRatingId, bookReviewId);
 	}
 	
 	@Override
