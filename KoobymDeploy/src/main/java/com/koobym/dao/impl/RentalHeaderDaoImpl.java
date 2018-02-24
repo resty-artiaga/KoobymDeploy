@@ -574,7 +574,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 	}
 
 
-	public RentalHeader complete(long rentalHeaderId){
+	public RentalHeader complete(long rentalHeaderId, long userRatingId){
 		RentalHeader rh = new RentalHeader();
 		
 		rh = get(rentalHeaderId);
@@ -591,6 +591,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
 		un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
 		un.setUser(rh.getUserId());
+		un.setExtraMessage(String.valueOf(userRatingId));
 		
 		rh.getRentalDetail().getBookOwner().setUser(rh.getUserId());
 				
