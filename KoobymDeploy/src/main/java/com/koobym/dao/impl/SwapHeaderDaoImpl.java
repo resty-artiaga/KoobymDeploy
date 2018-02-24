@@ -370,10 +370,12 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		SwapHeader sh = new SwapHeader();
 		SwapDetail sd = new SwapDetail();
 		SwapDetail sdMine = new SwapDetail();
+	
+		sh = get(swapHeaderId);
 		
 		sd = sh.getSwapDetail();
 		sdMine = sh.getRequestedSwapDetail();
-		sh = get(swapHeaderId);
+
 		
 		sh.getSwapDetail().getBookOwner().setUser(sdMine.getBookOwner().getUser());
 		sh.getRequestedSwapDetail().getBookOwner().setUser(sd.getBookOwner().getUser());
