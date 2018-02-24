@@ -367,18 +367,22 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 	}
 	
 	public SwapHeader setComplete(long swapHeaderId){
-		SwapHeader sh = new SwapHeader();
-		SwapDetail sd = new SwapDetail();
-		SwapDetail sdMine = new SwapDetail();
-	
+		SwapHeader sh = new SwapHeader();	
 		sh = get(swapHeaderId);
-		
-		sd = sh.getSwapDetail();
-		sdMine = sh.getRequestedSwapDetail();
+		SwapDetail mySwapDetail = new SwapDetail();
+		SwapDetail toBeSwapped = new SwapDetail();	
+		User ms = new User();
+		User tbs = new User();
 
+		mySwapDetail = sh.getRequestedSwapDetail();
+		toBeSwapped = sh.getSwapDetail();
+		ms = mySwapDetail.getBookOwner().getUser();
+		tbs = toBeSwapped.getBookOwner().getUser();
 		
-		sh.getSwapDetail().getBookOwner().setUser(sdMine.getBookOwner().getUser());
-		sh.getRequestedSwapDetail().getBookOwner().setUser(sd.getBookOwner().getUser());
+		mySwapDetail.getBookOwner().setUser(tbs);
+		toBeSwapped.getBookOwner().setUser(ms);
+		sh.setSwapDetail(toBeSwapped);
+		sh.setRequestedSwapDetail(mySwapDetail);
 		sh.setStatus("Complete");
 		
 		sh.getSwapDetail().setSwapStatus("Not Available");
@@ -396,10 +400,10 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionId(swapHeaderId);
 		un.setActionName("swap");
 		un.setActionStatus("Completed");
-		un.setBookActionPerformedOn(sd.getBookOwner());
-		un.setExtraMessage(String.valueOf(sdMine.getSwapDetailId()));
-		un.setUser(sd.getBookOwner().getUser());
-		un.setUserPerformer(sdMine.getBookOwner().getUser());
+		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
+		un.setExtraMessage(String.valueOf(sh.getRequestedSwapDetail().getSwapDetailId()));
+		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
+		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
 		
