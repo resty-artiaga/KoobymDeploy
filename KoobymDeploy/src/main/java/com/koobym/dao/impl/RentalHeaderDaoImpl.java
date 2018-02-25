@@ -223,7 +223,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.eq("status", "Confirmation"));
+		criteria = criteria.add(Restrictions.eq("status", "Request"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
