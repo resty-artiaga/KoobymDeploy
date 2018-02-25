@@ -117,4 +117,10 @@ public class AuctionHeaderController {
 		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.receivedBook(auctionHeaderId, userRatingId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/history/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<AuctionHeader>> history(@PathVariable("userId") long userId) {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.history(userId));
+		return flag;
+	}
 }

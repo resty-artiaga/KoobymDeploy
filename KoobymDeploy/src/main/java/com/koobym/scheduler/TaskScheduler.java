@@ -105,19 +105,16 @@ public class TaskScheduler {
 
 			if(ad.getStartDate().equals(formattedDate)) {
 				System.out.println("compare ni Start: " + ad.getStartDate()+", "+formattedDate);	
-//				System.out.println("status, parehas silag date, startDate, "+formattedDate);
-//				
+				
 				if(formattedData.equals(ad.getStartTime())){
 					System.out.println("sulod sa Start Time");
 					ad.setAuctionStatus("start");
 					auctionDetailDao.save(ad);
 				}
-//				
+				
 			}else if(ad.getEndDate().equals(formattedDate)){
 				System.out.println("compare ni End: " + ad.getEndDate()+", "+formattedDate);
 				
-//				System.out.println("status, parehas silag date, endDate, "+formattedDate);	
-//				
 				if(formattedData.equals(ad.getEndTime())){
 					ad.setAuctionStatus("stop");
 					System.out.println("sulod sa End Time");

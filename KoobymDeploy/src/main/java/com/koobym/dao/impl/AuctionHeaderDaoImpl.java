@@ -214,4 +214,16 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		return ah;
 	}
 	 
+	public List<AuctionHeader> history(long userId){
+		List<AuctionHeader> ah = new ArrayList<AuctionHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.add(Restrictions.eq("status", "Complete"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		ah = (List<AuctionHeader>) criteria.list();
+		
+		return ah;
+	}
 }

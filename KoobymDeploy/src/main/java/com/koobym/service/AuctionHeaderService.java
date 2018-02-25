@@ -18,4 +18,5 @@ public interface AuctionHeaderService extends BaseService<AuctionHeader, Long> {
 	public AuctionHeader changeOwner(long auctionHeaderId);
 	public AuctionHeader deliveredBook(long auctionHeaderId);
 	public AuctionHeader receivedBook(long auctionHeaderId, long userRatingId);
+	public List<AuctionHeader> history(long userId);
 }
