@@ -218,9 +218,9 @@ public class RentalHeaderController {
 		return flag;
 	}
 	
-	@RequestMapping(value = "/complete/{rentalHeaderId}/{userRatingId}", method = RequestMethod.GET)
-	public ResponseEntity<RentalHeader> complete(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("userRatingId") long userRatingId) {
-		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.complete(rentalHeaderId, userRatingId));
+	@RequestMapping(value = "/history/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> history(@PathVariable("userId") long userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.allHistory(userId));
 		return flag;
 	}
 }

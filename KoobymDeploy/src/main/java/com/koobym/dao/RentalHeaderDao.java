@@ -70,4 +70,6 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public RentalHeader received(long rentalHeaderId);
 
 	public RentalHeader complete(long rentalHeaderId, long userRatingId);
+	
+	public List<RentalHeader> allHistory(long userId);
 }
