@@ -215,4 +215,8 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 		return swapHeaderDao.setComplete(swapHeaderId);
 	}
 
+	@Override
+	public List<SwapHeader> history(long userId){
+		return swapHeaderDao.history(userId);
+	}
 }

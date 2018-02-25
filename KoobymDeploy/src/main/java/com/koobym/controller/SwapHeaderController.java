@@ -151,4 +151,10 @@ public class SwapHeaderController {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setComplete(swapHeaderId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/history/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> history(@PathVariable("userId") long userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.history(userId));
+		return flag;
+	}
 }

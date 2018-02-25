@@ -41,4 +41,6 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public SwapHeader setDelivered(long swapHeaderId);
 
 	public SwapHeader setComplete(long swapHeaderId);
+	
+	public List<SwapHeader> history(long userId);
 }
