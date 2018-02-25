@@ -157,4 +157,10 @@ public class SwapHeaderController {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.history(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/swapRequests/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<SwapHeader>> requests(@PathVariable("userId") long userId) {
+		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getRequests(userId));
+		return flag;
+	}
 }
