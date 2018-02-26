@@ -10,4 +10,5 @@ public interface UserNotificationService extends BaseService<UserNotification, L
 	public UserNotification sendEarlyNotif(long rentalHeaderId);
 	public UserNotification confirmEarlyNotif(long rentalHeaderId);
 	public UserNotification rejectEarlyNotif(long rentalHeaderId);
+	public UserNotification updateRentalExtraMessage(long userNotificationId);
 }

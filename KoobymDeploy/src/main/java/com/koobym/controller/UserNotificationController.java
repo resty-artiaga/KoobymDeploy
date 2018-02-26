@@ -95,4 +95,10 @@ public class UserNotificationController {
 		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.rejectEarlyNotif(new Long(rentalHeaderId)));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/updateRentalExtra/{userNotificationId}", method = RequestMethod.GET)
+	public ResponseEntity<UserNotification> updateRental(@PathVariable("userNotificationId") long userNotificationId) {
+		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.updateRentalExtraMessage(userNotificationId));
+		return flag;
+	}
 }

@@ -133,4 +133,20 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		
 	}
 	
+	@Override
+	public UserNotification updateRentalExtraMessage(long userNotificationId){
+		UserNotification un = new UserNotification();
+		RentalHeader rh = new RentalHeader();
+			
+		un = get(userNotificationId);
+		rh = rentalHeaderDao.get(un.getActionId());
+		
+		
+		rh.setRentalExtraMessage(un.getExtraMessage());
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(rh);
+		
+		return un;
+	}
+	
 }

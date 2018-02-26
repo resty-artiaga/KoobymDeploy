@@ -663,11 +663,12 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 				
 				UserNotification userN = new UserNotification();
 				userN.setActionId(rentalHeaderId);
-				userN.setActionName("rent");
+				userN.setActionName("rental");
 				userN.setActionStatus("Rejected");
 				userN.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
 				userN.setUser(rh.getUserId());
 				userN.setUserPerformer(rd.getBookOwner().getUser());
+				userN.setExtraMessage("Accepted other request.");
 				userNotificationDao.save(userN);
 				pusherServer.sendNotification(userN);
 			}

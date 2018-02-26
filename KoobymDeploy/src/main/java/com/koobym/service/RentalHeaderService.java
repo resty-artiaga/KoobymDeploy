@@ -36,4 +36,5 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public List<RentalHeader> allHistory(long userId);
 	public RentalHeader acceptRequest(long rentalHeaderId);
 	public RentalHeader rejectRequest(long rentalHeaderId);
+	
 }
