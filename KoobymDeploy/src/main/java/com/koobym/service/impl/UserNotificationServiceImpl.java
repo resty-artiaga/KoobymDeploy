@@ -53,4 +53,9 @@ public class UserNotificationServiceImpl extends BaseServiceImpl<UserNotificatio
 	public UserNotification updateRentalExtraMessage(long userNotificationId){
 		return userNotificationDao.updateRentalExtraMessage(userNotificationId);
 	}
+	
+	@Override
+	public UserNotification updateSwapExtraMessage(long userNotificationId){
+		return userNotificationDao.updateSwapExtraMessage(userNotificationId);
+	}
 }

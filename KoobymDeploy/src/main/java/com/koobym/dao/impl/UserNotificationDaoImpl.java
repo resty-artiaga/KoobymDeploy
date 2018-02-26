@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.koobym.dao.RentalHeaderDao;
+import com.koobym.dao.SwapHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.SwapHeader;
 import com.koobym.model.User;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
@@ -22,6 +24,9 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 
 	@Autowired
 	private RentalHeaderDao rentalHeaderDao;
+	
+	@Autowired
+	private SwapHeaderDao swapHeaderDao;
 	
 	@Autowired
 	private PusherServer pusherServer;
@@ -145,6 +150,21 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		rh.setRentalExtraMessage(un.getExtraMessage());
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
+		
+		return un;
+	}
+	
+	public UserNotification updateSwapExtraMessage(long userNotificationId){
+		UserNotification un = new UserNotification();
+		SwapHeader sh = new SwapHeader();
+			
+		un = get(userNotificationId);
+		sh = swapHeaderDao.get(un.getActionId());
+		
+		
+		sh.setSwapExtraMessage(un.getExtraMessage());
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(sh);
 		
 		return un;
 	}

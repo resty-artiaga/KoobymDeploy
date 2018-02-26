@@ -101,4 +101,10 @@ public class UserNotificationController {
 		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.updateRentalExtraMessage(userNotificationId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/updateSwapExtra/{userNotificationId}", method = RequestMethod.GET)
+	public ResponseEntity<UserNotification> updateSwap(@PathVariable("userNotificationId") long userNotificationId) {
+		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.updateSwapExtraMessage(userNotificationId));
+		return flag;
+	}
 }
