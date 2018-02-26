@@ -637,7 +637,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		
 		UserNotification un = new UserNotification();
 		un.setActionId(rentalHeaderId);
-		un.setActionName("rent");
+		un.setActionName("rental");
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
 		un.setUser(rh.getUserId());

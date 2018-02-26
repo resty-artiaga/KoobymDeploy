@@ -163,4 +163,16 @@ public class SwapHeaderController {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getRequests(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/approveRequests/{swapHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapHeader> approve(@PathVariable("swapHeaderId") long swapHeaderId) {
+		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.approveRequest(swapHeaderId));
+		return flag;
+	}
+	
+	@RequestMapping(value = "/rejectedRequests/{swapHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapHeader> rejected(@PathVariable("swapHeaderId") long swapHeaderId) {
+		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.rejectedRequest(swapHeaderId));
+		return flag;
+	}
 }

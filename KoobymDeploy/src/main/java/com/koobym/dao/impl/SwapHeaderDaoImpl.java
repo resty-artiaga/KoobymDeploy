@@ -440,4 +440,76 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		
 		return flag;
 	}
+	
+	public SwapHeader approveRequest(long swapHeaderId){
+		SwapHeader sh = new SwapHeader();
+		
+		sh = get(swapHeaderId);
+		
+		sh.setStatus("Approved");
+		sh.getSwapDetail().setSwapStatus("Not Available");
+		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
+		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
+		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(sh);
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(swapHeaderId);
+		un.setActionName("swap");
+		un.setActionStatus("Approved");
+		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
+		un.setUser(sh.getUser());
+		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		
+		List<SwapHeader> flag = new ArrayList<SwapHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
+		criteria = criteria.add(Restrictions.eq("status", "Request"));
+		criteria = criteria.add(Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		
+		SwapHeader swapHeaderTemp = new SwapHeader();
+		for(int init=0; init<flag.size(); init++){
+			swapHeaderTemp = flag.get(init);
+			
+			if(!(swapHeaderTemp.equals(swapHeaderId))){
+				swapHeaderTemp.setStatus("Rejected");
+				swapHeaderTemp.setSwapExtraMessage("Accepted other request.");
+				session.update(swapHeaderTemp);
+				
+				UserNotification userN = new UserNotification();
+				userN.setActionId(swapHeaderId);
+				userN.setActionName("swap");
+				userN.setActionStatus("Rejected");
+				userN.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
+				userN.setUser(sh.getUser());
+				userN.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
+				userN.setExtraMessage("Accepted other request.");
+				userNotificationDao.save(userN);
+				pusherServer.sendNotification(userN);
+				
+			}
+		}
+		return sh;
+	}
+	
+	public SwapHeader rejectedRequest(long swapHeaderId){
+		SwapHeader sh = new SwapHeader();
+		
+		sh = get(swapHeaderId);
+		
+		sh.setStatus("Rejected");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(sh);
+		
+		return sh;
+	}
 }

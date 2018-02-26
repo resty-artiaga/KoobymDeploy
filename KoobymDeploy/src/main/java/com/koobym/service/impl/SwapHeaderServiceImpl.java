@@ -224,4 +224,14 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> getRequests(long userId){
 		return swapHeaderDao.getRequests(userId);
 	}
+	
+	@Override
+	public SwapHeader approveRequest(long swapHeaderId){
+		return swapHeaderDao.approveRequest(swapHeaderId);
+	}
+	
+	@Override
+	public SwapHeader rejectedRequest(long swapHeaderId){
+		return swapHeaderDao.rejectedRequest(swapHeaderId);
+	}
 }

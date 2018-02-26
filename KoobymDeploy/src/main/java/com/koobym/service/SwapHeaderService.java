@@ -23,4 +23,6 @@ public interface SwapHeaderService extends BaseService<SwapHeader, Long> {
 	public SwapHeader setComplete(long swapHeaderId);
 	public List<SwapHeader> history(long userId);
 	public List<SwapHeader> getRequests(long userId);
+	public SwapHeader approveRequest(long swapHeaderId);
+	public SwapHeader rejectedRequest(long swapHeaderId);
 }
