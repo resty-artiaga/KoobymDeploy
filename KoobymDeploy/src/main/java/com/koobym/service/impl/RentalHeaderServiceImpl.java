@@ -260,4 +260,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public List<RentalHeader> allHistory(long userId){
 		return rentalHeaderDao.allHistory(userId);
 	}
+	
+	@Override
+	public RentalHeader acceptRequest(long rentalHeaderId){
+		return rentalHeaderDao.acceptRequest(rentalHeaderId);
+	}
 }

@@ -223,5 +223,11 @@ public class RentalHeaderController {
 		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.allHistory(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/acceptRequest/{rentalHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> acceptRequest(@PathVariable("rentalHeaderId") long rentalHeaderId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.acceptRequest(rentalHeaderId));
+		return flag;
+	}
 }
 	

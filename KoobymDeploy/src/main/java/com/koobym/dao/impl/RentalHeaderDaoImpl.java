@@ -617,4 +617,62 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		return flag;
 
 	}
+	
+	public RentalHeader acceptRequest(long rentalHeaderId){
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+		
+		RentalHeader rh = new RentalHeader();
+		RentalDetail rd = new RentalDetail();
+		
+		rh = get(rentalHeaderId);
+		rd = rh.getRentalDetail();
+		
+		
+		rh.setStatus("Approved");
+		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
+		rh.getRentalDetail().setRentalStatus("Not Available");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(rh);
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(rentalHeaderId);
+		un.setActionName("rent");
+		un.setActionStatus("Approved");
+		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+		un.setUser(rh.getUserId());
+		un.setUserPerformer(rd.getBookOwner().getUser());
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
+		criteria = criteria.add(Restrictions.eq("status", "Request"));
+		criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", rd.getRental_detailId()));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<RentalHeader>) criteria.list();
+			
+		RentalHeader rentalHeaderTemp;
+		for(int i= 0; i<flag.size();i++){
+			rentalHeaderTemp = flag.get(i);
+			
+			if(!(flag.get(i).equals(rentalHeaderId))){
+				rentalHeaderTemp.setStatus("Rejected");
+				rentalHeaderTemp.setRentalExtraMessage("Accepted other request");
+				session.update(rentalHeaderTemp);
+				
+				UserNotification userN = new UserNotification();
+				userN.setActionId(rentalHeaderId);
+				userN.setActionName("rent");
+				userN.setActionStatus("Rejected");
+				userN.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+				userN.setUser(rh.getUserId());
+				userN.setUserPerformer(rd.getBookOwner().getUser());
+				userNotificationDao.save(userN);
+				pusherServer.sendNotification(userN);
+			}
+		}
+		
+		return rh;
+	}
 }
