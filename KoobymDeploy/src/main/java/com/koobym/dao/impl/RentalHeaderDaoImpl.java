@@ -675,4 +675,17 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		
 		return rh;
 	}
+	
+	public RentalHeader rejectRequest(long rentalHeaderId){
+		RentalHeader rh = new RentalHeader();
+		
+		rh = get(rentalHeaderId);
+		
+		rh.setStatus("Rejected");
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(rh);
+		
+		return rh;
+	}
 }

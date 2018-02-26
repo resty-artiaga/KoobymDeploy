@@ -265,4 +265,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public RentalHeader acceptRequest(long rentalHeaderId){
 		return rentalHeaderDao.acceptRequest(rentalHeaderId);
 	}
+	
+	@Override
+	public RentalHeader rejectRequest(long rentalHeaderId){
+		return rentalHeaderDao.rejectRequest(rentalHeaderId);
+	}
 }
