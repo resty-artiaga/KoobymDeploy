@@ -485,12 +485,12 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 				session.update(swapHeaderTemp);
 				
 				UserNotification userN = new UserNotification();
-				userN.setActionId(swapHeaderId);
+				userN.setActionId(swapHeaderTemp.getSwapHeaderId());
 				userN.setActionName("swap");
 				userN.setActionStatus("Rejected");
-				userN.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
-				userN.setUser(sh.getUser());
-				userN.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
+				userN.setBookActionPerformedOn(swapHeaderTemp.getSwapDetail().getBookOwner());
+				userN.setUser(swapHeaderTemp.getUser());
+				userN.setUserPerformer(swapHeaderTemp.getRequestedSwapDetail().getBookOwner().getUser());
 				userN.setExtraMessage("Accepted other request.");
 				userNotificationDao.save(userN);
 				pusherServer.sendNotification(userN);
