@@ -35,6 +35,17 @@ public class Location {
 	@Column(name = "longitude", nullable = false)
 	private String longitude;
 
+	@Column(name = "status")
+	private String status;
+	
+	public String getStatus(){
+		return this.status;
+	}
+	
+	public void setStatus(String status){
+		this.status = status;
+	}
+	
 	public long getLocationId() {
 		return locationId;
 	}
