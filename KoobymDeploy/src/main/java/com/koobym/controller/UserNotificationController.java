@@ -107,4 +107,10 @@ public class UserNotificationController {
 		ResponseEntity<UserNotification> flag = ResponseEntity.ok(userNotificationService.updateSwapExtraMessage(userNotificationId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getNotificationNum/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Integer> notifNumber(@PathVariable("userId") long userId) {
+		ResponseEntity<Integer> flag = ResponseEntity.ok(userNotificationService.getCountNotRead(userId));
+		return flag;
+	}
 }

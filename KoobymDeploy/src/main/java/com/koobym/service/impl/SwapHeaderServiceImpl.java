@@ -234,4 +234,9 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public SwapHeader rejectedRequest(long swapHeaderId){
 		return swapHeaderDao.rejectedRequest(swapHeaderId);
 	}
+	
+	@Override
+	public List<SwapHeader> swapNotifyScheuler(){
+		return swapHeaderDao.swapNotifyScheuler();
+	}
 }

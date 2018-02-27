@@ -512,4 +512,15 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		
 		return sh;
 	}
+	
+	public List<SwapHeader> swapNotifyScheuler(){
+		List<SwapHeader> flag = new ArrayList<SwapHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.add(Restrictions.eq("status", "Approved"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<SwapHeader>) criteria.list();
+		
+		return flag;
+	}
 }

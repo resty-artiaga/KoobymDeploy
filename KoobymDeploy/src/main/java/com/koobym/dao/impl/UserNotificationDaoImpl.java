@@ -169,4 +169,20 @@ public class UserNotificationDaoImpl extends BaseDaoImpl<UserNotification, Long>
 		return un;
 	}
 	
+	public int getCountNotRead(long userId){
+		int countNotif=0;
+		
+		List<UserNotification> flag = new ArrayList<UserNotification>();
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(UserNotification.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.add(Restrictions.eq("isRead", false));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		flag = (List<UserNotification>) criteria.list();
+		
+		countNotif = flag.size();
+		
+		return countNotif;
+	}
+	
 }

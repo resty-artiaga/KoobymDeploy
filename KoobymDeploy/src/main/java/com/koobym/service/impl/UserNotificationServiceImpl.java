@@ -58,4 +58,9 @@ public class UserNotificationServiceImpl extends BaseServiceImpl<UserNotificatio
 	public UserNotification updateSwapExtraMessage(long userNotificationId){
 		return userNotificationDao.updateSwapExtraMessage(userNotificationId);
 	}
+	
+	@Override
+	public int getCountNotRead(long userId){
+		return userNotificationDao.getCountNotRead(userId);
+	}
 }

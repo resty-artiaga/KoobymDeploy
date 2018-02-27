@@ -49,4 +49,6 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public SwapHeader approveRequest(long swapHeaderId);
 
 	public SwapHeader rejectedRequest(long swapHeaderId);
+
+	public List<SwapHeader> swapNotifyScheuler();
 }
