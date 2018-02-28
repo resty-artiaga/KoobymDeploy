@@ -39,7 +39,7 @@ public class Location {
 	private String status;
 	
 	public String getStatus(){
-		return this.status;
+		return status;
 	}
 	
 	public void setStatus(String status){
