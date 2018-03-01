@@ -43,4 +43,5 @@ public class AuthorDaoImpl extends BaseDaoImpl<Author, Long> implements AuthorDa
 
 		return authors;
 	}
+	
 }
