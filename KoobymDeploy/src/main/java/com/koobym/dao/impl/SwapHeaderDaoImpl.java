@@ -17,6 +17,7 @@ import com.koobym.model.BookOwner;
 import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapDetail;
 import com.koobym.model.SwapHeader;
+import com.koobym.model.SwapHeaderDetail;
 import com.koobym.model.User;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
@@ -77,7 +78,16 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
-
+	}
+	
+	
+	@Override
+	public void save(SwapHeader t) {
+		super.save(t);
+		for(SwapHeaderDetail shd: t.getSwapHeaderDetails()){
+			shd.setSwapHeaderId(t.getSwapHeaderId());
+		}
+		super.update(t);
 	}
 
 	public List<SwapHeader> getToReceiveByIdRenter(int userId) {
