@@ -1,6 +1,7 @@
 package com.koobym.model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
