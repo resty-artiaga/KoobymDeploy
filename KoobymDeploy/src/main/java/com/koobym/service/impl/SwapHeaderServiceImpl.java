@@ -239,4 +239,9 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> swapNotifyScheuler(){
 		return swapHeaderDao.swapNotifyScheuler();
 	}
+	
+	@Override
+	public SwapHeader checkExist(long userId, long swapDetailId){
+		return swapHeaderDao.checkExist(userId, swapDetailId);
+	}
 }

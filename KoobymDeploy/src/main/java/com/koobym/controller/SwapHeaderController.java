@@ -175,4 +175,10 @@ public class SwapHeaderController {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.rejectedRequest(swapHeaderId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/checkExist/{userId}/{swapDetailId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapHeader> exist(@PathVariable("userId") long userId, @PathVariable("swapDetailId") long swapDetailId) {
+		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.checkExist(userId, swapDetailId));
+		return flag;
+	}
 }

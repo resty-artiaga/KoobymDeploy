@@ -27,10 +27,10 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 	@Autowired
 	private UserNotificationDao userNotificationDao;
-	
+
 	@Autowired
 	private PusherServer pusherServer;
-	
+
 	public SwapHeaderDaoImpl() {
 		super(SwapHeader.class);
 	}
@@ -79,12 +79,11 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
 	}
-	
-	
+
 	@Override
 	public void save(SwapHeader t) {
 		super.save(t);
-		for(SwapHeaderDetail shd: t.getSwapHeaderDetails()){
+		for (SwapHeaderDetail shd : t.getSwapHeaderDetails()) {
 			shd.setSwapHeaderId(t.getSwapHeaderId());
 		}
 		super.update(t);
@@ -163,33 +162,31 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		return flag;
 
 	}
-	
-	public SwapHeader swapOwner(long userId){
+
+	public SwapHeader swapOwner(long userId) {
 		SwapHeader flag = new SwapHeader();
 		SwapDetail mySwapDetail = new SwapDetail();
-		SwapDetail toBeSwapped = new SwapDetail();	
+		SwapDetail toBeSwapped = new SwapDetail();
 		User ms = new User();
 		User tbs = new User();
-		
-		
+
 		flag = get(userId);
 		mySwapDetail = flag.getRequestedSwapDetail();
 		toBeSwapped = flag.getSwapDetail();
 		ms = mySwapDetail.getBookOwner().getUser();
 		tbs = toBeSwapped.getBookOwner().getUser();
-		
+
 		mySwapDetail.getBookOwner().setUser(tbs);
 		toBeSwapped.getBookOwner().setUser(ms);
 		flag.setSwapDetail(toBeSwapped);
 		flag.setRequestedSwapDetail(mySwapDetail);
-		
-		
+
 		Session session = getSessionFactory().getCurrentSession();
-		
+
 		session.update(flag);
 		return flag;
 	}
-	
+
 	public SwapHeader swapRequested(SwapHeader swapHeader) {
 
 		String squery = "insert into swap_header (userId, swap_detailId, locationId, userDayTimeId, dateSwap, status) "
@@ -253,25 +250,24 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		query.executeUpdate();
 
 		swapHeader = get(swapHeaderId);
-		
+
 		swapDetail = swapHeader.getSwapDetail();
 		swapDetailReq = swapHeader.getRequestedSwapDetail();
-		
+
 		Session sessionStat = getSessionFactory().getCurrentSession();
 
-		
-		if(status.equals("Approved")){
+		if (status.equals("Approved")) {
 			swapDetail.setSwapStatus("Not Available");
 			swapDetail.getBookOwner().setBookStat("Not Available");
 			swapDetailReq.setSwapStatus("Not Available");
 			swapDetailReq.getBookOwner().setBookStat("Not Available");
 		}
-		
+
 		swapHeader.setSwapDetail(swapDetail);
 		swapHeader.setRequestedSwapDetail(swapDetailReq);
-		
+
 		sessionStat.update(swapHeader);
-		
+
 		return swapHeader;
 	}
 
@@ -286,8 +282,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
 	}
-	
-	public List<SwapHeader> getRequests(long userId){
+
+	public List<SwapHeader> getRequests(long userId) {
 		List<SwapHeader> flag = null;
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwner");
@@ -360,21 +356,21 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		query.setLong("swapHeaderId", swapHeader.getSwapHeaderId());
 		query.executeUpdate();
 	}
-	
-	public SwapHeader setDelivered(long swapHeaderId){
+
+	public SwapHeader setDelivered(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
-		
+
 		sh = get(swapHeaderId);
-		
+
 		sh.setSwapExtraMessage("delivered");
 		sh.getSwapDetail().setSwapStatus("Not Available");
 		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
 		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
 		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(sh);
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(swapHeaderId);
 		un.setActionName("swap");
@@ -385,40 +381,56 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setUserPerformer(sh.getSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		return sh;
 	}
-	
-	public SwapHeader setComplete(long swapHeaderId){
-		SwapHeader sh = new SwapHeader();	
+
+	public SwapHeader setComplete(long swapHeaderId) {
+		Session session = getSessionFactory().getCurrentSession();
+		SwapHeader sh = new SwapHeader();
 		sh = get(swapHeaderId);
 		SwapDetail mySwapDetail = new SwapDetail();
-		SwapDetail toBeSwapped = new SwapDetail();	
-		User ms = new User();
-		User tbs = new User();
+		SwapDetail toBeSwapped = new SwapDetail();
+		User requestor = new User();
+		User requestee = new User();
+
+		List<SwapDetail> requestorSwapDetail = new ArrayList<>();
+		List<SwapDetail> requesteeSwapDetail = new ArrayList<>();
+
+		for (SwapHeaderDetail shd : sh.getSwapHeaderDetails()) {
+			if ("Requestor".equals(shd.getSwapType())) {
+				requestorSwapDetail.add(shd.getSwapDetail());
+			} else if ("Requestee".equals(shd.getSwapType())) {
+				requesteeSwapDetail.add(shd.getSwapDetail());
+			}
+		}
 
 		mySwapDetail = sh.getRequestedSwapDetail();
 		toBeSwapped = sh.getSwapDetail();
-		ms = mySwapDetail.getBookOwner().getUser();
-		tbs = toBeSwapped.getBookOwner().getUser();
-		
-		mySwapDetail.getBookOwner().setUser(tbs);
-		toBeSwapped.getBookOwner().setUser(ms);
+		requestor = mySwapDetail.getBookOwner().getUser();
+		requestee = toBeSwapped.getBookOwner().getUser();
+
+		for (SwapDetail sd : requestorSwapDetail) {
+			sd.getBookOwner().setUser(requestee);
+			sd.setSwapStatus("Not Available");
+			sd.getBookOwner().setStatus("none");
+			sd.getBookOwner().setBookStat("Not Available");
+			session.update(sd);
+		}
+
+		for (SwapDetail sd : requesteeSwapDetail) {
+			sd.getBookOwner().setUser(requestor);
+			sd.setSwapStatus("Not Available");
+			sd.getBookOwner().setStatus("none");
+			sd.getBookOwner().setBookStat("Not Available");
+			session.update(sd);
+		}
+
 		sh.setSwapDetail(toBeSwapped);
 		sh.setRequestedSwapDetail(mySwapDetail);
 		sh.setStatus("Complete");
-		
-		sh.getSwapDetail().setSwapStatus("Not Available");
-		sh.getSwapDetail().getBookOwner().setStatus("none");
-		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
-		
-		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
-		sh.getRequestedSwapDetail().getBookOwner().setStatus("none");
-		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
-		
-		Session session = getSessionFactory().getCurrentSession();
 		session.update(sh);
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(swapHeaderId);
 		un.setActionName("swap");
@@ -429,13 +441,13 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		return sh;
 	}
-	
-	public List<SwapHeader> history(long userId){
+
+	public List<SwapHeader> history(long userId) {
 		List<SwapHeader> flag = new ArrayList<SwapHeader>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.createAlias("swapDetail", "swapDetail");
 		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwnerSwap");
@@ -443,28 +455,30 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
 		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwnerRequest");
 		criteria = criteria.createAlias("requestedSwapDetail.bookOwner.user", "userRequest");
-		criteria = criteria.add(Restrictions.or(Restrictions.eq("userSwap.userId", userId), Restrictions.eq("userRequest.userId", userId)));
-		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Complete"), Restrictions.eq("status", "Rejected")));
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("userSwap.userId", userId),
+				Restrictions.eq("userRequest.userId", userId)));
+		criteria = criteria
+				.add(Restrictions.or(Restrictions.eq("status", "Complete"), Restrictions.eq("status", "Rejected")));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		flag = (List<SwapHeader>)criteria.list();
-		
+		flag = (List<SwapHeader>) criteria.list();
+
 		return flag;
 	}
-	
-	public SwapHeader approveRequest(long swapHeaderId){
+
+	public SwapHeader approveRequest(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
-		
+
 		sh = get(swapHeaderId);
-		
+
 		sh.setStatus("Approved");
 		sh.getSwapDetail().setSwapStatus("Not Available");
 		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
 		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
 		sh.getRequestedSwapDetail().getBookOwner().setBookStat("Not Available");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(sh);
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(swapHeaderId);
 		un.setActionName("swap");
@@ -474,26 +488,26 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
-		
+
 		List<SwapHeader> flag = new ArrayList<SwapHeader>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
-		criteria = criteria.add(Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
+		criteria = criteria.add(
+				Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
-		
+
 		SwapHeader swapHeaderTemp = new SwapHeader();
-		for(int init=0; init<flag.size(); init++){
+		for (int init = 0; init < flag.size(); init++) {
 			swapHeaderTemp = flag.get(init);
-			
-			if(!(swapHeaderTemp.equals(swapHeaderId))){
+
+			if (!(swapHeaderTemp.equals(swapHeaderId))) {
 				swapHeaderTemp.setStatus("Rejected");
 				swapHeaderTemp.setSwapExtraMessage("Accepted other request.");
 				session.update(swapHeaderTemp);
-				
+
 				UserNotification userN = new UserNotification();
 				userN.setActionId(swapHeaderTemp.getSwapHeaderId());
 				userN.setActionName("swap");
@@ -504,32 +518,47 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 				userN.setExtraMessage("Accepted other request.");
 				userNotificationDao.save(userN);
 				pusherServer.sendNotification(userN);
-				
+
 			}
 		}
 		return sh;
 	}
-	
-	public SwapHeader rejectedRequest(long swapHeaderId){
+
+	public SwapHeader rejectedRequest(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
-		
+
 		sh = get(swapHeaderId);
-		
+
 		sh.setStatus("Rejected");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(sh);
-		
+
 		return sh;
 	}
-	
-	public List<SwapHeader> swapNotifyScheuler(){
+
+	public List<SwapHeader> swapNotifyScheuler() {
 		List<SwapHeader> flag = new ArrayList<SwapHeader>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.add(Restrictions.eq("status", "Approved"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
+
+		return flag;
+	}
+	
+	public SwapHeader checkExist(long userId, long swapDetailId){
+		SwapHeader flag = new SwapHeader();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.createAlias("swapDetails", "swapDetails");
+		criteria = criteria.createAlias("swapDetails.swapDetail", "swapDetailsReq");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.add(Restrictions.eq("swapDetailsReq.swap_detailId", swapDetailId));
+		criteria = criteria.add(Restrictions.eq("swapDetailsReq.swapType", "Requestee"));
+		flag = (SwapHeader) criteria.uniqueResult();
 		
 		return flag;
 	}

@@ -2,6 +2,7 @@ package com.koobym.dao;
 
 import java.util.List;
 
+import com.koobym.model.RentalHeader;
 import com.koobym.model.SwapHeader;
 
 public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
@@ -51,4 +52,6 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public SwapHeader rejectedRequest(long swapHeaderId);
 
 	public List<SwapHeader> swapNotifyScheuler();
+	
+	public SwapHeader checkExist(long userId, long swapDetailId);
 }
