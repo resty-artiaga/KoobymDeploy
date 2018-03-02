@@ -547,19 +547,28 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 		return flag;
 	}
-	
-	public SwapHeader checkExist(long userId, long swapDetailId){
-		SwapHeader flag = new SwapHeader();
-		
-		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
-		criteria = criteria.createAlias("user", "user");
-		criteria = criteria.createAlias("swapDetails", "swapDetails");
-		criteria = criteria.createAlias("swapDetails.swapDetail", "swapDetailsReq");
-		criteria = criteria.add(Restrictions.eq("user.userId", userId));
-		criteria = criteria.add(Restrictions.eq("swapDetailsReq.swap_detailId", swapDetailId));
-		criteria = criteria.add(Restrictions.eq("swapDetailsReq.swapType", "Requestee"));
-		flag = (SwapHeader) criteria.uniqueResult();
-		
+
+	public SwapHeader checkExist(long userId, long swapDetailId) {
+		SwapHeader flag = null;
+
+		SwapHeaderDetail swp;
+		String query = "select shd.swapHeaderId from swap_header_detail shd inner join swap_header sh on shd.swapHeaderId = "
+				+ " sh.swapHeaderId where shd.swapDetailId = :swapDetailId and sh.userId = :userId and sh.status = 'Request'";
+
+		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(query);
+		sqlQuery.setLong("swapDetailId", swapDetailId);
+		sqlQuery.setLong("userId", userId);
+		Object obj = sqlQuery.uniqueResult();
+		try {
+			Long swapHeaderId = new Long((Integer) obj);
+
+			if (obj != null) {
+				flag = get(swapHeaderId);
+			}
+		} catch (Exception e) {
+
+		}
+
 		return flag;
 	}
 }
