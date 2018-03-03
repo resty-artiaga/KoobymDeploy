@@ -3,6 +3,7 @@ package com.koobym.dao.impl;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
@@ -468,8 +469,15 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 	public SwapHeader approveRequest(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
 
+		 
 		sh = get(swapHeaderId);
+		Set<SwapHeaderDetail> shd = sh.getSwapHeaderDetails();
 
+		for(SwapHeaderDetail detail : shd){
+			detail.getSwapDetail().setSwapStatus("Not Available");
+			detail.getSwapDetail().getBookOwner().setBookStat("Not Available");
+		}
+		
 		sh.setStatus("Approved");
 		sh.getSwapDetail().setSwapStatus("Not Available");
 		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
@@ -494,8 +502,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
-		criteria = criteria.add(
-				Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
+		criteria = criteria.add(Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
 
