@@ -484,7 +484,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionName("swap");
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
-		un.setUser(sh.getUser());
+		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
 		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
