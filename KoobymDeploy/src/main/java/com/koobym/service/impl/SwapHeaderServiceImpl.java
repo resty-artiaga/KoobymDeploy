@@ -1,6 +1,8 @@
 package com.koobym.service.impl;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +13,7 @@ import com.koobym.dao.LocationDao;
 import com.koobym.dao.SwapHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.SwapHeader;
+import com.koobym.model.SwapHeaderDetail;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
 import com.koobym.service.SwapHeaderService;
@@ -143,7 +146,18 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 	@Override
 	public SwapHeader addNewSwapHeader(SwapHeader swapHeader) {
-		swapHeaderDao.save(swapHeader);
+		
+		swapHeader.getSwapDetail().setSwapStatus("Not Available");
+		swapHeader.getRequestedSwapDetail().setSwapStatus("Not Available");
+		
+		Set<SwapHeaderDetail> shd = swapHeader.getSwapHeaderDetails();
+		
+		for(SwapHeaderDetail shdD : shd){
+			shdD.getSwapDetail().setSwapStatus("Not Available");
+			shdD.getSwapDetail().getBookOwner().setBookStat("Not Available");
+			shdD.getSwapDetail().getBookOwner().getBook().setStatus("Not Available");
+		}
+		
 //
 //		UserNotification userNotif = new UserNotification();
 //		userNotif.setUser(swapHeader.getSwapDetail().getBookOwner().getUser());
