@@ -288,8 +288,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		List<SwapHeader> flag = null;
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwner");
-		criteria = criteria.createAlias("bookOwner.user", "user");
-		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		criteria = criteria.createAlias("bookOwner.user", "userbook");
+		criteria = criteria.add(Restrictions.eq("userbook.userId", userId));
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
@@ -493,7 +493,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
 		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
-		un.setUserPerformer(sh.getUser());
+		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
 
