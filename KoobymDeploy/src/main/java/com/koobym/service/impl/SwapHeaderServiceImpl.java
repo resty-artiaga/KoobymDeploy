@@ -157,6 +157,9 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			shdD.getSwapDetail().getBookOwner().setBookStat("Not Available");
 			shdD.getSwapDetail().getBookOwner().getBook().setStatus("Not Available");
 		}
+		swapHeader.setSwapHeaderDetails(shd);
+		
+		swapHeaderDao.save(swapHeader);
 		
 //
 //		UserNotification userNotif = new UserNotification();
