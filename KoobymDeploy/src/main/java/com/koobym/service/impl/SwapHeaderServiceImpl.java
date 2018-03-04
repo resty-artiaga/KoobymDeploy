@@ -146,19 +146,6 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 	@Override
 	public SwapHeader addNewSwapHeader(SwapHeader swapHeader) {
-		
-		swapHeader.getSwapDetail().setSwapStatus("Not Available");
-		swapHeader.getRequestedSwapDetail().setSwapStatus("Not Available");
-		
-		Set<SwapHeaderDetail> shd = swapHeader.getSwapHeaderDetails();
-		
-		for(SwapHeaderDetail shdD : shd){
-			shdD.getSwapDetail().setSwapStatus("Not Available");
-			shdD.getSwapDetail().getBookOwner().setBookStat("Not Available");
-			shdD.getSwapDetail().getBookOwner().getBook().setStatus("Not Available");
-		}
-		swapHeader.setSwapHeaderDetails(shd);
-		
 		swapHeaderDao.save(swapHeader);
 
 		return swapHeader;
