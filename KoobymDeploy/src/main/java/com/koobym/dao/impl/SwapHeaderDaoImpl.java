@@ -2,6 +2,7 @@ package com.koobym.dao.impl;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -472,13 +473,17 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		 
 		sh = get(swapHeaderId);
 		Set<SwapHeaderDetail> shd = sh.getSwapHeaderDetails();
+		Set<SwapHeaderDetail> shdetail = new HashSet<SwapHeaderDetail>();
 
+		
 		for(SwapHeaderDetail detail : shd){
 			detail.getSwapDetail().setSwapStatus("Not Available");
 			detail.getSwapDetail().getBookOwner().setBookStat("Not Available");
+			shdetail.add(detail);
 		}
 		
 		sh.setStatus("Approved");
+		sh.setSwapHeaderDetails(shdetail);
 		sh.getSwapDetail().setSwapStatus("Not Available");
 		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
 		sh.getSwapDetail().getBookOwner().setBookStat("Not Available");
@@ -492,8 +497,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionName("swap");
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
-		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
-		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		un.setUser(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		un.setUserPerformer(sh.getSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
 
