@@ -497,8 +497,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionName("swap");
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
-		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
-		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		un.setUser(sh.getUser());
+		un.setUserPerformer(sh.getSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
 
@@ -526,7 +526,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 				userN.setActionStatus("Rejected");
 				userN.setBookActionPerformedOn(swapHeaderTemp.getSwapDetail().getBookOwner());
 				userN.setUser(swapHeaderTemp.getUser());
-				userN.setUserPerformer(swapHeaderTemp.getRequestedSwapDetail().getBookOwner().getUser());
+				userN.setUserPerformer(swapHeaderTemp.getSwapDetail().getBookOwner().getUser());
 				userN.setExtraMessage("Accepted other request.");
 				userNotificationDao.save(userN);
 				pusherServer.sendNotification(userN);
