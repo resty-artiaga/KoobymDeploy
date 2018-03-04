@@ -472,6 +472,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 		 
 		sh = get(swapHeaderId);
+		
+		
 		Set<SwapHeaderDetail> shd = sh.getSwapHeaderDetails();
 		Set<SwapHeaderDetail> shdetail = new HashSet<SwapHeaderDetail>();
 
@@ -498,6 +500,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
 		un.setUser(sh.getUser());
+		System.out.println("User = "+sh.getUser().getUserFname());
 		un.setUserPerformer(sh.getSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
