@@ -147,7 +147,6 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	@Override
 	public SwapHeader addNewSwapHeader(SwapHeader swapHeader) {
 		swapHeaderDao.save(swapHeader);
-
 		return swapHeader;
 	}
 
