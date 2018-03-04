@@ -111,7 +111,150 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 				temp.setUser(new User());
 				temp.getUser().setUserId((int) row.get("userId"));
 				Hibernate.initialize(temp.getUser());
-				temp.setStatusDescription((String) row.get("status_description"));
+				temp.setStatusDescription((String) row.get("statusDescription"));
+				Date dateBought = (Date) row.get("dateBought");
+				if (dateBought != null) {
+					temp.setDateBought(format.format(new java.util.Date(dateBought.getTime())));
+				}
+				temp.setNoRenters((int) row.get("noRenters"));
+				temp.setStatus((String) row.get("status"));
+				Double rate = (Double) row.get("rate");
+				if (rate != null) {
+					temp.setRate(rate);
+				} else {
+					temp.setRate(0);
+				}
+				flag.add(temp);
+			}
+		}
+		return flag;
+	}
+
+	public List<BookOwner> searchByGenre(String genre) {
+		List<BookOwner> flag = new ArrayList<BookOwner>();
+		Session session = getSessionFactory().getCurrentSession();
+		String squery = " select bo.book_ownerId, bo.bookId, bo.userId, bo.statusDescription, bo.dateBought, bo.noRenters, bo.status, bo.bookStat, rating.rate"
+				+ " from book_owner bo inner join genre_book gb on gb.bookId = bo.bookId inner join genre g on g.genreID = gb.genreId"
+				+ " left join (select avg(r.rateNumber) as rate, bor.book_ownerId from rate r inner join book_owner_rating bor on r.rateId = bor.rateId group by bor.book_ownerId) as rating"
+				+ " on rating.book_ownerId = bo.book_ownerId"
+				+ " where g.genreName like :genre order by rating.rate desc";
+
+		SQLQuery query = session.createSQLQuery(squery);
+		genre = "%" + genre + "%";
+		query.setString("genre", genre);
+		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		Map<String, Object> row = null;
+		List<Object> data = query.list();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		BookOwner temp;
+		for (Object object : data) {
+			row = (Map<String, Object>) object;
+			temp = new BookOwner();
+
+			temp.setBook_OwnerId((int) row.get("book_ownerId"));
+			if (isCurrentlyAvailableForRent(temp.getBook_OwnerId())) {
+				temp.setBook(new Book());
+				temp.getBook().setBookId((int) row.get("bookId"));
+				Hibernate.initialize(temp.getBook());
+				temp.setUser(new User());
+				temp.getUser().setUserId((int) row.get("userId"));
+				Hibernate.initialize(temp.getUser());
+				temp.setStatusDescription((String) row.get("statusDescription"));
+				Date dateBought = (Date) row.get("dateBought");
+				if (dateBought != null) {
+					temp.setDateBought(format.format(new java.util.Date(dateBought.getTime())));
+				}
+				temp.setNoRenters((int) row.get("noRenters"));
+				temp.setStatus((String) row.get("status"));
+				Double rate = (Double) row.get("rate");
+				if (rate != null) {
+					temp.setRate(rate);
+				} else {
+					temp.setRate(0);
+				}
+				flag.add(temp);
+			}
+		}
+		return flag;
+	}
+
+	public List<BookOwner> searchByAuthor(String author) {
+		List<BookOwner> flag = new ArrayList<BookOwner>();
+		Session session = getSessionFactory().getCurrentSession();
+		String squery = "select bo.book_ownerId, bo.bookId, bo.userId, bo.statusDescription, bo.dateBought, bo.noRenters, bo.status, bo.bookStat, rating.rate  from book_owner bo inner join author_book ab on ab.bookId = bo.bookId inner join author a on a.authorId = ab.authorId"
+				+ " left join (select avg(r.rateNumber) as rate, bor.book_ownerId from rate r inner join book_owner_rating bor on r.rateId = bor.rateId group by bor.book_ownerId) as rating"
+				+ " on rating.book_ownerId = bo.book_ownerId"
+				+ " where a.authorFname like :author order by rating.rate desc";
+
+		SQLQuery query = session.createSQLQuery(squery);
+		author = "%" + author + "%";
+		query.setString("author", author);
+		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		Map<String, Object> row = null;
+		List<Object> data = query.list();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		BookOwner temp;
+		for (Object object : data) {
+			row = (Map<String, Object>) object;
+			temp = new BookOwner();
+
+			temp.setBook_OwnerId((int) row.get("book_ownerId"));
+			if (isCurrentlyAvailableForRent(temp.getBook_OwnerId())) {
+				temp.setBook(new Book());
+				temp.getBook().setBookId((int) row.get("bookId"));
+				Hibernate.initialize(temp.getBook());
+				temp.setUser(new User());
+				temp.getUser().setUserId((int) row.get("userId"));
+				Hibernate.initialize(temp.getUser());
+				temp.setStatusDescription((String) row.get("statusDescription"));
+				Date dateBought = (Date) row.get("dateBought");
+				if (dateBought != null) {
+					temp.setDateBought(format.format(new java.util.Date(dateBought.getTime())));
+				}
+				temp.setNoRenters((int) row.get("noRenters"));
+				temp.setStatus((String) row.get("status"));
+				Double rate = (Double) row.get("rate");
+				if (rate != null) {
+					temp.setRate(rate);
+				} else {
+					temp.setRate(0);
+				}
+				flag.add(temp);
+			}
+		}
+		return flag;
+	}
+
+	public List<BookOwner> searchByUserOwner(String userOwnerName) {
+		List<BookOwner> flag = new ArrayList<BookOwner>();
+		Session session = getSessionFactory().getCurrentSession();
+		String squery = "select bo.book_ownerId, bo.bookId, bo.userId, bo.statusDescription, bo.dateBought, bo.noRenters, bo.status, bo.bookStat, rating.rate  from book_owner bo"
+				+ " inner join user u on u.userId = bo.userId"
+				+ " left join (select avg(r.rateNumber) as rate, bor.book_ownerId from rate r inner join book_owner_rating bor on r.rateId = bor.rateId group by bor.book_ownerId) as rating"
+				+ " on rating.book_ownerId = bo.book_ownerId"
+				+ " where u.userFname like :userOwnerName or u.userLname like :userOwnerName order by rating.rate desc;";
+
+		SQLQuery query = session.createSQLQuery(squery);
+		userOwnerName = "%" + userOwnerName + "%";
+		query.setString("userOwnerName", userOwnerName);
+		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+		Map<String, Object> row = null;
+		List<Object> data = query.list();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+		BookOwner temp;
+		for (Object object : data) {
+			row = (Map<String, Object>) object;
+			temp = new BookOwner();
+
+			temp.setBook_OwnerId((int) row.get("book_ownerId"));
+			if (isCurrentlyAvailableForRent(temp.getBook_OwnerId())) {
+				temp.setBook(new Book());
+				temp.getBook().setBookId((int) row.get("bookId"));
+				Hibernate.initialize(temp.getBook());
+				temp.setUser(new User());
+				temp.getUser().setUserId((int) row.get("userId"));
+				Hibernate.initialize(temp.getUser());
+				temp.setStatusDescription((String) row.get("statusDescription"));
 				Date dateBought = (Date) row.get("dateBought");
 				if (dateBought != null) {
 					temp.setDateBought(format.format(new java.util.Date(dateBought.getTime())));

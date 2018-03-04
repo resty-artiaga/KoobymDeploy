@@ -116,6 +116,45 @@ public class BookOwnerServiceImpl extends BaseServiceImpl<BookOwner, Long> imple
 		return toReturn;
 	}
 
+	public List<BookOwner> searchByGenre(String genre) {
+		List<BookOwner> flags = bookOwnerDao.searchByGenre(genre);
+		List<BookOwner> toReturn = new ArrayList<BookOwner>();
+		for (BookOwner flag : flags) {
+			if (flag.getStatus() != null && !"none".equals(flag.getStatus())) {
+				flag.setBook(bookDao.get(flag.getBook().getBookId()));
+				flag.setUser(userDao.get(flag.getUser().getUserId()));
+				toReturn.add(flag);
+			}
+		}
+		return toReturn;
+	}
+
+	public List<BookOwner> searchByAuthor(String author) {
+		List<BookOwner> flags = bookOwnerDao.searchByAuthor(author);
+		List<BookOwner> toReturn = new ArrayList<BookOwner>();
+		for (BookOwner flag : flags) {
+			if (flag.getStatus() != null && !"none".equals(flag.getStatus())) {
+				flag.setBook(bookDao.get(flag.getBook().getBookId()));
+				flag.setUser(userDao.get(flag.getUser().getUserId()));
+				toReturn.add(flag);
+			}
+		}
+		return toReturn;
+	}
+
+	public List<BookOwner> searchByUserOwner(String userOwner) {
+		List<BookOwner> flags = bookOwnerDao.searchByUserOwner(userOwner);
+		List<BookOwner> toReturn = new ArrayList<BookOwner>();
+		for (BookOwner flag : flags) {
+			if (flag.getStatus() != null && !"none".equals(flag.getStatus())) {
+				flag.setBook(bookDao.get(flag.getBook().getBookId()));
+				flag.setUser(userDao.get(flag.getUser().getUserId()));
+				toReturn.add(flag);
+			}
+		}
+		return toReturn;
+	}
+
 	public Set<BookActivityObject> getUserOwnBookActivities(int userId) {
 		List<RentalHeader> rentalHeaders = rentalHeaderDao.getOngoingByOwner(userId);
 		List<SwapHeader> swapHeaders = swapHeaderDao.getOngoingSwaps(userId);
