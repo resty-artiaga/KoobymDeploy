@@ -26,7 +26,7 @@ public class SwapHeaderController {
 	public ResponseEntity<SwapHeader> add(@RequestBody SwapHeader swapHeader) {
 		ResponseEntity<SwapHeader> ent = null;
 		System.out.println("inside add swap header");
-		swapHeaderService.addNewSwapHeader(swapHeader);
+//		swapHeaderService.addNewSwapHeader(swapHeader);
 		if (swapHeader == null) {
 			ent = ResponseEntity.badRequest().body(null);
 		} else {
