@@ -586,4 +586,26 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 		return flag;
 	}
+	
+	public SwapHeader updateConfirm(long swapHeaderId){
+		SwapHeader sh = new SwapHeader();
+		
+		sh = get(swapHeaderId);
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(sh);
+		
+		UserNotification un = new UserNotification();
+		
+		un.setActionId(swapHeaderId);
+		un.setActionName("swap");
+		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
+		un.setUser(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		un.setUserPerformer(sh.getUser());
+		un.setActionStatus("Confirm");
+		
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		return sh;
+	}
 }

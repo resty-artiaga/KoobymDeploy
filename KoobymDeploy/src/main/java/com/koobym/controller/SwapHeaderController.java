@@ -181,4 +181,10 @@ public class SwapHeaderController {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.checkExist(userId, swapDetailId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/updateSwap/{swapHeaderId}", method = RequestMethod.GET)
+	public ResponseEntity<SwapHeader> updateSwap(@PathVariable("swapHeaderId") long swapHeaderId) {
+		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.updateConfirm(swapHeaderId));
+		return flag;
+	}
 }
