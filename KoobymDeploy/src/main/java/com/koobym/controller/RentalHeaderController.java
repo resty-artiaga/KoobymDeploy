@@ -235,5 +235,11 @@ public class RentalHeaderController {
 		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.rejectRequest(rentalHeaderId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/setConfirm/{rentalHeaderId}/{meetUpDeliveryId}/{meetUpReturnId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> setConfirm(@PathVariable("rentalHeaderId") long rentalHeaderId, @PathVariable("meetUpDeliveryId") long meetUpDeliveryId, @PathVariable("meetUpReturnId") long meetUpReturnId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setConfirm(rentalHeaderId, meetUpDeliveryId, meetUpReturnId));
+		return flag;
+	}
 }
 	

@@ -1,7 +1,9 @@
 package com.koobym.dao.impl;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -673,6 +675,49 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 				pusherServer.sendNotification(userN);
 			}
 		}
+		
+		return rh;
+	}
+	
+	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId){
+		RentalHeader rh = new RentalHeader();
+
+		MeetUp mu = meetUpDao.get(meetUpDeliveryId);
+		MeetUp returnMu = meetUpDao.get(meetUpReturnId);
+		
+		rh = get(rentalHeaderId);
+		
+		rh.setMeetUp(mu);
+		rh.setReturnMeetUp(returnMu);
+		
+		rh.setRentalReturnDate(returnMu.getUserDayTime().getDays().getStrDay());
+		rh.setRentalEndDate(rh.getRentalReturnDate());
+		
+		rh.setDateDeliver(rh.getMeetUp().getUserDayTime().getDays().getStrDay());
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateDate = new Date();
+		String formattedDate = format.format(dateDate);
+		
+		rh.setDateConfirmed(formattedDate);
+		rh.getRentalDetail().setRentalStatus("Not Available");
+		rh.setStatus("Confirm");
+		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
+		
+		UserNotification un = new UserNotification();
+		un.setActionId(rentalHeaderId);
+		un.setActionName("rental");
+		un.setActionStatus("Confirm");
+		un.setUser(rh.getRentalDetail().getBookOwner().getUser());
+		un.setUserPerformer(rh.getUserId());
+		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
+		
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
+		Session session = getSessionFactory().getCurrentSession();
+		session.update(rh);
+		
 		
 		return rh;
 	}

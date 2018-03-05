@@ -3,6 +3,9 @@ package com.koobym.scheduler;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -16,11 +19,13 @@ import com.koobym.dao.AuctionCommentDao;
 import com.koobym.dao.AuctionDetailDao;
 import com.koobym.dao.AuctionHeaderDao;
 import com.koobym.dao.RentalHeaderDao;
+import com.koobym.dao.SwapHeaderDao;
 import com.koobym.dao.UserNotificationDao;
 import com.koobym.model.AuctionComment;
 import com.koobym.model.AuctionDetail;
 import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
+import com.koobym.model.SwapHeader;
 import com.koobym.model.UserNotification;
 import com.koobym.pusher.PusherServer;
 
@@ -29,6 +34,9 @@ public class TaskScheduler {
 
 	@Autowired
 	private RentalHeaderDao rentalHeaderDao;
+	
+	@Autowired
+	private SwapHeaderDao swapHeaderDao;
 
 	@Autowired
 	private AuctionHeaderDao auctionHeaderDao;
@@ -125,6 +133,47 @@ public class TaskScheduler {
 			}
 			
 			
+
+		}
+	}
+	
+	@Transactional
+	@Scheduled(fixedRate = 60000)
+	public void sendSwapNotification(){
+		System.out.println("SwapRemind");
+		
+		Date date = new Date();
+		String stdDateFormat = "yyyy-MM-dd";
+		DateFormat dateFormat = new SimpleDateFormat(stdDateFormat);
+		String currDate = dateFormat.format(date);
+		System.out.println("currentDate: "+currDate);
+		
+		String stdTimeFormat = "hh:mm:a";
+		DateFormat timeFormat = new SimpleDateFormat(stdTimeFormat);
+		String currTime = timeFormat.format(date);
+		System.out.println("currentTime: "+currTime);
+		
+		List<SwapHeader> swapHeader = swapHeaderDao.swapNotifyScheuler();
+		System.out.println("swapHeaderSize: "+swapHeader.size());
+		UserNotification userNotify, userOwner;
+		Duration duration;
+		
+		for(SwapHeader sh : swapHeader){
+			String comparedDelivery = sh.getDateDelivered();
+			Date compared;
+			try {
+				compared = dateFormat.parse(comparedDelivery);
+				long days = date.getTime() - compared.getTime();
+				LocalDate dateLocal = LocalDate.now().minusDays(2);
+				LocalDate dateLocalCurr = LocalDate.now().minusDays(2);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				String formattedString = dateLocal.format(formatter);
+				String formattedStringCurrent = dateLocalCurr.format(formatter);
+				System.out.println("localDate - 2:"+formattedString+" localDateCurr: "+formattedStringCurrent);
+				System.out.println("Difference compared:"+comparedDelivery+" currentDate:"+currDate+" is ");
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 
 		}
 	}
