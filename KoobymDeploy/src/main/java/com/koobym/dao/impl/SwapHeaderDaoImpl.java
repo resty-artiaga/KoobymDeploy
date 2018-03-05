@@ -414,7 +414,6 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		for (SwapDetail sd : requestorSwapDetail) {
 			sd.getBookOwner().setUser(requestee);
 			sd.setSwapStatus("Not Available");
-			sd.getBookOwner().setStatus("none");
 			sd.getBookOwner().setBookStat("Not Available");
 			session.update(sd);
 		}
@@ -422,7 +421,6 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		for (SwapDetail sd : requesteeSwapDetail) {
 			sd.getBookOwner().setUser(requestor);
 			sd.setSwapStatus("Not Available");
-			sd.getBookOwner().setStatus("none");
 			sd.getBookOwner().setBookStat("Not Available");
 			session.update(sd);
 		}
