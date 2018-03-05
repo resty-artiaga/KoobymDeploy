@@ -395,7 +395,23 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		SwapDetail toBeSwapped = new SwapDetail();
 		User requestor = new User();
 		User requestee = new User();
+		
+		System.out.println("SwapUSer="+sh.getSwapDetail().getBookOwner().getUser().getUserId());
+		System.out.println("ReqSwapUSer="+sh.getRequestedSwapDetail().getBookOwner().getUser().getUserId());
 
+		System.out.println("SwapUSer="+sh.getSwapDetail().getBookOwner().getUser().getUserId());
+		System.out.println("ReqSwapUSer="+sh.getRequestedSwapDetail().getBookOwner().getUser().getUserId());
+		UserNotification un = new UserNotification();
+		un.setActionId(swapHeaderId);
+		un.setActionName("swap");
+		un.setActionStatus("Completed");
+		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
+		un.setExtraMessage(String.valueOf(sh.getRequestedSwapDetail().getSwapDetailId()));
+		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
+		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
+		userNotificationDao.save(un);
+		pusherServer.sendNotification(un);
+		
 		List<SwapDetail> requestorSwapDetail = new ArrayList<>();
 		List<SwapDetail> requesteeSwapDetail = new ArrayList<>();
 
@@ -430,17 +446,6 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		sh.setRequestedSwapDetail(mySwapDetail);
 		sh.setStatus("Complete");
 		session.update(sh);
-
-		UserNotification un = new UserNotification();
-		un.setActionId(swapHeaderId);
-		un.setActionName("swap");
-		un.setActionStatus("Completed");
-		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
-		un.setExtraMessage(String.valueOf(sh.getRequestedSwapDetail().getSwapDetailId()));
-		un.setUser(sh.getSwapDetail().getBookOwner().getUser());
-		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
-		userNotificationDao.save(un);
-		pusherServer.sendNotification(un);
 
 		return sh;
 	}
