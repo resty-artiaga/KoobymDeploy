@@ -117,7 +117,7 @@ public class TaskScheduler {
 				if(formattedData.equals(ad.getStartTime())){
 					System.out.println("sulod sa Start Time");
 					ad.setAuctionStatus("start");
-					auctionDetailDao.save(ad);
+					auctionDetailDao.update(ad);
 				}
 				
 			}else if(ad.getEndDate().equals(formattedDate)){
@@ -127,7 +127,9 @@ public class TaskScheduler {
 					ad.setAuctionStatus("stop");
 					System.out.println("sulod sa End Time");
 					ad.getBookOwner().setStatus("none");
-					auctionDetailDao.save(ad);
+					ad.getBookOwner().setBookStat("Not Available");
+					ad.setStatus("Not Available");
+					auctionDetailDao.update(ad);
 				}
 //								
 			}
@@ -211,10 +213,23 @@ public class TaskScheduler {
 					System.out.println("sulod sa rh : " + rh.getEndDate());
 					List<AuctionComment> modelComments = auctionCommentDao.getMaximumBid((int) rh.getAuctionDetailId());
 					System.out.println("after getting maximum bid");
+					
+					if(modelComments.size()==0){
+						AuctionDetail ad = new AuctionDetail();
+						ad = auctionDetailDao.get(rh.getAuctionDetailId());
+						ad.setAuctionStatus("stop");
+						ad.setStatus("Not Available");
+						ad.getBookOwner().setBookStat("Not Available");
+						auctionDetailDao.update(ad);
+						
+					}
+					
 
 					for (int i = 0; i < modelComments.size(); i++) {
 						AuctionHeader ah = new AuctionHeader();
+						AuctionDetail ad = new AuctionDetail();
 						ah = auctionHeaderDao.getAuctionHeader(rh.getAuctionDetailId(), modelComments.get(i).getUser().getUserId());
+						ad = ah.getAuctionDetail();
 						un = new UserNotification();
 						un.setActionId(ah.getAuctionHeaderId());
 						un.setActionName("auction");
@@ -222,10 +237,11 @@ public class TaskScheduler {
 						un.setUser(modelComments.get(i).getUser());
 						un.setUserPerformer(rh.getBookOwner().getUser());
 						String message = String.valueOf(modelComments.get(i).getAuctionComment());
+						
 						if (i == 0) {
+							ah.setStatus("win");
 							un.setActionStatus("win");
 							un.setExtraMessage(message);
-							
 							
 							unO = new UserNotification();
 							unO.setUser(rh.getBookOwner().getUser());
@@ -239,9 +255,13 @@ public class TaskScheduler {
 							userNotificationDao.save(unO);
 							pusherServer.sendNotification(unO);
 						} else {
+							ah.setStatus("lose");
 							un.setActionStatus("lose");
 							un.setExtraMessage(message);
 						}
+						ad.setStatus("Not Available");
+						auctionDetailDao.update(ad);
+						auctionHeaderDao.update(ah);
 						userNotificationDao.save(un);
 						pusherServer.sendNotification(un);
 					}
