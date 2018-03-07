@@ -75,9 +75,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		List<AuctionHeader> flag = new ArrayList<AuctionHeader>();
 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
-		criteria = criteria.createAlias("auctionDetail", "auctionDetail");
-		criteria = criteria.createAlias("auctionDetail.bookOwner", "bookOwner");
-		criteria = criteria.createAlias("bookOwner.user", "user");
+		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
 		criteria = criteria.addOrder(Order.desc("dateDelivered")); 
