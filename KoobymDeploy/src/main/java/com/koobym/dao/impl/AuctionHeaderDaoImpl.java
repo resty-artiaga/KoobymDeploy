@@ -96,8 +96,8 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		criteria = criteria.createAlias("auctionDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("auctionDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.eq("status", "win"));
-		criteria = criteria.add(Restrictions.and(Restrictions.ne("auctionExtraMessage", "Delivered"), Restrictions.eq("auctionExtraMessage","")));
+		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
+		criteria = criteria.add(Restrictions.eqOrIsNull("auctionExtraMessage", null));
 		criteria = criteria.addOrder(Order.desc("dateDelivered")); 
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<AuctionHeader>) criteria.list();
@@ -221,6 +221,17 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", userId));
 		criteria = criteria.add(Restrictions.eq("status", "Complete"));
+		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		ah = (List<AuctionHeader>) criteria.list();
+		
+		return ah;
+	}
+	
+	public List<AuctionHeader> getAllWin(){
+		List<AuctionHeader> ah = new ArrayList<AuctionHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
+		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		ah = (List<AuctionHeader>) criteria.list();
 		

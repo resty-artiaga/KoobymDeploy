@@ -123,4 +123,10 @@ public class AuctionHeaderController {
 		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.history(userId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/getAllWin", method = RequestMethod.GET)
+	public ResponseEntity<List<AuctionHeader>> win() {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getAllWin());
+		return flag;
+	}
 }

@@ -100,4 +100,9 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		return auctionHeaderDao.history(userId);
 	}
 	
+	@Override
+	public List<AuctionHeader> getAllWin(){
+		return auctionHeaderDao.getAllWin();
+	}
+	
 }
