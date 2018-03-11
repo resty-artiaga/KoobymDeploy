@@ -112,7 +112,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.eq("status", "Approved"));
+		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
 		criteria = criteria.addOrder(Order.desc("dateDeliver"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
@@ -733,5 +733,16 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		session.update(rh);
 		
 		return rh;
+	}
+	
+	public RentalHeader getLatestRenter(long rentalDetailId){
+		RentalHeader flag = new RentalHeader();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.add(Restrictions.eq("rentalDetail", "rentalDetail"));
+		criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", rentalDetailId));
+		criteria = criteria.add(Restrictions.or(Restrictions.ne("status", "Complete"), Restrictions.ne("status", "Rejected")));
+		flag = (RentalHeader) criteria.uniqueResult();
+		return flag;
 	}
 }
