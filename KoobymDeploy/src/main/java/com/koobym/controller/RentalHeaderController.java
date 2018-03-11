@@ -241,5 +241,11 @@ public class RentalHeaderController {
 		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.setConfirm(rentalHeaderId, meetUpDeliveryId, meetUpReturnId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/latestRenter/{rentalDetailId}", method = RequestMethod.GET)
+	public ResponseEntity<RentalHeader> latest(@PathVariable("rentalDetailId") long rentalDetailId) {
+		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.getLatestRenter(rentalDetailId));
+		return flag;
+	}
 }
 	
