@@ -123,7 +123,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		boolean flag = false;
 
 		String query = "select count(rentalHeaderId) from rental_header "
-				+ " where rental_header.userId = :userId and (status='Confirm' or status='Approved' or status='Returned' or status='Delivered')";
+				+ " where rental_header.userId = :userId and (status='Confirm' or status='Approved' or status='Received' or status='Delivered')";
 
 		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(query);
 		sqlQuery.setLong("userId", userId);
