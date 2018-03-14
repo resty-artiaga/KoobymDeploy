@@ -47,7 +47,6 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		criteria = criteria.createAlias("swapDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
-		criteria = criteria.add(Restrictions.ne("swapExtraMessage", "delivered"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
@@ -100,7 +99,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("requestedSwapDetail.bookOwner.user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Confirm"), Restrictions.eq("status", "Delivered")));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
 		return flag;
@@ -364,6 +363,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 		sh = get(swapHeaderId);
 
+		sh.setStatus("Delivered");
 		sh.setSwapExtraMessage("delivered");
 		sh.getSwapDetail().setSwapStatus("Not Available");
 		sh.getRequestedSwapDetail().setSwapStatus("Not Available");
@@ -395,12 +395,12 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		SwapDetail toBeSwapped = new SwapDetail();
 		User requestor = new User();
 		User requestee = new User();
-		
-		System.out.println("SwapUSer="+sh.getSwapDetail().getBookOwner().getUser().getUserId());
-		System.out.println("ReqSwapUSer="+sh.getRequestedSwapDetail().getBookOwner().getUser().getUserId());
 
-		System.out.println("SwapUSer="+sh.getSwapDetail().getBookOwner().getUser().getUserId());
-		System.out.println("ReqSwapUSer="+sh.getRequestedSwapDetail().getBookOwner().getUser().getUserId());
+		System.out.println("SwapUSer=" + sh.getSwapDetail().getBookOwner().getUser().getUserId());
+		System.out.println("ReqSwapUSer=" + sh.getRequestedSwapDetail().getBookOwner().getUser().getUserId());
+
+		System.out.println("SwapUSer=" + sh.getSwapDetail().getBookOwner().getUser().getUserId());
+		System.out.println("ReqSwapUSer=" + sh.getRequestedSwapDetail().getBookOwner().getUser().getUserId());
 		UserNotification un = new UserNotification();
 		un.setActionId(swapHeaderId);
 		un.setActionName("swap");
@@ -411,7 +411,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setUserPerformer(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		List<SwapDetail> requestorSwapDetail = new ArrayList<>();
 		List<SwapDetail> requesteeSwapDetail = new ArrayList<>();
 
@@ -473,20 +473,17 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 	public SwapHeader approveRequest(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
 
-		 
 		sh = get(swapHeaderId);
-		
-		
+
 		Set<SwapHeaderDetail> shd = sh.getSwapHeaderDetails();
 		Set<SwapHeaderDetail> shdetail = new HashSet<SwapHeaderDetail>();
 
-		
-		for(SwapHeaderDetail detail : shd){
+		for (SwapHeaderDetail detail : shd) {
 			detail.getSwapDetail().setSwapStatus("Not Available");
 			detail.getSwapDetail().getBookOwner().setBookStat("Not Available");
 			shdetail.add(detail);
 		}
-		
+
 		sh.setStatus("Approved");
 		sh.setSwapHeaderDetails(shdetail);
 		sh.getSwapDetail().setSwapStatus("Not Available");
@@ -503,7 +500,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		un.setActionStatus("Approved");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
 		un.setUser(sh.getUser());
-		System.out.println("User = "+sh.getUser().getUserFname());
+		System.out.println("User = " + sh.getUser().getUserFname());
 		un.setUserPerformer(sh.getSwapDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
@@ -513,7 +510,8 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
 		criteria = criteria.createAlias("requestedSwapDetail", "requestedSwapDetail");
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
-		criteria = criteria.add(Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
+		criteria = criteria.add(
+				Restrictions.eq("requestedSwapDetail.swapDetailId", sh.getRequestedSwapDetail().getSwapDetailId()));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapHeader>) criteria.list();
 
@@ -548,12 +546,11 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		BookOwner bo = new BookOwner();
 		Session session = getSessionFactory().getCurrentSession();
 
-		
 		sh = get(swapHeaderId);
 		sd = sh.getSwapHeaderDetails();
-		
-		for(SwapHeaderDetail shd: sd){
-			if(shd.getSwapType().equals("Requestor")){
+
+		for (SwapHeaderDetail shd : sd) {
+			if (shd.getSwapType().equals("Requestor")) {
 				shd.getSwapDetail().setSwapStatus("Available");
 				session.update(shd.getSwapDetail());
 				shd.getSwapDetail().getBookOwner().setBookStat("Available");
@@ -562,7 +559,6 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 				session.update(shd.getSwapDetail().getBookOwner().getBook());
 			}
 		}
-		
 
 		sh.setStatus("Rejected");
 
@@ -605,30 +601,29 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 		return flag;
 	}
-	
-	public SwapHeader updateConfirm(long swapHeaderId){
+
+	public SwapHeader updateConfirm(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
-		
+
 		sh = get(swapHeaderId);
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(sh);
-		
+
 		UserNotification un = new UserNotification();
-		
+
 		un.setActionId(swapHeaderId);
 		un.setActionName("swap");
 		un.setBookActionPerformedOn(sh.getSwapDetail().getBookOwner());
 		un.setUser(sh.getRequestedSwapDetail().getBookOwner().getUser());
 		un.setUserPerformer(sh.getUser());
 		un.setActionStatus("Confirm");
-		
+
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
 		return sh;
 	}
-	
-	
+
 	public boolean canSwap(long userId) {
 		boolean flag = false;
 
