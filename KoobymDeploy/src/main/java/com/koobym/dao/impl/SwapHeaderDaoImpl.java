@@ -288,7 +288,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 	public List<SwapHeader> getRequests(long userId) {
 		List<SwapHeader> flag = null;
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapHeader.class);
-		criteria = criteria.createAlias("requestedSwapDetail.bookOwner", "bookOwner");
+		criteria = criteria.createAlias("swapDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("bookOwner.user", "userbook");
 		criteria = criteria.add(Restrictions.eq("userbook.userId", userId));
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
