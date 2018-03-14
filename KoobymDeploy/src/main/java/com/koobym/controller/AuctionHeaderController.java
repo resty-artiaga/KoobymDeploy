@@ -89,8 +89,8 @@ public class AuctionHeaderController {
 	}
 
 	@RequestMapping(value = "/getAuctionHeader/{auctionDetailId}/{userId}", method = RequestMethod.GET)
-	public ResponseEntity<AuctionHeader> getAuctionHeader(@PathVariable("auctionDetailId") int auctionDetailId, @PathVariable("userId") int userId) {
-		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.getAuctionHeader(auctionDetailId, userId));
+	public ResponseEntity<List<AuctionHeader>> getAuctionHeader(@PathVariable("auctionDetailId") int auctionDetailId, @PathVariable("userId") int userId) {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getAuctionHeader(auctionDetailId, userId));
 		return flag;
 	}
 	

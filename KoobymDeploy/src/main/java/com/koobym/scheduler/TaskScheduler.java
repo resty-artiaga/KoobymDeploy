@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -113,14 +115,16 @@ public class TaskScheduler {
 
 			if(ad.getStartDate().equals(formattedDate)) {
 				System.out.println("compare ni Start: " + ad.getStartDate()+", "+formattedDate);	
-				
+				System.out.println("compare ni Time: " + ad.getStartTime()+", "+formattedData);
 				if(formattedData.equals(ad.getStartTime())){
 					System.out.println("sulod sa Start Time");
 					ad.setAuctionStatus("start");
 					auctionDetailDao.update(ad);
 				}
 				
-			}else if(ad.getEndDate().equals(formattedDate)){
+			}
+			
+			if(ad.getEndDate().equals(formattedDate)){
 				System.out.println("compare ni End: " + ad.getEndDate()+", "+formattedDate);
 				
 				if(formattedData.equals(ad.getEndTime())){
@@ -141,38 +145,48 @@ public class TaskScheduler {
 	
 	@Transactional
 	@Scheduled(fixedRate = 60000)
-	public void sendSwapNotification(){
-		System.out.println("SwapRemind");
-		
+	public void sendRemindNotification(){
 		Date date = new Date();
 		String stdDateFormat = "yyyy-MM-dd";
 		DateFormat dateFormat = new SimpleDateFormat(stdDateFormat);
 		String currDate = dateFormat.format(date);
 		System.out.println("currentDate: "+currDate);
-		
-		String stdTimeFormat = "hh:mm:a";
-		DateFormat timeFormat = new SimpleDateFormat(stdTimeFormat);
-		String currTime = timeFormat.format(date);
-		System.out.println("currentTime: "+currTime);
-		
+				
 		List<SwapHeader> swapHeader = swapHeaderDao.swapNotifyScheuler();
 		System.out.println("swapHeaderSize: "+swapHeader.size());
 		UserNotification userNotify, userOwner;
-		Duration duration;
 		
-		for(SwapHeader sh : swapHeader){
-			String comparedDelivery = sh.getDateDelivered();
+		for(int init = 0; init<swapHeader.size(); init++){
+
+			String comparedDelivery = swapHeader.get(init).getDateDelivered();
 			Date compared;
 			try {
 				compared = dateFormat.parse(comparedDelivery);
-				long days = date.getTime() - compared.getTime();
-				LocalDate dateLocal = LocalDate.now().minusDays(2);
-				LocalDate dateLocalCurr = LocalDate.now().minusDays(2);
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				String formattedString = dateLocal.format(formatter);
-				String formattedStringCurrent = dateLocalCurr.format(formatter);
-				System.out.println("localDate - 2:"+formattedString+" localDateCurr: "+formattedStringCurrent);
-				System.out.println("Difference compared:"+comparedDelivery+" currentDate:"+currDate+" is ");
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(compared);
+				cal.add(Calendar.DATE, -1);
+				Date comapreDate = cal.getTime();
+				
+				System.out.println("DeliverDate:"+comparedDelivery+" PrevDate:"+dateFormat.format(comapreDate));
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(SwapHeader sh : swapHeader){
+
+			try {
+				String comparedDelivery = sh.getDateDelivered();
+				Date compared;
+				compared = dateFormat.parse(comparedDelivery);
+
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(compared);
+				cal.add(Calendar.DATE, -1);
+				Date comapreDate = cal.getTime();
+				
+				System.out.println("DeliverDate:"+comparedDelivery+" PrevDate:"+dateFormat.format(comapreDate));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -226,9 +240,13 @@ public class TaskScheduler {
 					
 
 					for (int i = 0; i < modelComments.size(); i++) {
-						AuctionHeader ah = new AuctionHeader();
+						System.out.println("stoppedAuction");
+
+						List<AuctionHeader> ahList = new ArrayList<AuctionHeader>();
 						AuctionDetail ad = new AuctionDetail();
-						ah = auctionHeaderDao.getAuctionHeader(rh.getAuctionDetailId(), modelComments.get(i).getUser().getUserId());
+						AuctionHeader ah = new AuctionHeader();
+						ahList = auctionHeaderDao.getAuctionHeader(rh.getAuctionDetailId(), modelComments.get(i).getUser().getUserId());
+						ah = ahList.get(0);
 						ad = ah.getAuctionDetail();
 						un = new UserNotification();
 						un.setActionId(ah.getAuctionHeaderId());
@@ -239,6 +257,7 @@ public class TaskScheduler {
 						String message = String.valueOf(modelComments.get(i).getAuctionComment());
 						
 						if (i == 0) {
+							System.out.println("daog here");
 							ah.setStatus("win");
 							un.setActionStatus("win");
 							un.setExtraMessage(message);
@@ -255,6 +274,8 @@ public class TaskScheduler {
 							userNotificationDao.save(unO);
 							pusherServer.sendNotification(unO);
 						} else {
+							System.out.println("pildi here");
+
 							ah.setStatus("lose");
 							un.setActionStatus("lose");
 							un.setExtraMessage(message);

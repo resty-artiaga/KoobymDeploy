@@ -44,15 +44,15 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		super(AuctionHeader.class);
 	}
 
-	public AuctionHeader getAuctionHeader(long auctionDetailId, long userId) {
-		AuctionHeader auctionHeader = new AuctionHeader();
+	public List<AuctionHeader> getAuctionHeader(long auctionDetailId, long userId) {
+		List<AuctionHeader> auctionHeader = new ArrayList<AuctionHeader>();
 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.createAlias("auctionDetail", "auctionDetail");
 		criteria = criteria.add(Restrictions.eq("user.userId", userId));
 		criteria = criteria.add(Restrictions.eq("auctionDetail.auctionDetailId", auctionDetailId));
-		auctionHeader = (AuctionHeader) criteria.uniqueResult();
+		auctionHeader = (List<AuctionHeader>) criteria.list();
 
 		return auctionHeader;
 	}

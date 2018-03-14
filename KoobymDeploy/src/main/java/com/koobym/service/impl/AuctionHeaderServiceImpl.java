@@ -44,7 +44,7 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 	}
 	
 	@Override
-	public AuctionHeader getAuctionHeader(long auctionDetailId, long userId){
+	public List<AuctionHeader> getAuctionHeader(long auctionDetailId, long userId){
 		return auctionHeaderDao.getAuctionHeader(auctionDetailId, userId);
 	}
 	
