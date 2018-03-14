@@ -63,6 +63,7 @@ public class SwapDetailDaoImpl extends BaseDaoImpl<SwapDetail, Long> implements 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(SwapDetail.class);
 		criteria = criteria.createAlias("bookOwner", "bookOwner");
 		criteria = criteria.add(Restrictions.eq("bookOwner.user.userId", new Long(userId)));
+		criteria = criteria.add(Restrictions.eq("swapStatus", "Available"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<SwapDetail>) criteria.list();
 		return flag;
