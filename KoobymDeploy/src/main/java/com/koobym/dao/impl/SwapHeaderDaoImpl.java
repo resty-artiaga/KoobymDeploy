@@ -544,12 +544,28 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 
 	public SwapHeader rejectedRequest(long swapHeaderId) {
 		SwapHeader sh = new SwapHeader();
+		Set<SwapHeaderDetail> sd = new HashSet<SwapHeaderDetail>();
+		BookOwner bo = new BookOwner();
+		Session session = getSessionFactory().getCurrentSession();
 
+		
 		sh = get(swapHeaderId);
+		sd = sh.getSwapHeaderDetails();
+		
+		for(SwapHeaderDetail shd: sd){
+			if(shd.getSwapType().equals("Requestor")){
+				shd.getSwapDetail().setSwapStatus("Available");
+				session.update(shd.getSwapDetail());
+				shd.getSwapDetail().getBookOwner().setBookStat("Available");
+				session.update(shd.getSwapDetail().getBookOwner());
+				shd.getSwapDetail().getBookOwner().getBook().setStatus("Available");
+				session.update(shd.getSwapDetail().getBookOwner().getBook());
+			}
+		}
+		
 
 		sh.setStatus("Rejected");
 
-		Session session = getSessionFactory().getCurrentSession();
 		session.update(sh);
 
 		return sh;
