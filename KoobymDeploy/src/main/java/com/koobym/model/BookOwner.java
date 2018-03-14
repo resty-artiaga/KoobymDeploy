@@ -43,17 +43,17 @@ public class BookOwner {
 
 	@Column(name = "bookStat")
 	private String bookStat;
-	
-	public String getBookStat(){
-		return this.bookStat;
-	}
-	
-	public void setBookStat(String bookStat){
-		this.bookStat = bookStat;
-	}
-	
+
 	@Transient
 	private double rate;
+
+	public String getBookStat() {
+		return bookStat;
+	}
+
+	public void setBookStat(String bookStat) {
+		this.bookStat = bookStat;
+	}
 
 	public double getRate() {
 		return rate;

@@ -58,7 +58,8 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.createAlias("book", "book");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.or(Restrictions.eq("book.status", "Available"), Restrictions.eq("book.status", "Not Available")));
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("book.status", "Available"),
+				Restrictions.eq("book.status", "Not Available")));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<BookOwner>) criteria.list();
 		return flag;
@@ -92,7 +93,8 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 				+ " GROUP BY bookId ORDER BY 2 desc) as suggested_books on book_owner.bookId = suggested_books.bi"
 				+ " LEFT JOIN (select avg(rate.rateNumber) as rate, book_owner_rating.book_ownerId as boi from rate"
 				+ " JOIN book_owner_rating on rate.rateId = book_owner_rating.rateId group by"
-				+ " book_owner_rating.book_ownerId) as ratings on ratings.boi = book_owner.book_ownerId where userId != :userId order by rate desc";
+				+ " book_owner_rating.book_ownerId) as ratings on ratings.boi = book_owner.book_ownerId where userId != :userId "
+				+ " and book_owner.bookStat = 'Available' order by rate desc";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		query.setInteger("userId", userId);
@@ -139,7 +141,7 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 				+ " from book_owner bo inner join genre_book gb on gb.bookId = bo.bookId inner join genre g on g.genreID = gb.genreId"
 				+ " left join (select avg(r.rateNumber) as rate, bor.book_ownerId from rate r inner join book_owner_rating bor on r.rateId = bor.rateId group by bor.book_ownerId) as rating"
 				+ " on rating.book_ownerId = bo.book_ownerId"
-				+ " where g.genreName like :genre order by rating.rate desc";
+				+ " where g.genreName like :genre and bo.bookStat='Available' order by rating.rate desc";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		genre = "%" + genre + "%";
@@ -186,7 +188,7 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 		String squery = "select bo.book_ownerId, bo.bookId, bo.userId, bo.statusDescription, bo.dateBought, bo.noRenters, bo.status, bo.bookStat, rating.rate  from book_owner bo inner join author_book ab on ab.bookId = bo.bookId inner join author a on a.authorId = ab.authorId"
 				+ " left join (select avg(r.rateNumber) as rate, bor.book_ownerId from rate r inner join book_owner_rating bor on r.rateId = bor.rateId group by bor.book_ownerId) as rating"
 				+ " on rating.book_ownerId = bo.book_ownerId"
-				+ " where a.authorFname like :author order by rating.rate desc";
+				+ " where a.authorFname like :author and bo.bookStat='Available'  order by rating.rate desc";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		author = "%" + author + "%";
@@ -234,7 +236,8 @@ public class BookOwnerDaoImpl extends BaseDaoImpl<BookOwner, Long> implements Bo
 				+ " inner join user u on u.userId = bo.userId"
 				+ " left join (select avg(r.rateNumber) as rate, bor.book_ownerId from rate r inner join book_owner_rating bor on r.rateId = bor.rateId group by bor.book_ownerId) as rating"
 				+ " on rating.book_ownerId = bo.book_ownerId"
-				+ " where u.userFname like :userOwnerName or u.userLname like :userOwnerName order by rating.rate desc;";
+				+ " where u.userFname like :userOwnerName or u.userLname like :userOwnerName "
+				+ " and bo.bookStat='Available' order by rating.rate desc;";
 
 		SQLQuery query = session.createSQLQuery(squery);
 		userOwnerName = "%" + userOwnerName + "%";
