@@ -31,7 +31,7 @@ public class BookOwner {
 	@JoinColumn(name = "bookId")
 	private Book book;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	private User user;
 
