@@ -247,5 +247,11 @@ public class RentalHeaderController {
 		ResponseEntity<RentalHeader> flag = ResponseEntity.ok(rentalHeaderService.getLatestRenter(rentalDetailId));
 		return flag;
 	}
+	
+	@RequestMapping(value = "/allRequested/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<RentalHeader>> request(@PathVariable("userId") long userId) {
+		ResponseEntity<List<RentalHeader>> flag = ResponseEntity.ok(rentalHeaderService.allRequested(userId));
+		return flag;
+	}
 }
 	

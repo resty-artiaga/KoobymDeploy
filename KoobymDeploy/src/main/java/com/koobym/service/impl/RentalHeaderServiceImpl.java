@@ -280,4 +280,9 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 	public RentalHeader getLatestRenter(long rentalDetailId){
 		return rentalHeaderDao.getLatestRenter(rentalDetailId);
 	}
+	
+	@Override
+	public List<RentalHeader> allRequested(long userId){
+		return rentalHeaderDao.allRequested(userId);
+	}
 }

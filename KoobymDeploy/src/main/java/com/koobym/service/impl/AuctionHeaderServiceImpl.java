@@ -40,18 +40,6 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 	@Override
 	public AuctionHeader addNewAuctionHeader(AuctionHeader auctionHeader) {
 		auctionHeaderDao.save(auctionHeader);
-
-		UserNotification userNotif = new UserNotification();
-		userNotif.setUser(auctionHeader.getAuctionDetail().getBookOwner().getUser());
-		userNotif.setActionId(auctionHeader.getAuctionHeaderId());
-		userNotif.setActionName("auction");
-		userNotif.setActionStatus("Bid");
-		userNotif.setUserPerformer(auctionHeader.getUser());
-		userNotif.setBookActionPerformedOn(auctionHeader.getAuctionDetail().getBookOwner());
-		userNotificationDao.save(userNotif);
-
-		pusherServer.sendNotification(userNotif);
-
 		return auctionHeader;
 	}
 	

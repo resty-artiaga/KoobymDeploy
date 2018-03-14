@@ -126,7 +126,7 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.createAlias("user", "user");
-		criteria = criteria.add(Restrictions.eq("status", "Approved"));
+		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
 		criteria = criteria.addOrder(Order.desc("dateDeliver"));
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -743,6 +743,18 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", rentalDetailId));
 		criteria = criteria.add(Restrictions.or(Restrictions.ne("status", "Complete"), Restrictions.ne("status", "Rejected")));
 		flag = (RentalHeader) criteria.uniqueResult();
+		return flag;
+	}
+	
+	public List<RentalHeader> allRequested(long userId){
+		List<RentalHeader> flag = new ArrayList<RentalHeader>();
+		
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
+		criteria = criteria.add(Restrictions.eq("status", "Request"));
+		criteria = criteria.createAlias("user", "user");
+		criteria = criteria.add(Restrictions.eq("user.userId", userId));
+		flag = (List<RentalHeader>) criteria.uniqueResult();
+		
 		return flag;
 	}
 }

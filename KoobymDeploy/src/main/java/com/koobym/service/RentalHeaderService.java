@@ -38,5 +38,6 @@ public interface RentalHeaderService extends BaseService<RentalHeader, Long> {
 	public RentalHeader rejectRequest(long rentalHeaderId);
 	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId);
 	public RentalHeader getLatestRenter(long rentalDetailId);
+	public List<RentalHeader> allRequested(long userId);
 	
 }
