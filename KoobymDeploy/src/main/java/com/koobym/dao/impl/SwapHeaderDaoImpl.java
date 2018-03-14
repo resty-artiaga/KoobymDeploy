@@ -628,7 +628,7 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		boolean flag = false;
 
 		String query = "select count(swapHeaderId) from swap_header "
-				+ " where swap_header.userId = :userId and (status='Confirm' or status='Approved')";
+				+ " where swap_header.userId = :userId and (status='Confirm' or status='Approved' or status='Delivered')";
 
 		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(query);
 		sqlQuery.setLong("userId", userId);

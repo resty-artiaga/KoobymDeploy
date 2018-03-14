@@ -77,7 +77,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(AuctionHeader.class);
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.eq("status", "Confirm"));
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Confirm"), Restrictions.eq("status", "Delivered")));
 		criteria = criteria.addOrder(Order.desc("dateDelivered"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<AuctionHeader>) criteria.list();
@@ -166,6 +166,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		ah = get(auctionHeaderId);
 
 		ah.setAuctionExtraMessage("Delivered");
+		ah.setStatus("Delivered");
 
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(ah);
@@ -239,7 +240,7 @@ public class AuctionHeaderDaoImpl extends BaseDaoImpl<AuctionHeader, Long> imple
 		boolean flag = false;
 
 		String query = "select count(auctionHeaderId) from auction_header "
-				+ " where auction_header.userId = :userId and (status='Confirm' or status='win')";
+				+ " where auction_header.userId = :userId and (status='Confirm' or status='win' or status='Delivered')";
 
 		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(query);
 		sqlQuery.setLong("userId", userId);
