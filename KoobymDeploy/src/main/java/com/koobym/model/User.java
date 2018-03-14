@@ -38,7 +38,7 @@ public class User {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy="userId", cascade=CascadeType.ALL)
 	private Set<UserDayTime> userDayTimes;
 	
-	@Column(name = "email", nullable = false)
+	@Column(name = "email")
 	private String email;
 
 	@Column(name = "password", nullable = false)
