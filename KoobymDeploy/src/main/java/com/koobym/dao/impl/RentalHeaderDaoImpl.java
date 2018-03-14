@@ -117,7 +117,24 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
+	}
 
+	public boolean canRent(long userId) {
+		boolean flag = false;
+
+		String query = "select count(rentalHeaderId) from rental_header "
+				+ " where rental_header.userId = :userId and (status='Confirm' or status='Approved' or status='Returned')";
+
+		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(query);
+		sqlQuery.setLong("userId", userId);
+		Object obj = sqlQuery.uniqueResult();
+		BigInteger bigIntVal = (BigInteger) obj;
+
+		if (bigIntVal != null && bigIntVal.longValue() < 3) {
+			flag = true;
+		}
+
+		return flag;
 	}
 
 	public List<RentalHeader> getToReceiveByIdRenter(int userId) {
@@ -142,7 +159,8 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
 		criteria = criteria.createAlias("rentalDetail.bookOwner", "bookOwner");
 		criteria = criteria.createAlias("rentalDetail.bookOwner.user", "userOwner");
-		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Approved"),Restrictions.and(Restrictions.eq("status", "Received"), Restrictions.eq("userOwner.userId", userId))));
+		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Approved"),
+				Restrictions.and(Restrictions.eq("status", "Received"), Restrictions.eq("userOwner.userId", userId))));
 		criteria = criteria.add(Restrictions.or(Restrictions.eq("userOwner.userId", new Long(userId)),
 				Restrictions.eq("user.userId", new Long(userId))));
 		criteria = criteria.addOrder(Order.desc("dateDeliver"));
@@ -159,7 +177,8 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", new Long(userId)));
-		criteria = criteria.add(Restrictions.and(Restrictions.eq("status", "Received"), Restrictions.eq("rentalExtraMessage","Delivered")));
+		criteria = criteria.add(Restrictions.and(Restrictions.eq("status", "Received"),
+				Restrictions.eq("rentalExtraMessage", "Delivered")));
 		criteria = criteria.addOrder(Order.desc("rentalEndDate"));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
@@ -416,7 +435,9 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 	public List<RentalHeader> getElapsedRentalDate() {
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
-		criteria = criteria.add(Restrictions.ge("rentalEndDate", new Date()));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		criteria = criteria.add(Restrictions.ge("rentalEndDate", cal.getTime()));
 		criteria = criteria.add(Restrictions.not(Restrictions.eq("status", "Due")));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
@@ -472,24 +493,24 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		query.executeUpdate();
 	}
 
-	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId){
+	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId) {
 		RentalHeader rh = new RentalHeader();
-		
+
 		rh = get(rentalHeaderId);
 
 		rh.setStatus("Received");
 		rh.setRentalExtraMessage("Returned");
-		
+
 		UserNotification un = new UserNotification();
-		
+
 		un.setActionId(rentalHeaderId);
 		un.setActionName("rental");
 		un.setActionStatus("returned");
 		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
-		un.setExtraMessage(String.valueOf(bookRatingId)+", "+String.valueOf(bookReviewId));
+		un.setExtraMessage(String.valueOf(bookRatingId) + ", " + String.valueOf(bookReviewId));
 		un.setUser(rh.getRentalDetail().getBookOwner().getUser());
 		un.setUserPerformer(rh.getUserId());
-		
+
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
 
@@ -497,19 +518,19 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		session.update(rh);
 		return rh;
 	}
-	
-	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId){
+
+	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId) {
 		RentalHeader rh = new RentalHeader();
-		
+
 		rh = get(rentalHeaderId);
 		rh.setStatus("Complete");
 		rh.getRentalDetail().setRentalStatus("Available");
 		rh.getRentalDetail().getBookOwner().setBookStat("Available");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
 		UserNotification un = new UserNotification();
-		
+
 		un.setActionId(rentalHeaderId);
 		un.setExtraMessage(String.valueOf(userRatingId));
 		un.setActionName("rental");
@@ -519,23 +540,22 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
-		
+
 		return rh;
 	}
-	
-	public RentalHeader delivered(long rentalHeaderId){
+
+	public RentalHeader delivered(long rentalHeaderId) {
 		RentalHeader rh = new RentalHeader();
-		
+
 		rh = get(rentalHeaderId);
-		
+
 		rh.setRentalExtraMessage("Delivered");
 		rh.getRentalDetail().setRentalStatus("Not Available");
 		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(rentalHeaderId);
 		un.setActionName("rental");
@@ -545,22 +565,22 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		return rh;
 	}
-	
-	public RentalHeader received(long rentalHeaderId){
+
+	public RentalHeader received(long rentalHeaderId) {
 		RentalHeader rh = new RentalHeader();
-		
+
 		rh = get(rentalHeaderId);
-		
+
 		rh.setStatus("Received");
 		rh.getRentalDetail().setRentalStatus("Not Available");
 		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(rentalHeaderId);
 		un.setActionName("rental");
@@ -568,24 +588,23 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
 		un.setUser(rh.getRentalDetail().getBookOwner().getUser());
 		un.setUserPerformer(rh.getUserId());
-		
+
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		return rh;
 	}
 
-
-	public RentalHeader complete(long rentalHeaderId, long userRatingId){
+	public RentalHeader complete(long rentalHeaderId, long userRatingId) {
 		RentalHeader rh = new RentalHeader();
-		
+
 		rh = get(rentalHeaderId);
-		
+
 		rh.setStatus("Complete");
 		rh.getRentalDetail().setRentalStatus("Not Available");
 		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
 		rh.getRentalDetail().getBookOwner().setStatus("none");
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(rentalHeaderId);
 		un.setActionName("rental");
@@ -594,49 +613,49 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setUserPerformer(rh.getRentalDetail().getBookOwner().getUser());
 		un.setUser(rh.getUserId());
 		un.setExtraMessage(String.valueOf(userRatingId));
-		
+
 		rh.getRentalDetail().getBookOwner().setUser(rh.getUserId());
-				
+
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
-		
+
 		return rh;
 	}
-	
-	public List<RentalHeader> allHistory(long userId){
-		
+
+	public List<RentalHeader> allHistory(long userId) {
+
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
 
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", userId));
-		criteria = criteria.add(Restrictions.or(Restrictions.eq("status", "Complete"), Restrictions.eq("status", "Rejected")));
+		criteria = criteria
+				.add(Restrictions.or(Restrictions.eq("status", "Complete"), Restrictions.eq("status", "Rejected")));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
 		return flag;
 
 	}
-	
-	public RentalHeader acceptRequest(long rentalHeaderId){
+
+	public RentalHeader acceptRequest(long rentalHeaderId) {
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
-		
+
 		RentalHeader rh = new RentalHeader();
 		RentalDetail rd = new RentalDetail();
-		
+
 		rh = get(rentalHeaderId);
 		rd = rh.getRentalDetail();
-		
-		
+
 		rh.setStatus("Approved");
 		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
 		rh.getRentalDetail().setRentalStatus("Not Available");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(rentalHeaderId);
 		un.setActionName("rental");
@@ -646,23 +665,23 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setUserPerformer(rd.getBookOwner().getUser());
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.createAlias("rentalDetail", "rentalDetail");
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
 		criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", rd.getRental_detailId()));
 		criteria = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		flag = (List<RentalHeader>) criteria.list();
-			
+
 		RentalHeader rentalHeaderTemp;
-		for(int i= 0; i<flag.size();i++){
+		for (int i = 0; i < flag.size(); i++) {
 			rentalHeaderTemp = flag.get(i);
-			
-			if(!(flag.get(i).equals(rentalHeaderId))){
+
+			if (!(flag.get(i).equals(rentalHeaderId))) {
 				rentalHeaderTemp.setStatus("Rejected");
 				rentalHeaderTemp.setRentalExtraMessage("Accepted other request");
 				session.update(rentalHeaderTemp);
-				
+
 				UserNotification userN = new UserNotification();
 				userN.setActionId(rentalHeaderId);
 				userN.setActionName("rental");
@@ -675,35 +694,35 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 				pusherServer.sendNotification(userN);
 			}
 		}
-		
+
 		return rh;
 	}
-	
-	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId){
+
+	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId) {
 		RentalHeader rh = new RentalHeader();
 
 		MeetUp mu = meetUpDao.get(meetUpDeliveryId);
 		MeetUp returnMu = meetUpDao.get(meetUpReturnId);
-		
+
 		rh = get(rentalHeaderId);
-		
+
 		rh.setMeetUp(mu);
 		rh.setReturnMeetUp(returnMu);
-		
+
 		rh.setRentalReturnDate(returnMu.getUserDayTime().getDays().getStrDay());
 		rh.setRentalEndDate(rh.getRentalReturnDate());
-		
+
 		rh.setDateDeliver(rh.getMeetUp().getUserDayTime().getDays().getStrDay());
-		
+
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date dateDate = new Date();
 		String formattedDate = format.format(dateDate);
-		
+
 		rh.setDateConfirmed(formattedDate);
 		rh.getRentalDetail().setRentalStatus("Not Available");
 		rh.setStatus("Confirm");
 		rh.getRentalDetail().getBookOwner().setBookStat("Not Available");
-		
+
 		UserNotification un = new UserNotification();
 		un.setActionId(rentalHeaderId);
 		un.setActionName("rental");
@@ -711,50 +730,50 @@ public class RentalHeaderDaoImpl extends BaseDaoImpl<RentalHeader, Long> impleme
 		un.setUser(rh.getRentalDetail().getBookOwner().getUser());
 		un.setUserPerformer(rh.getUserId());
 		un.setBookActionPerformedOn(rh.getRentalDetail().getBookOwner());
-		
+
 		userNotificationDao.save(un);
 		pusherServer.sendNotification(un);
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
-		
-		
+
 		return rh;
 	}
-	
-	public RentalHeader rejectRequest(long rentalHeaderId){
+
+	public RentalHeader rejectRequest(long rentalHeaderId) {
 		RentalHeader rh = new RentalHeader();
-		
+
 		rh = get(rentalHeaderId);
-		
+
 		rh.setStatus("Rejected");
-		
+
 		Session session = getSessionFactory().getCurrentSession();
 		session.update(rh);
-		
+
 		return rh;
 	}
-	
-	public RentalHeader getLatestRenter(long rentalDetailId){
+
+	public RentalHeader getLatestRenter(long rentalDetailId) {
 		RentalHeader flag = new RentalHeader();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.add(Restrictions.eq("rentalDetail", "rentalDetail"));
 		criteria = criteria.add(Restrictions.eq("rentalDetail.rental_detailId", rentalDetailId));
-		criteria = criteria.add(Restrictions.or(Restrictions.ne("status", "Complete"), Restrictions.ne("status", "Rejected")));
+		criteria = criteria
+				.add(Restrictions.or(Restrictions.ne("status", "Complete"), Restrictions.ne("status", "Rejected")));
 		flag = (RentalHeader) criteria.uniqueResult();
 		return flag;
 	}
-	
-	public List<RentalHeader> allRequested(long userId){
+
+	public List<RentalHeader> allRequested(long userId) {
 		List<RentalHeader> flag = new ArrayList<RentalHeader>();
-		
+
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(RentalHeader.class);
 		criteria = criteria.add(Restrictions.eq("status", "Request"));
 		criteria = criteria.createAlias("user", "user");
 		criteria = criteria.add(Restrictions.eq("user.userId", userId));
 		flag = (List<RentalHeader>) criteria.uniqueResult();
-		
+
 		return flag;
 	}
 }

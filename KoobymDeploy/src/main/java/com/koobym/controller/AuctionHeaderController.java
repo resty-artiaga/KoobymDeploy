@@ -2,7 +2,6 @@ package com.koobym.controller;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,11 +54,12 @@ public class AuctionHeaderController {
 		}
 		return ent;
 	}
-	
+
 	@RequestMapping(value = "/updateStatus/{status}/{auctionHeaderId}/{date}", method = RequestMethod.GET)
 	public ResponseEntity<AuctionHeader> setApprovedExam(@PathVariable("auctionHeaderId") int auctionHeaderId,
 			@PathVariable("status") String status, @PathVariable("date") String date) {
-		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.setApprovedExam(auctionHeaderId, status, date));
+		ResponseEntity<AuctionHeader> flag = ResponseEntity
+				.ok(auctionHeaderService.setApprovedExam(auctionHeaderId, status, date));
 		return flag;
 	}
 
@@ -68,7 +68,7 @@ public class AuctionHeaderController {
 		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getToDeliverById(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionHeader>> getRoles() {
 		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.list());
@@ -89,44 +89,54 @@ public class AuctionHeaderController {
 	}
 
 	@RequestMapping(value = "/getAuctionHeader/{auctionDetailId}/{userId}", method = RequestMethod.GET)
-	public ResponseEntity<List<AuctionHeader>> getAuctionHeader(@PathVariable("auctionDetailId") int auctionDetailId, @PathVariable("userId") int userId) {
-		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getAuctionHeader(auctionDetailId, userId));
+	public ResponseEntity<List<AuctionHeader>> getAuctionHeader(@PathVariable("auctionDetailId") int auctionDetailId,
+			@PathVariable("userId") int userId) {
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity
+				.ok(auctionHeaderService.getAuctionHeader(auctionDetailId, userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/getWinById/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionHeader>> getWinById(@PathVariable("userId") int userId) {
-		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getWinById(new Long (userId)));
+		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getWinById(new Long(userId)));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/changeOwner/{auctionHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<AuctionHeader> changeOwner(@PathVariable("auctionHeaderId") long auctionHeaderId) {
 		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.changeOwner(auctionHeaderId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/deliveredBook/{auctionHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<AuctionHeader> deliveredBook(@PathVariable("auctionHeaderId") long auctionHeaderId) {
 		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.deliveredBook(auctionHeaderId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/completeBook/{auctionHeaderId}/{userRatingId}", method = RequestMethod.GET)
-	public ResponseEntity<AuctionHeader> completeBook(@PathVariable("auctionHeaderId") long auctionHeaderId, @PathVariable("userRatingId") long userRatingId) {
-		ResponseEntity<AuctionHeader> flag = ResponseEntity.ok(auctionHeaderService.receivedBook(auctionHeaderId, userRatingId));
+	public ResponseEntity<AuctionHeader> completeBook(@PathVariable("auctionHeaderId") long auctionHeaderId,
+			@PathVariable("userRatingId") long userRatingId) {
+		ResponseEntity<AuctionHeader> flag = ResponseEntity
+				.ok(auctionHeaderService.receivedBook(auctionHeaderId, userRatingId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/history/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionHeader>> history(@PathVariable("userId") long userId) {
 		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.history(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/getAllWin", method = RequestMethod.GET)
 	public ResponseEntity<List<AuctionHeader>> win() {
 		ResponseEntity<List<AuctionHeader>> flag = ResponseEntity.ok(auctionHeaderService.getAllWin());
+		return flag;
+	}
+
+	@RequestMapping(value = "/canAuction/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Boolean> canAuction(@PathVariable("userId") long userId) {
+		ResponseEntity<Boolean> flag = ResponseEntity.ok(auctionHeaderService.canAuction(userId));
 		return flag;
 	}
 }

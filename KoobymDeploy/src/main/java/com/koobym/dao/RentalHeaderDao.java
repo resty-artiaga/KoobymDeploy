@@ -6,9 +6,9 @@ import com.koobym.model.AuctionHeader;
 import com.koobym.model.RentalHeader;
 
 public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
-	
+
 	public List<RentalHeader> getToDeliverToday();
-	
+
 	public List<RentalHeader> getToReceive(long userId);
 
 	public void rejectAllOtherRequests(RentalHeader rentalHeader);
@@ -58,28 +58,30 @@ public interface RentalHeaderDao extends BaseDao<RentalHeader, Long> {
 	public RentalHeader setMeetUp(long rentalHeaderId, long meetUpId);
 
 	public List<RentalHeader> getElapsedRentalDate();
-	
+
 	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId);
-	
+
 	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId);
-	
+
 	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId);
-	
+
 	public RentalHeader delivered(long rentalHeaderId);
 
 	public RentalHeader received(long rentalHeaderId);
 
 	public RentalHeader complete(long rentalHeaderId, long userRatingId);
-	
+
 	public List<RentalHeader> allHistory(long userId);
-	
+
 	public RentalHeader acceptRequest(long rentalHeaderId);
 
 	public RentalHeader rejectRequest(long rentalHeaderId);
 
 	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId);
-	
+
 	public RentalHeader getLatestRenter(long rentalDetailId);
-	
+
 	public List<RentalHeader> allRequested(long userId);
+
+	public boolean canRent(long userId);
 }

@@ -41,6 +41,10 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 		this.userNotificationDao = userNotificationDao;
 	}
 
+	public boolean canSwap(long userId) {
+		return swapHeaderDao.canSwap(userId);
+	}
+
 	@Override
 	public List<SwapHeader> getToDeliverById(int userId) {
 		return swapHeaderDao.getToDeliverById(userId);
@@ -107,7 +111,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 			pusherServer.sendNotification(userNotif);
 		}
-		
+
 		if ("ToReceive".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUser(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
@@ -120,7 +124,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 
 			pusherServer.sendNotification(userNotif);
 		}
-		
+
 		if ("Complete".equals(status)) {
 			UserNotification userNotif = new UserNotification();
 			userNotif.setUserPerformer(swapHeader.getRequestedSwapDetail().getBookOwner().getUser());
@@ -139,7 +143,7 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 			userNotif.setUserPerformer(swapHeader.getSwapDetail().getBookOwner().getUser());
 			userNotif.setBookActionPerformedOn(swapHeader.getRequestedSwapDetail().getBookOwner());
 			userNotificationDao.save(userNotif);
-			
+
 			pusherServer.sendNotification(userNotif);
 			pusherServer.sendNotification(userNotif1);
 		}
@@ -193,54 +197,54 @@ public class SwapHeaderServiceImpl extends BaseServiceImpl<SwapHeader, Long> imp
 	public List<SwapHeader> getCompleteAllById(int userId) {
 		return swapHeaderDao.getCompleteAllById(userId);
 	}
-	
+
 	@Override
-	public SwapHeader swapOwner(long userId){
+	public SwapHeader swapOwner(long userId) {
 		return swapHeaderDao.swapOwner(userId);
 	}
-	
+
 	@Override
-	public SwapHeader setDelivered(long swapHeaderId){
+	public SwapHeader setDelivered(long swapHeaderId) {
 		return swapHeaderDao.setDelivered(swapHeaderId);
 	}
-	
+
 	@Override
-	public SwapHeader setComplete(long swapHeaderId){
+	public SwapHeader setComplete(long swapHeaderId) {
 		return swapHeaderDao.setComplete(swapHeaderId);
 	}
 
 	@Override
-	public List<SwapHeader> history(long userId){
+	public List<SwapHeader> history(long userId) {
 		return swapHeaderDao.history(userId);
 	}
-	
+
 	@Override
-	public List<SwapHeader> getRequests(long userId){
+	public List<SwapHeader> getRequests(long userId) {
 		return swapHeaderDao.getRequests(userId);
 	}
-	
+
 	@Override
-	public SwapHeader approveRequest(long swapHeaderId){
+	public SwapHeader approveRequest(long swapHeaderId) {
 		return swapHeaderDao.approveRequest(swapHeaderId);
 	}
-	
+
 	@Override
-	public SwapHeader rejectedRequest(long swapHeaderId){
+	public SwapHeader rejectedRequest(long swapHeaderId) {
 		return swapHeaderDao.rejectedRequest(swapHeaderId);
 	}
-	
+
 	@Override
-	public List<SwapHeader> swapNotifyScheuler(){
+	public List<SwapHeader> swapNotifyScheuler() {
 		return swapHeaderDao.swapNotifyScheuler();
 	}
-	
+
 	@Override
-	public SwapHeader checkExist(long userId, long swapDetailId){
+	public SwapHeader checkExist(long userId, long swapDetailId) {
 		return swapHeaderDao.checkExist(userId, swapDetailId);
 	}
-	
+
 	@Override
-	public SwapHeader updateConfirm(long swapHeaderId){
+	public SwapHeader updateConfirm(long swapHeaderId) {
 		return swapHeaderDao.updateConfirm(swapHeaderId);
 	}
 }

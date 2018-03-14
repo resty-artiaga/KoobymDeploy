@@ -2,7 +2,6 @@ package com.koobym.service.impl;
 
 import java.util.List;
 
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,60 +36,64 @@ public class AuctionHeaderServiceImpl extends BaseServiceImpl<AuctionHeader, Lon
 		this.userNotificationDao = userNotificationDao;
 	}
 
+	public boolean canAuction(long userId) {
+		return auctionHeaderDao.canAuction(userId);
+	}
+
 	@Override
 	public AuctionHeader addNewAuctionHeader(AuctionHeader auctionHeader) {
 		auctionHeaderDao.save(auctionHeader);
 		return auctionHeader;
 	}
-	
+
 	@Override
-	public List<AuctionHeader> getAuctionHeader(long auctionDetailId, long userId){
+	public List<AuctionHeader> getAuctionHeader(long auctionDetailId, long userId) {
 		return auctionHeaderDao.getAuctionHeader(auctionDetailId, userId);
 	}
-	
+
 	@Override
-	public AuctionHeader setApprovedExam(long auctionHeaderId, String status, String dateApproved){
+	public AuctionHeader setApprovedExam(long auctionHeaderId, String status, String dateApproved) {
 		return auctionHeaderDao.setApprovedExam(auctionHeaderId, status, dateApproved);
 	}
-	
+
 	@Override
-	public List<AuctionHeader> getToDeliverById(int userId){
+	public List<AuctionHeader> getToDeliverById(int userId) {
 		return auctionHeaderDao.getToDeliverById(userId);
 	}
-	
+
 	@Override
-	public List<AuctionHeader> getToReceiveById(int userId){
+	public List<AuctionHeader> getToReceiveById(int userId) {
 		return auctionHeaderDao.getToReceiveById(userId);
 	}
-	
+
 	@Override
-	public List<AuctionHeader> getWinById(long userId){
+	public List<AuctionHeader> getWinById(long userId) {
 		return auctionHeaderDao.getWinById(userId);
 	}
-	
+
 	@Override
-	public AuctionHeader changeOwner(long auctionHeaderId){
+	public AuctionHeader changeOwner(long auctionHeaderId) {
 		return auctionHeaderDao.changeOwner(auctionHeaderId);
 	}
-	
+
 	@Override
-	public AuctionHeader deliveredBook(long auctionHeaderId){
+	public AuctionHeader deliveredBook(long auctionHeaderId) {
 		return auctionHeaderDao.deliveredBook(auctionHeaderId);
 	}
-	
+
 	@Override
-	public AuctionHeader receivedBook(long auctionHeaderId, long userRatingId){
+	public AuctionHeader receivedBook(long auctionHeaderId, long userRatingId) {
 		return auctionHeaderDao.receivedBook(auctionHeaderId, userRatingId);
 	}
-	
+
 	@Override
-	public List<AuctionHeader> history(long userId){
+	public List<AuctionHeader> history(long userId) {
 		return auctionHeaderDao.history(userId);
 	}
-	
+
 	@Override
-	public List<AuctionHeader> getAllWin(){
+	public List<AuctionHeader> getAllWin() {
 		return auctionHeaderDao.getAllWin();
 	}
-	
+
 }

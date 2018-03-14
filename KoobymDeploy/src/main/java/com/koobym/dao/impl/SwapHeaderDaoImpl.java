@@ -627,4 +627,23 @@ public class SwapHeaderDaoImpl extends BaseDaoImpl<SwapHeader, Long> implements 
 		pusherServer.sendNotification(un);
 		return sh;
 	}
+	
+	
+	public boolean canSwap(long userId) {
+		boolean flag = false;
+
+		String query = "select count(swapHeaderId) from swap_header "
+				+ " where swap_header.userId = :userId and (status='Confirm' or status='Approved')";
+
+		SQLQuery sqlQuery = getSessionFactory().getCurrentSession().createSQLQuery(query);
+		sqlQuery.setLong("userId", userId);
+		Object obj = sqlQuery.uniqueResult();
+		BigInteger bigIntVal = (BigInteger) obj;
+
+		if (bigIntVal != null && bigIntVal.longValue() < 3) {
+			flag = true;
+		}
+
+		return flag;
+	}
 }

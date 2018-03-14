@@ -32,6 +32,10 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 		this.userNotificationDao = userNotificationDao;
 	}
 
+	public boolean canRent(long userId) {
+		return rentalHeaderDao.canRent(userId);
+	}
+
 	@Override
 	public List<RentalHeader> getToDeliverById(int userId) {
 		return rentalHeaderDao.getToDeliverById(userId);
@@ -220,69 +224,69 @@ public class RentalHeaderServiceImpl extends BaseServiceImpl<RentalHeader, Long>
 
 		return rentalHeaderDao.setMeetUp(rentalHeaderId, meetUpId);
 	}
-	
+
 	@Override
-	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId){
+	public RentalHeader setReturnMeetUp(long rentalHeaderId, long meetUpId) {
 		return rentalHeaderDao.setReturnMeetUp(rentalHeaderId, meetUpId);
 	}
-	
+
 	@Override
-	public List<RentalHeader> getToReceive(long userId){
+	public List<RentalHeader> getToReceive(long userId) {
 		return rentalHeaderDao.getToReceive(userId);
 	}
-	
+
 	@Override
-	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId){
+	public RentalHeader setReturnToReceive(long rentalHeaderId, long bookRatingId, long bookReviewId) {
 		return rentalHeaderDao.setReturnToReceive(rentalHeaderId, bookRatingId, bookReviewId);
 	}
-	
+
 	@Override
-	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId){
+	public RentalHeader setCompleteRental(long rentalHeaderId, long userRatingId) {
 		return rentalHeaderDao.setCompleteRental(rentalHeaderId, userRatingId);
 	}
-	
+
 	@Override
-	public RentalHeader delivered(long rentalHeaderId){
+	public RentalHeader delivered(long rentalHeaderId) {
 		return rentalHeaderDao.delivered(rentalHeaderId);
 	}
-	
+
 	@Override
-	public RentalHeader received(long rentalHeaderId){
+	public RentalHeader received(long rentalHeaderId) {
 		return rentalHeaderDao.received(rentalHeaderId);
 	}
-	
+
 	@Override
-	public RentalHeader complete(long rentalHeaderId, long userRatingId){
+	public RentalHeader complete(long rentalHeaderId, long userRatingId) {
 		return rentalHeaderDao.complete(rentalHeaderId, userRatingId);
 	}
-	
+
 	@Override
-	public List<RentalHeader> allHistory(long userId){
+	public List<RentalHeader> allHistory(long userId) {
 		return rentalHeaderDao.allHistory(userId);
 	}
-	
+
 	@Override
-	public RentalHeader acceptRequest(long rentalHeaderId){
+	public RentalHeader acceptRequest(long rentalHeaderId) {
 		return rentalHeaderDao.acceptRequest(rentalHeaderId);
 	}
-	
+
 	@Override
-	public RentalHeader rejectRequest(long rentalHeaderId){
+	public RentalHeader rejectRequest(long rentalHeaderId) {
 		return rentalHeaderDao.rejectRequest(rentalHeaderId);
 	}
-	
+
 	@Override
-	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId){
+	public RentalHeader setConfirm(long rentalHeaderId, long meetUpDeliveryId, long meetUpReturnId) {
 		return rentalHeaderDao.setConfirm(rentalHeaderId, meetUpDeliveryId, meetUpReturnId);
 	}
-	
+
 	@Override
-	public RentalHeader getLatestRenter(long rentalDetailId){
+	public RentalHeader getLatestRenter(long rentalDetailId) {
 		return rentalHeaderDao.getLatestRenter(rentalDetailId);
 	}
-	
+
 	@Override
-	public List<RentalHeader> allRequested(long userId){
+	public List<RentalHeader> allRequested(long userId) {
 		return rentalHeaderDao.allRequested(userId);
 	}
 }

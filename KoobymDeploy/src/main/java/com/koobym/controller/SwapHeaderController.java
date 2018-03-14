@@ -100,7 +100,8 @@ public class SwapHeaderController {
 	@RequestMapping(value = "/updateStatus/{status}/{swapHeaderId}/{date}", method = RequestMethod.GET)
 	public ResponseEntity<SwapHeader> setApprovedExam(@PathVariable("swapHeaderId") int swapHeaderId,
 			@PathVariable("status") String status, @PathVariable("date") String date) {
-		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setApprovedExam(status, swapHeaderId, date));
+		ResponseEntity<SwapHeader> flag = ResponseEntity
+				.ok(swapHeaderService.setApprovedExam(status, swapHeaderId, date));
 		return flag;
 	}
 
@@ -139,52 +140,59 @@ public class SwapHeaderController {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.swapOwner(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/setDelivered/{swapHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<SwapHeader> setDelivered(@PathVariable("swapHeaderId") long swapHeaderId) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setDelivered(swapHeaderId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/setComplete/{swapHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<SwapHeader> setComplete(@PathVariable("swapHeaderId") long swapHeaderId) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.setComplete(swapHeaderId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/history/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> history(@PathVariable("userId") long userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.history(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/swapRequests/{userId}", method = RequestMethod.GET)
 	public ResponseEntity<List<SwapHeader>> requests(@PathVariable("userId") long userId) {
 		ResponseEntity<List<SwapHeader>> flag = ResponseEntity.ok(swapHeaderService.getRequests(userId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/approveRequests/{swapHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<SwapHeader> approve(@PathVariable("swapHeaderId") long swapHeaderId) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.approveRequest(swapHeaderId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/rejectedRequests/{swapHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<SwapHeader> rejected(@PathVariable("swapHeaderId") long swapHeaderId) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.rejectedRequest(swapHeaderId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/checkExist/{userId}/{swapDetailId}", method = RequestMethod.GET)
-	public ResponseEntity<SwapHeader> exist(@PathVariable("userId") long userId, @PathVariable("swapDetailId") long swapDetailId) {
+	public ResponseEntity<SwapHeader> exist(@PathVariable("userId") long userId,
+			@PathVariable("swapDetailId") long swapDetailId) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.checkExist(userId, swapDetailId));
 		return flag;
 	}
-	
+
 	@RequestMapping(value = "/updateSwap/{swapHeaderId}", method = RequestMethod.GET)
 	public ResponseEntity<SwapHeader> updateSwap(@PathVariable("swapHeaderId") long swapHeaderId) {
 		ResponseEntity<SwapHeader> flag = ResponseEntity.ok(swapHeaderService.updateConfirm(swapHeaderId));
+		return flag;
+	}
+
+	@RequestMapping(value = "/canSwap/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<Boolean> canSwap(@PathVariable("userId") long userId) {
+		ResponseEntity<Boolean> flag = ResponseEntity.ok(swapHeaderService.canSwap(userId));
 		return flag;
 	}
 }

@@ -24,7 +24,7 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public List<SwapHeader> getRequestedSwaps(long userId);
 
 	public List<SwapHeader> getRequests(long userId);
-	
+
 	public List<SwapHeader> getToApproveSwaps(long userId);
 
 	public List<SwapHeader> getCompleteById(int userId);
@@ -38,22 +38,24 @@ public interface SwapHeaderDao extends BaseDao<SwapHeader, Long> {
 	public List<SwapHeader> getCompleteAllById(int userId);
 
 	public List<SwapHeader> getOngoingSwaps(long userId);
-	
+
 	public SwapHeader swapOwner(long userId);
 
 	public SwapHeader setDelivered(long swapHeaderId);
 
 	public SwapHeader setComplete(long swapHeaderId);
-	
+
 	public List<SwapHeader> history(long userId);
-	
+
 	public SwapHeader approveRequest(long swapHeaderId);
 
 	public SwapHeader rejectedRequest(long swapHeaderId);
 
 	public List<SwapHeader> swapNotifyScheuler();
-	
+
 	public SwapHeader checkExist(long userId, long swapDetailId);
 
 	public SwapHeader updateConfirm(long swapHeaderId);
+
+	public boolean canSwap(long userId);
 }
