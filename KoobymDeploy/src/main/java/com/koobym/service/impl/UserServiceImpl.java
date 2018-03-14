@@ -36,12 +36,29 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 			userR = userDao.register(user);
 			for (UserDayTime udt : userDayTimes) {
 				udt.setUserId(userR.getUserId());
-				userDayTimeDao.save(udt);
-			}
+				userDayTimeDao.saveOrUpdate(udt);
+			}					
+			
 		} catch (Exception e) {
 			userR = null;
 		}
 		return userR;
+	}
+
+	@Override
+	public void update(User user) {
+		User userR = null;
+		try {
+			Set<UserDayTime> userDayTimes = user.getUserDayTimes();
+			user.setUserDayTimes(null);
+			userDao.update(user);
+			for (UserDayTime udt : userDayTimes) {
+				udt.setUserId(user.getUserId());
+				userDayTimeDao.saveOrUpdate(udt);
+			}
+		} catch (Exception e) {
+			userR = null;
+		}
 	}
 
 	@Override

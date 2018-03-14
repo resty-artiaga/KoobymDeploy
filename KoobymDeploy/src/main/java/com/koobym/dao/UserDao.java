@@ -6,4 +6,5 @@ public interface UserDao extends BaseDao<User, Long> {
 	public User register(User user);
 	public User login(User user);
 	public User checkFbUser(String userFbId);
+	public void updateUser(User user);
 }
